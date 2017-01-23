@@ -1,0 +1,25 @@
+#!/bin/sh
+#|-*- mode:lisp -*-|#
+#| <Put a one-line description here>
+exec ros -Q -- $0 "$@"
+|#
+(progn ;;init forms
+  (ql:quickload 'log4cl-json))
+
+(defpackage :ros.script.example.3694141461
+  (:use :cl))
+(in-package :ros.script.example.3694141461)
+
+(defun main (&rest argv)
+  (declare (ignorable argv))
+  (log:info "Starting the program")
+  (log:config)
+  (log:info "Removing all appenders")
+  (log4cl:remove-all-appenders log4cl:*root-logger*)
+  (log:config)
+  (log:info "Adding Json Appender")
+  (log4cl:add-appender log4cl:*root-logger*
+                       (make-instance 'log4cl-json.appender:json-appender))
+  (log4cl-json.appender:with-fields (:request-id 42)
+    (log:info "Done")))
+;;; vim: set ft=lisp lisp:
