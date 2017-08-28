@@ -50,6 +50,8 @@ Fields are stored as a plist, and transformed into an a list before serializatio
                                logger
 			       level
                                log-func)
+  (declare (ignorable logger))
+  
   (with-slots (layout stream %output-since-flush) this
     (let* ((message (with-output-to-string (s)
                       (funcall log-func s)))
@@ -65,7 +67,9 @@ Fields are stored as a plist, and transformed into an a list before serializatio
       
       (jonathan:with-output (stream)
         (let ((jonathan:*from* :alist))
-          (jonathan:%to-json data))))
+          (jonathan:%to-json data)))
+
+      (terpri stream))
     
     (setf %output-since-flush t)
     (log4cl::maybe-flush-appender-stream this stream))

@@ -1,6 +1,27 @@
 Usage
 =====
 
+To turn this handler on, do:
+
+.. code:: common-lisp
+
+   (log4cl-json:setup)
+
+Then, somewhere in code:
+
+.. code:: common-lisp
+
+
+   (log4cl-json:with-fields (:request-id 42)
+      (log:info "Processing request")
+      ;; All logging in this call and nested calls will have
+      ;; "request-id = 42" field.
+      (process-request))
+
+TODO
+====
+
+Add traceback logging.
 
 Output examples
 ===============

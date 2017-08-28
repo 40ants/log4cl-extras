@@ -11,7 +11,9 @@
                :hamcrest-prove)
   :components ((:module "t"
                 :components
-                ((:test-file "appender"))))
+                ((:file "utils")
+                 (:test-file "core")
+                 (:test-file "appender"))))
   :description "Test system for log4cl-json"
 
   :defsystem-depends-on (:prove-asdf)

@@ -3,7 +3,8 @@
   (:use :cl
         :log4cl-json.appender
         :prove
-        :hamcrest.prove))
+        :hamcrest.prove
+        :log4cl-json.t.utils))
 (in-package :log4cl-json.t.appender)
 
 
@@ -13,74 +14,52 @@
 
 
 (subtest
-    "Basic output without fields."
-  (flet ((log-message (message &key (level log4cl:+log-level-debug+))
-           "Pass message through appender and return resulting JSON as a string."
-           (with-output-to-string (stream)
-             (let ((appender (make-instance 'json-appender
-                                            :stream stream)))
-               (log4cl:appender-do-append appender
-                                          log4cl:*root-logger*
-                                          level
-                                          (lambda (s)
-                                            (princ message
-                                                   s)))))))
-    (subtest
-        "When there is no fields, key '@fields' should have
+    "When there is no fields, key '@fields' should have
 only :|level| field and @message and @timestamp keys should be in the log item."
-      (let* ((line (log-message "Some"))
-             (data (jonathan:parse line)))
+  (multiple-value-bind (line data) (log-message "Some")
+    (declare (ignorable line))
 
-        (assert-that
-         data
-         (has-plist-entries :|@message| "Some"
-                            :|@timestamp| _
-                            :|@fields| (has-plist-entries
-                                        :|level| "DEBUG")))))))
+    (assert-that
+     data
+     (has-plist-entries :|@message| "Some"
+                        :|@timestamp| _
+                        :|@fields| (has-plist-entries
+                                    :|level| "DEBUG")))))
 
 
 (subtest
     "Adding fields with \"with-fields\" macro."
-  (flet ((log-message (message &key (level log4cl:+log-level-debug+))
-           "Pass message through appender and return resulting JSON as a string."
-           (with-output-to-string (stream)
-             (let ((appender (make-instance 'json-appender
-                                            :stream stream)))
-               (log4cl:appender-do-append appender
-                                          log4cl:*root-logger*
-                                          level
-                                          (lambda (s)
-                                            (princ message
-                                                   s)))))))
-    (subtest
-        "\"with-fields\" macro can add one field."
-      (let* ((line (with-fields (:|request-id| 100500)
-                     (log-message "Some")))
-             (data (jonathan:parse line)))
+  (subtest
+      "\"with-fields\" macro can add one field."
+    (multiple-value-bind (line data)
+        (with-fields (:|request-id| 100500)
+          (log-message "Some"))
+      (declare (ignorable line))
 
-        (assert-that
-         data
-         (has-plist-entries :|@message| "Some"
-                            :|@timestamp| _
-                            :|@fields| (has-plist-entries
-                                        :|request-id| 100500
-                                        :|level| "DEBUG")))))
+      (assert-that
+       data
+       (has-plist-entries :|@message| "Some"
+                          :|@timestamp| _
+                          :|@fields| (has-plist-entries
+                                      :|request-id| 100500
+                                      :|level| "DEBUG")))))
 
-    (subtest
-        "\"with-fields\" macro can add many fields."
-      (let* ((line (with-fields (:|request-id| 100500
-                                 :|org-id| 42 )
-                     (log-message "Some")))
-             (data (jonathan:parse line)))
-
-        (assert-that
-         data
-         (has-plist-entries :|@message| "Some"
-                            :|@timestamp| _
-                            :|@fields| (has-plist-entries
-                                        :|request-id| 100500
-                                        :|org-id| 42
-                                        :|level| "DEBUG")))))))
+  (subtest
+      "\"with-fields\" macro can add many fields."
+    (multiple-value-bind (line data)
+        (with-fields (:|request-id| 100500
+                       :|org-id| 42 )
+          (log-message "Some"))
+      (declare (ignorable line))
+        
+      (assert-that
+       data
+       (has-plist-entries :|@message| "Some"
+                          :|@timestamp| _
+                          :|@fields| (has-plist-entries
+                                      :|request-id| 100500
+                                      :|org-id| 42
+                                      :|level| "DEBUG"))))))
 
 
 (finalize)

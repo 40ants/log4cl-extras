@@ -11,10 +11,13 @@
   :depends-on (:log4cl
                :local-time
                :iterate
-               :jonathan)
+               :jonathan
+               :dissect)
   :components ((:module "src"
                 :components
-                ((:file "appender"))))
+                ((:file "appender")
+                 (:file "core")
+                 (:file "package"))))
   :description "A JSON appender for log4cl, to stream logs to ElasticSearch."
   :long-description
   #.(with-open-file (stream (merge-pathnames
