@@ -1,10 +1,21 @@
 (defpackage log4cl-json.core
   (:use :cl)
-  (:export :setup))
+  (:export :setup
+           :with-log-unhandled))
 (in-package :log4cl-json.core)
 
 
-(defun get-traceback (&key (skip 0) (depth 10))
+(defvar *default-skip-frames*
+  ;; On CCL and SBLC first four frames are from signal handling code.
+  #+(or ccl sbcl)
+  4
+  #-(or ccl sbcl)
+  0)
+
+
+(defun get-traceback (&key
+                        (skip *default-skip-frames*)
+                        (depth 10))
   (subseq (dissect:stack)
           skip (+ skip depth)))
 
@@ -24,7 +35,7 @@
 
 (defun format-frame (frame &key (max-call-length 10))
   (format nil "  File \"~a\", line ~a, in ~a
-    ~a"
+    ~S"
           (dissect:file frame)
           (dissect:line frame)
           (limit-length (remove-newlines
@@ -35,7 +46,7 @@
                  (dissect:args frame))))
 
 
-(defun format-traceback (tb &key (max-call-length 10))
+(defun traceback-to-string (tb &key (max-call-length 10))
   (format nil "Traceback (most recent call last):
 ~{~a
 ~}" (mapcar (lambda (item)
@@ -44,20 +55,18 @@
             tb)))
 
 
-(defun foo (bar &key (boo "baz"))
-  (let ((other "value2"))
-    (error "The message")
-    (format nil "~a ~a ~a" bar boo other)))
-
-
-(defun bar ()
-  (with-log-unhandled
-      (foo 1)))
-
-
-(defmacro with-log-unhandled (&body body)
-  `(handler-case )
-  )
+(defmacro with-log-unhandled (() &body body)
+  (alexandria:with-gensyms (tb tb-as-string)
+    `(handler-bind
+         ((t (lambda (condition)
+               (declare (ignorable condition))
+               
+               (let* ((,tb (get-traceback))
+                      (,tb-as-string (traceback-to-string ,tb)))
+                 (log4cl-json.appender:with-fields
+                     (:|traceback| ,tb-as-string)
+                   (log:error "Unhandled exception"))))))
+       ,@body)))
 
 
 (defun setup (&key (stream *standard-output*)

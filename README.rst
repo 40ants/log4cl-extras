@@ -18,10 +18,55 @@ Then, somewhere in code:
       ;; "request-id = 42" field.
       (process-request))
 
-TODO
-====
+If you want to log unhandled signals' traceback, then do:
 
-Add traceback logging.
+.. code:: common-lisp
+
+   (log4cl-json:with-log-unhandled ()
+     (foo)
+     (bar)))
+
+If some unhandled condition will be signaled in foo or bar, this code
+will log an error with ``traceback`` field like this::
+
+  Traceback (most recent call last):
+    File "NIL", line NIL, in BAR
+      (BAR 1 :BOO "baz")
+    File "NIL", line NIL, in FOO
+      (FOO)
+    File "NIL", line NIL, in HANDLE-RE…
+      (HANDLE-REQUEST 42)
+    File "NIL", line NIL, in MAIN
+      (MAIN)
+    File
+    "/Users/art/.roswell/impls/x86-64/darwin/ccl-bin/1.11/level-1/l1-aprims.lisp",
+    line 90, in APPLY
+      (APPLY MAIN NIL)
+    File
+    "/Users/art/.roswell/impls/x86-64/darwin/ccl-bin/1.11/level-1/l1-readloop.lisp",
+    line 827, in CALL-CHEC…
+      (CCL::CALL-CHECK-REGS APPLY MAIN NIL)
+    File
+    "/Users/art/.roswell/impls/x86-64/darwin/ccl-bin/1.11/level-1/l1-readloop.lisp",
+    line 706, in CHEAP-EVA…
+      (CCL::CHEAP-EVAL-IN-ENVIRONMENT (ROSWELL:QUIT (APPLY 'MAIN
+      ROSWELL:*ARGV*)) NIL)
+    File
+    "/Users/art/.roswell/impls/x86-64/darwin/ccl-bin/1.11/level-1/l1-readloop.lisp",
+    line 668, in CHEAP-EVA…
+      (CCL::CHEAP-EVAL (ROSWELL:QUIT (APPLY 'MAIN ROSWELL:*ARGV*)))
+    File
+    "/Users/art/.roswell/impls/x86-64/darwin/ccl-bin/1.11/tools/asdf.lisp",
+    line 3947, in (INTERNAL…
+      ((:INTERNAL UIOP/STREAM:EVAL-INPUT) #<CONCATENATED-STREAM
+      #x302000DA60CD>)
+    File "/Users/art/usr/roswell/etc/roswell/init.lisp", line 355, in
+    (INTERNAL…
+      ((:INTERNAL ROSWELL::BODY ROSWELL:SCRIPT)
+      #<BASIC-FILE-CHARACTER-INPUT-STREAM
+      ("/Users/art/projects/lisp/log4cl-json/./example.ros"/4 UTF-8)
+      #x302000DA730D>)
+
 
 Output examples
 ===============

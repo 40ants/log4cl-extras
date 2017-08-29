@@ -5,13 +5,15 @@
 
 
 (defsystem log4cl-json
-  :version "0.1.0"
+  :version "0.2.0"
   :author "Alexander Artemenko"
   :license "BSD"
   :depends-on (:log4cl
                :local-time
                :iterate
                :jonathan
+               :cl-reexport
+               :alexandria
                :dissect)
   :components ((:module "src"
                 :components

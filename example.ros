@@ -4,22 +4,52 @@
 exec ros -Q -- $0 "$@"
 |#
 (progn ;;init forms
+  (push "./" asdf:*central-registry*)
   (ql:quickload 'log4cl-json))
 
 (defpackage :ros.script.example.3694141461
   (:use :cl))
 (in-package :ros.script.example.3694141461)
 
+
+(declaim (optimize (speed 1) (safety 3) (debug 3)))
+
+
+(defun bar (bar &key (boo "baz"))
+  (let* ((other "value2")
+        (result (format nil "~a ~a ~a" bar boo other)))
+    
+    (error "The message")
+    result))
+
+
+(defun other ()
+  (log:info "Some number was generated " (random 100)))
+
+
+(defun foo ()
+  (other)
+  (bar 1))
+
+
+(defun handle-request (id)
+  (foo))
+
+
 (defun main (&rest argv)
   (declare (ignorable argv))
-  (log:info "Starting the program")
-  (log:config)
-  (log:info "Removing all appenders")
-  (log4cl:remove-all-appenders log4cl:*root-logger*)
-  (log:config)
-  (log:info "Adding Json Appender")
-  (log4cl:add-appender log4cl:*root-logger*
-                       (make-instance 'log4cl-json.appender:json-appender))
-  (log4cl-json.appender:with-fields (:request-id 42)
-    (log:info "Done")))
+  
+  (log4cl-json:setup)
+  (let ((request-id 42))
+    (log4cl-json:with-fields (:|request_id| request-id)
+      (log:info "Incoming request")
+      
+      (handler-case
+          (log4cl-json:with-log-unhandled ()
+            (handle-request request-id))
+        (error ()
+          (log:error "Exiting because of unhandled exception")
+          (uiop:quit 1)))
+      
+      (log:info "Done"))))
 ;;; vim: set ft=lisp lisp:
