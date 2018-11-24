@@ -58,14 +58,14 @@
 (defmacro with-log-unhandled (() &body body)
   (alexandria:with-gensyms (tb tb-as-string)
     `(handler-bind
-         ((t (lambda (condition)
-               (declare (ignorable condition))
-               
-               (let* ((,tb (get-traceback))
-                      (,tb-as-string (traceback-to-string ,tb)))
-                 (log4cl-json.appender:with-fields
-                     (:|traceback| ,tb-as-string)
-                   (log:error "Unhandled exception"))))))
+         ((error (lambda (condition)
+                   (declare (ignorable condition))
+                   
+                   (let* ((,tb (get-traceback))
+                          (,tb-as-string (traceback-to-string ,tb)))
+                     (log4cl-json.appender:with-fields
+                         (:|traceback| ,tb-as-string)
+                       (log:error "Unhandled exception"))))))
        ,@body)))
 
 

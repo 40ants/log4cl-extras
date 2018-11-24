@@ -1,11 +1,5 @@
-(in-package :cl-user)
-(defpackage log4cl-json-asd
-  (:use :cl :asdf))
-(in-package :log4cl-json-asd)
-
-
 (defsystem log4cl-json
-  :version "0.2.0"
+  :version "0.2.1"
   :author "Alexander Artemenko"
   :license "BSD"
   :depends-on (:log4cl
