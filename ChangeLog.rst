@@ -2,7 +2,17 @@
  Changelog
 ===========
 
-0.2.1 - 2018-11-24
+0.2.2 (2018-12-08)
+==================
+
+Fixed
+-----
+
+* Fixed system's loading in environments with ``C`` locale.
+
+  This closes issue reported along with pull request #1.
+
+0.2.1 (2018-11-24)
 ==================
 
 Fixed
@@ -20,7 +30,7 @@ Fixed
   Now this bad behavior was fixed and only ``errors`` are logged.
 
 
-0.2.0 - 2017-08-29
+0.2.0 (2017-08-29)
 ==================
 
 New
@@ -29,7 +39,7 @@ New
 * Added ability to log tracebacks using ``with-log-unhandled``.
 
 
-0.1.0 - 2017-01-23
+0.1.0 (2017-01-23)
 ==================
 
 * Initial version.

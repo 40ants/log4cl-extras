@@ -1,5 +1,5 @@
 (defsystem log4cl-json
-  :version "0.2.1"
+  :version "0.2.2"
   :author "Alexander Artemenko"
   :license "BSD"
   :depends-on (:log4cl
@@ -20,7 +20,8 @@
                              #p"README.rst"
                              (or *load-pathname* *compile-file-pathname*))
                             :if-does-not-exist nil
-                            :direction :input)
+                            :direction :input
+                            :external-format :utf-8)
       (when stream
         (let ((seq (make-array (file-length stream)
                                :element-type 'character
