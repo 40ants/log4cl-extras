@@ -2,6 +2,14 @@
  Changelog
 ===========
 
+0.3.0 (2019-01-07)
+==================
+
+Improved
+--------
+
+* Now condition's description is added to the end of the backtrace.
+
 0.2.2 (2018-12-08)
 ==================
 

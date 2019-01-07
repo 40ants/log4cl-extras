@@ -59,10 +59,10 @@
   (alexandria:with-gensyms (tb tb-as-string)
     `(handler-bind
          ((error (lambda (condition)
-                   (declare (ignorable condition))
-                   
                    (let* ((,tb (get-traceback))
-                          (,tb-as-string (traceback-to-string ,tb)))
+                          (,tb-as-string (format nil "~A~2%Condition: ~A"
+                                                 (traceback-to-string ,tb)
+                                                 condition)))
                      (log4cl-json.appender:with-fields
                          (:|traceback| ,tb-as-string)
                        (log:error "Unhandled exception"))))))

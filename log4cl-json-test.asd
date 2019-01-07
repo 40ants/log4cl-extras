@@ -1,9 +1,3 @@
-(in-package :cl-user)
-(defpackage log4cl-json-test-asd
-  (:use :cl :asdf))
-(in-package :log4cl-json-test-asd)
-
-
 (defsystem log4cl-json-test
   :author "Alexander Artemenko"
   :license "BSD"
