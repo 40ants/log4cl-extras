@@ -2,6 +2,14 @@
  Changelog
 ===========
 
+0.4.1 (2019-03-05)
+==================
+
+Fixed
+-----
+
+* Added missing dependency from cl-strings.
+
 0.4.0 (2019-03-04)
 ==================
 

@@ -1,5 +1,5 @@
 (defsystem log4cl-json
-  :version "0.4.0"
+  :version "0.4.1"
   :author "Alexander Artemenko"
   :license "BSD"
   :depends-on (:log4cl
@@ -8,6 +8,7 @@
                :jonathan
                :cl-reexport
                :alexandria
+               :cl-strings
                :dissect)
   :components ((:module "src"
                 :components
