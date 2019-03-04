@@ -42,8 +42,83 @@ Fields are stored as a plist, and transformed into an a list before serializatio
 (defclass json-appender (log4cl:fixed-stream-appender)
   ((stream :initarg :stream
            :initform *standard-output*
-           :accessor appender-stream))
+           :accessor appender-stream)
+   (plain :initarg :plain
+          :initform nil
+          :documentation "Write plain log (not JSON) for the REPL."
+          :accessor appender-plain))
   (:documentation "Appender which writes JSON items to the stream."))
+
+
+(defmethod initialize-instance :after ((appender json-appender) &rest initargs)
+  (declare (ignorable initargs))
+  
+  (let ((stream (appender-stream appender)))
+    ;; If appender was initialized from the REPL, we want
+    ;; it to output in a plain format instead of the JSON
+    (setf (appender-plain appender)
+          (and (find-package :slynk-gray)
+               (typep stream
+                      (uiop:intern* :sly-output-stream
+                                    :slynk-gray))))))
+
+
+(defun write-json-item (stream log-func level)
+  (let* ((message (with-output-to-string (s)
+                    (funcall log-func s)))
+         (fields (get-fields))
+         (data (list (cons :|@message| message)
+                     (cons :|@timestamp| (get-timestamp)))))
+
+    (push (cons :|level| (log4cl:log-level-to-string level))
+          fields)
+
+    (push (cons :|@fields| fields)
+          data)
+      
+    (jonathan:with-output (stream)
+      (let ((jonathan:*from* :alist))
+        (jonathan:%to-json data)))
+
+    (terpri stream)))
+
+
+(defun print-with-indent (stream prefix text)
+  "Prints a prefix to each line of the of the text."
+  (loop for line in (cl-strings:split text #\Newline)
+        do (format stream "~A~A~%" prefix line)))
+
+
+(defun write-plain-item (stream log-func level)
+  (let* ((message (with-output-to-string (s)
+                    (funcall log-func s)))
+         (fields (get-fields))
+         (level (log4cl:log-level-to-string level))
+         (timestamp (get-timestamp))
+         (traceback (alexandria:assoc-value fields :|traceback|)))
+
+    ;; Desired output is like that
+    ;; <ERROR> [19:01:07] ultralisp/cron cron.lisp (perform-checks h0)
+    ;;   Text message.
+    ;;   some: field
+    ;;   another: field
+    ;;   Traceback: Multiline
+    ;;   traceback
+    ;;   which easy to read.
+    (format stream "<~A> [~A]~%  ~A~%"
+            level
+            timestamp
+            message)
+    (setf cl-user::*fields* fields)
+    (loop for (key . value) in fields
+          unless (eql key
+                      :|traceback|)
+            do (format stream "  ~A: ~A~%"
+                       key
+                       value))
+
+    (when traceback
+      (print-with-indent stream "  " traceback))))
 
 
 (defmethod appender-do-append ((this json-appender)
@@ -52,24 +127,10 @@ Fields are stored as a plist, and transformed into an a list before serializatio
                                log-func)
   (declare (ignorable logger))
   
-  (with-slots (layout stream %output-since-flush) this
-    (let* ((message (with-output-to-string (s)
-                      (funcall log-func s)))
-           (fields (get-fields))
-           (data (list (cons :|@message| message)
-                       (cons :|@timestamp| (get-timestamp)))))
-
-      (push (cons :|level| (log4cl:log-level-to-string level))
-            fields)
-
-      (push (cons :|@fields| fields)
-            data)
-      
-      (jonathan:with-output (stream)
-        (let ((jonathan:*from* :alist))
-          (jonathan:%to-json data)))
-
-      (terpri stream))
+  (with-slots (layout stream %output-since-flush plain) this
+    (if plain
+        (write-plain-item stream log-func level)
+        (write-json-item stream log-func level))
     
     (setf %output-since-flush t)
     (log4cl::maybe-flush-appender-stream this stream))

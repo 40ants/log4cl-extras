@@ -2,6 +2,16 @@
  Changelog
 ===========
 
+0.4.0 (2019-03-04)
+==================
+
+Improved
+--------
+
+Now ``setup`` sets appender into a mode when it prints log in a human
+readable way if it its called from the SLY's REPL. All logger fields are
+printed as well, including a traceback.
+
 0.3.0 (2019-01-07)
 ==================
 
