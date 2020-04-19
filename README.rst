@@ -1,3 +1,11 @@
+Deprecated
+==========
+
+This library was renamed to log4cl-extras and moved to:
+
+https://github.com/40ants/log4cl-extras
+
+
 Usage
 =====
 
