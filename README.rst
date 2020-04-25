@@ -1,11 +1,3 @@
-Deprecated
-==========
-
-This library was renamed to log4cl-extras and moved to:
-
-https://github.com/40ants/log4cl-extras
-
-
 Usage
 =====
 
@@ -13,14 +5,14 @@ To turn this handler on, do:
 
 .. code:: common-lisp
 
-   (log4cl-json:setup)
+   (log4cl-extras:setup)
 
 Then, somewhere in code:
 
 .. code:: common-lisp
 
 
-   (log4cl-json:with-fields (:request-id 42)
+   (log4cl-extras:with-fields (:request-id 42)
       (log:info "Processing request")
       ;; All logging in this call and nested calls will have
       ;; "request-id = 42" field.
@@ -30,7 +22,7 @@ If you want to log unhandled signals' traceback, then do:
 
 .. code:: common-lisp
 
-   (log4cl-json:with-log-unhandled ()
+   (log4cl-extras:with-log-unhandled ()
      (foo)
      (bar)))
 
@@ -72,7 +64,7 @@ will log an error with ``traceback`` field like this::
     (INTERNAL…
       ((:INTERNAL ROSWELL::BODY ROSWELL:SCRIPT)
       #<BASIC-FILE-CHARACTER-INPUT-STREAM
-      ("/Users/art/projects/lisp/log4cl-json/./example.ros"/4 UTF-8)
+      ("/Users/art/projects/lisp/log4cl-extras/./example.ros"/4 UTF-8)
       #x302000DA730D>)
 
 

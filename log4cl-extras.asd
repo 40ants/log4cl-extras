@@ -1,21 +1,20 @@
-(defsystem log4cl-json
-  :version "0.4.1"
+(defsystem log4cl-extras
+  :version "0.5.0"
   :author "Alexander Artemenko"
   :license "BSD"
-  :depends-on (:log4cl
-               :local-time
-               :iterate
-               :jonathan
-               :cl-reexport
-               :alexandria
-               :cl-strings
-               :dissect)
-  :components ((:module "src"
-                :components
-                ((:file "appender")
-                 (:file "core")
-                 (:file "package"))))
-  :description "A JSON appender for log4cl, to stream logs to ElasticSearch."
+  :class :package-inferred-system
+  ;; :depends-on (:log4cl
+  ;;              :local-time
+  ;;              :iterate
+  ;;              :jonathan
+  ;;              :cl-reexport
+  ;;              :alexandria
+  ;;              :cl-strings
+  ;;              :dissect)
+  :pathname "src"
+  :depends-on ("log4cl-extras/config"
+               "log4cl-extras/error")
+  :description "A bunch of addons to log4cl, JSON appender, context fields, cross-finger appender, etc."
   :long-description
   #.(with-open-file (stream (merge-pathnames
                              #p"README.rst"
@@ -30,4 +29,4 @@
           (setf (fill-pointer seq)
                 (read-sequence seq stream))
           seq)))
-  :in-order-to ((test-op (test-op log4cl-json-test))))
+  :in-order-to ((test-op (test-op log4cl-extras-test))))

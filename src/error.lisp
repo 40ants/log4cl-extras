@@ -1,8 +1,14 @@
-(defpackage log4cl-json.core
-  (:use :cl)
-  (:export :setup
-           :with-log-unhandled))
-(in-package :log4cl-json.core)
+(defpackage #:log4cl-extras/error
+  (:use #:cl)
+  (:import-from #:dissect)
+  (:import-from #:log4cl-extras/context
+                #:with-fields)
+  (:import-from #:log4cl-extras/utils
+                #:remove-newlines
+                #:limit-length)
+  (:export
+   #:with-log-unhandled))
+(in-package log4cl-extras/error)
 
 
 (defvar *default-skip-frames*
@@ -19,18 +25,6 @@
   (subseq (dissect:stack)
           skip (+ skip depth)))
 
-
-(defun remove-newlines (text)
-  (substitute #\Space #\Newline text))
-
-
-(defun limit-length (text max-len)
-  (if (> (length text)
-         (- max-len 1))
-      (concatenate 'string
-                   (subseq text 0 (- max-len 1))
-                   "…")
-      text))
 
 
 (defun format-frame (frame &key (max-call-length 10))
@@ -63,25 +57,7 @@
                           (,tb-as-string (format nil "~A~2%Condition: ~A"
                                                  (traceback-to-string ,tb)
                                                  condition)))
-                     (log4cl-json.appender:with-fields
-                         (:|traceback| ,tb-as-string)
+                     (with-fields (:traceback ,tb-as-string)
                        (log:error "Unhandled exception"))))))
        ,@body)))
 
-
-(defun setup (&key (stream *standard-output*)
-                (remove-all-appenders t)
-                (level :info))
-  "Setup JSON logger to output data to the stream.
-
-By default, it will send data to STDOUT."
-  
-  (when remove-all-appenders
-    (log4cl:remove-all-appenders log4cl:*root-logger*))
-
-  (log4cl:add-appender log4cl:*root-logger*
-                       (make-instance 'log4cl-json.appender:json-appender
-                                      :stream stream))
-
-  (log4cl:set-log-level log4cl:*root-logger*
-                        level))
