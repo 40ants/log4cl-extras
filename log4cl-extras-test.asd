@@ -1,4 +1,5 @@
 (defsystem log4cl-json-test
+  :name "log4cl-json-test"
   :author "Alexander Artemenko"
   :license "BSD"
   :depends-on (:log4cl-json
