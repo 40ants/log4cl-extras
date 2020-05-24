@@ -1,16 +1,9 @@
 (defsystem log4cl-extras
+  :name "log4cl-extras"
   :version "0.5.0"
   :author "Alexander Artemenko"
   :license "BSD"
   :class :package-inferred-system
-  ;; :depends-on (:log4cl
-  ;;              :local-time
-  ;;              :iterate
-  ;;              :jonathan
-  ;;              :cl-reexport
-  ;;              :alexandria
-  ;;              :cl-strings
-  ;;              :dissect)
   :pathname "src"
   :depends-on ("log4cl-extras/config"
                "log4cl-extras/error")
