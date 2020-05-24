@@ -10,12 +10,12 @@
 (in-package log4cl-extras/plain)
 
 
-(defun write-plain-item (stream log-func level)
+(defun write-plain-item (stream log-func level &key (timezone local-time:*default-timezone*))
   (let* ((message (with-output-to-string (s)
                     (funcall log-func s)))
          (fields (get-fields))
          (level (log4cl:log-level-to-string level))
-         (timestamp (get-timestamp))
+         (timestamp (get-timestamp :timezone timezone))
          (traceback (alexandria:assoc-value fields "traceback"
                                             :test #'string=)))
 
@@ -47,7 +47,10 @@
 
 
 (defclass plain-layout (log4cl:layout)
-  ())
+  ((timezone :initform local-time:*default-timezone*
+             :initarg :timezone
+             :type local-time::timezone
+             :reader get-timezone)))
 
 
 (defmethod log4cl:layout-to-stream ((layout plain-layout)
@@ -56,5 +59,5 @@
                                     level
                                     log-func)
   (declare (ignorable layout logger))
-  (write-plain-item stream log-func level)
+  (write-plain-item stream log-func level :timezone (get-timezone layout))
   (values))

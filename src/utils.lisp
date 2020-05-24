@@ -11,11 +11,11 @@
 (in-package log4cl-extras/utils)
 
 
-(defun get-timestamp ()
+(defun get-timestamp (&key (timezone local-time:+utc-zone+))
   (let ((now (local-time:now)))
     (local-time:format-rfc3339-timestring
      nil now
-     :timezone local-time:+utc-zone+)))
+     :timezone timezone)))
 
 
 (defun is-sly-stream (stream)
