@@ -1,9 +1,9 @@
 (in-package :cl-user)
-(defpackage log4cl-json.t.core
+(defpackage log4cl-extras.t.core
   (:use :cl
-        :log4cl-json.core
+        :log4cl-extras.core
         :prove))
-(in-package :log4cl-json.t.core)
+(in-package :log4cl-extras.t.core)
 
 
 (plan 1)

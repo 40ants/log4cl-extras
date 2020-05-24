@@ -1,14 +1,14 @@
 (in-package :cl-user)
-(defpackage log4cl-json.t.appender
+(defpackage log4cl-extras.t.appender
   (:use :cl
-        :log4cl-json.appender
+        :log4cl-extras.appender
         :prove
         :hamcrest.prove
-        :log4cl-json.t.utils))
-(in-package :log4cl-json.t.appender)
+        :log4cl-extras.t.utils))
+(in-package :log4cl-extras.t.appender)
 
 
-;; NOTE: To run this test file, execute `(asdf:test-system :log4cl-json)' in your Lisp.
+;; NOTE: To run this test file, execute `(asdf:test-system :log4cl-extras)' in your Lisp.
 
 (plan 2)
 

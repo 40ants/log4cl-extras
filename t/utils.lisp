@@ -1,9 +1,9 @@
 (in-package :cl-user)
-(defpackage log4cl-json.t.utils
+(defpackage log4cl-extras.t.utils
   (:use :cl
-        :log4cl-json.appender)
+        :log4cl-extras.appender)
   (:export :log-message))
-(in-package :log4cl-json.t.utils)
+(in-package :log4cl-extras.t.utils)
 
 
 (defun log-message (message &key (level log4cl:+log-level-debug+))
