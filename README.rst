@@ -11,6 +11,18 @@ This library extends log4cl in a few ways:
 * Uses the appenders which are not disabled in case of some error which again, should be useful for production.
 
 
+Installation
+============
+
+This library is not available from Quicklisp, but you can install it from Ultralisp.org:
+
+.. code:: common-lisp
+
+   (ql-dist:install-dist "http://dist.ultralisp.org/"
+                         :prompt nil)
+   (ql:quickload :log4cl-extras)
+
+
 Configuration
 =============
 
