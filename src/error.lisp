@@ -1,6 +1,7 @@
 (defpackage #:log4cl-extras/error
   (:use #:cl)
   (:import-from #:dissect)
+  (:import-from #:log4cl)
   (:import-from #:log4cl-extras/context
                 #:with-fields)
   (:import-from #:log4cl-extras/utils
