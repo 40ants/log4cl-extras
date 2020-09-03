@@ -23,8 +23,9 @@
     (push (cons :|level| (log4cl:log-level-to-string level))
           data)
 
-    (push (cons :|fields| fields)
-          data)
+    (when fields
+      (push (cons :|fields| fields)
+            data))
       
     (jonathan:with-output (stream)
       (let ((jonathan:*from* :alist))
