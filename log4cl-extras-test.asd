@@ -3,7 +3,7 @@
   :author "Alexander Artemenko"
   :license "BSD"
   :depends-on (:log4cl-extras
-               :hamcrest-prove)
+               :hamcrest/prove)
   :components ((:module "t"
                 :components
                 ((:file "utils")

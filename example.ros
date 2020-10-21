@@ -5,7 +5,7 @@ exec ros -Q -- $0 "$@"
 |#
 (progn ;;init forms
   (push "./" asdf:*central-registry*)
-  (ql:quickload 'log4cl-json))
+  (ql:quickload 'log4cl-extras))
 
 (defpackage :ros.script.example.3694141461
   (:use :cl))
@@ -39,13 +39,13 @@ exec ros -Q -- $0 "$@"
 (defun main (&rest argv)
   (declare (ignorable argv))
   
-  (log4cl-json:setup)
+  (log4cl-extras/config:setup)
   (let ((request-id 42))
-    (log4cl-json:with-fields (:|request_id| request-id)
+    (log4cl-extras/context:with-fields (:|request_id| request-id)
       (log:info "Incoming request")
       
       (handler-case
-          (log4cl-json:with-log-unhandled ()
+          (log4cl-extras/error:with-log-unhandled ()
             (handle-request request-id))
         (error ()
           (log:error "Exiting because of unhandled exception")
