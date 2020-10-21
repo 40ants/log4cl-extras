@@ -2,7 +2,7 @@
   :name "log4cl-extras-test"
   :author "Alexander Artemenko"
   :license "BSD"
-  :depends-on (:log4cl-json
+  :depends-on (:log4cl-extras
                :hamcrest-prove)
   :components ((:module "t"
                 :components
