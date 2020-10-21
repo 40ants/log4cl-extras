@@ -1,7 +1,7 @@
 (in-package :cl-user)
 (defpackage log4cl-extras.t.utils
   (:use :cl
-        :log4cl-extras.appender)
+        :log4cl-extras/appenders)
   (:export :log-message))
 (in-package :log4cl-extras.t.utils)
 

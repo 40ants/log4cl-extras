@@ -1,7 +1,7 @@
 (in-package :cl-user)
 (defpackage log4cl-extras.t.core
   (:use :cl
-        :log4cl-extras.core
+        :log4cl-extras/error
         :prove))
 (in-package :log4cl-extras.t.core)
 
@@ -14,7 +14,8 @@
              (error "Blah minor"))
            (bar ()
              (foo)))
-    
+
     (multiple-value-bind (line data)
-        (with-log-unhandled
+        (with-log-unhandled ()
             (bar)))))
+(finalize)
