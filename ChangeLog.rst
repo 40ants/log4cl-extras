@@ -2,6 +2,28 @@
  Changelog
 ===========
 
+0.4.2 (2020-11-26)
+==================
+
+Fixed
+-----
+
+* Fixed ``with-log-unhandled`` for cases when some function argument's print-object signaled the error.
+
+  Because of this nasty error, sometimes ``with-log-unhandled`` didn't log "Unandled error".
+
+
+Added
+-----
+
+* Now ``with-log-undandled`` accepts key argument ``:depth`` which is 10 by default.
+
+  This argument can be overriden by setting ``log4cl-extras/error:*max-traceback-depth*``.
+
+* Also another variable ``log4cl-extras/error:*max-traceback-depth*`` can be set to control
+  how long function or method name can be. By default it is 100, but methods are logged along
+  with their specialized arguments and can be longer.
+
 0.4.1 (2019-03-05)
 ==================
 

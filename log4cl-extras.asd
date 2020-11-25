@@ -1,6 +1,6 @@
 (defsystem log4cl-extras
   :name "log4cl-extras"
-  :version "0.5.0"
+  :version "0.4.2"
   :author "Alexander Artemenko"
   :license "BSD"
   :class :package-inferred-system
