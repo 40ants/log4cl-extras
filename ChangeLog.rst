@@ -20,7 +20,7 @@ Added
 
   This argument can be overriden by setting ``log4cl-extras/error:*max-traceback-depth*``.
 
-* Also another variable ``log4cl-extras/error:*max-traceback-depth*`` can be set to control
+* Also another variable ``log4cl-extras/error:*max-call-length*`` can be set to control
   how long function or method name can be. By default it is 100, but methods are logged along
   with their specialized arguments and can be longer.
 
