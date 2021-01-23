@@ -31,7 +31,7 @@ jobs:
         env:
           LISP: sbcl-bin
         run: |
-          curl -L https://raw.githubusercontent.com/roswell/roswell/master/scripts/install-for-ci.sh | sh
+          curl -L https://raw.githubusercontent.com/svetlyak40wt/roswell/patches/scripts/install-for-ci.sh | sh
           echo /home/runner/.roswell/bin >> $GITHUB_PATH
       - name: Install Qlot
         run: ros install qlot
