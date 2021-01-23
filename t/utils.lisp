@@ -1,9 +1,8 @@
-(in-package :cl-user)
-(defpackage log4cl-extras.t.utils
+(defpackage log4cl-extras-test/utils
   (:use :cl
         :log4cl-extras/appenders)
   (:export :log-message))
-(in-package :log4cl-extras.t.utils)
+(in-package :log4cl-extras-test/utils)
 
 
 (defun log-message (message &key (level log4cl:+log-level-debug+))

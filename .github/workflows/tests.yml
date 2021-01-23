@@ -1,0 +1,37 @@
+name: 'Tests'
+
+on:
+  push:
+  pull_request:
+  schedule:
+    # rebuild docs at 10 AM every Monday
+    - cron:  '0 10 * * 1'
+
+jobs:
+  run_tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Show Env
+        run: 'env | sort -u'
+      - name: Install Roswell
+        env:
+          LISP: sbcl-bin
+        run: |
+          curl -L https://raw.githubusercontent.com/roswell/roswell/master/scripts/install-for-ci.sh | sh
+          echo /home/runner/.roswell/bin >> $GITHUB_PATH
+      - name: Install Qlot
+        run: ros install qlot
+      - name: Install Latest Dependencies
+        run: |
+          # Here we remove lock file to test
+          # our system with latest dependencies
+          rm -f qlot.lock
+          qlot install
+          echo .qlot/bin >> $GITHUB_PATH
+      - name: Check CL Version
+        run: |
+          qlot exec ros install 40ants/cl-info
+          cl-info
+      - name: Run Tests
+        run: qlot exec rove log4cl-extras-test
