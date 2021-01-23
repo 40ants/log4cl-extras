@@ -50,4 +50,7 @@ jobs:
       - name: Install Rove
         run: qlot exec ros install rove
       - name: Run Tests
-        run: qlot exec rove log4cl-extras-test
+        run: |
+          set -x
+          qlot exec which rove
+          qlot exec rove log4cl-extras-test
