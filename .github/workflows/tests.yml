@@ -19,8 +19,8 @@ on:
   schedule:
     # rebuild docs at 10 AM every Day
     - cron:  '0 10 * * *'
-       env:
-         BY_CRON: yes
+      env:
+        BY_CRON: yes
 
 jobs:
   run_tests:
