@@ -1,7 +1,8 @@
 (defpackage log4cl-extras-test/utils
-  (:use :cl
-        :log4cl-extras/appenders)
-  (:export :log-message))
+  (:use #:cl
+        #:log4cl-extras/appenders)
+  (:import-from #:jonathan)
+  (:export #:log-message))
 (in-package :log4cl-extras-test/utils)
 
 

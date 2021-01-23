@@ -46,17 +46,17 @@ jobs:
       - name: Check CL Version
         run: |
           qlot exec ros install 40ants/cl-info
-          cl-info
+          qlot exec cl-info
       - name: Install Rove
         run: qlot exec ros install rove
-      - name: Start SSH session
-        uses: luchihoratiu/debug-via-ssh@main
-        with:
-          NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
-          NGROK_REGION: eu
-          SSH_PASS: ${{ secrets.SSH_PASS }}
+      # - name: Start SSH session
+      #   uses: luchihoratiu/debug-via-ssh@main
+      #   with:
+      #     NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
+      #     NGROK_REGION: eu
+      #     SSH_PASS: ${{ secrets.SSH_PASS }}
       - name: Run Tests
         run: |
           set -x
           qlot exec which rove
-          qlot exec rove log4cl-extras-test
+          qlot exec rove log4cl-extras-test.asd

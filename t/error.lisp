@@ -8,10 +8,16 @@
                 #:assert-that)
   (:import-from #:log4cl-extras-test/utils
                 #:log-message)
+  (:import-from #:log4cl-extras/error)
   (:import-from #:hamcrest/matchers
                 #:has-plist-entries
                 #:_))
 (in-package log4cl-extras-test/error)
+
+;; Without this settings compiler might
+;; not show variables in stack frames
+;; and tests will fail:
+(declaim (optimize (debug 3)))
 
 
 (defun return-backtrace ()

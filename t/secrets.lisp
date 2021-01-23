@@ -20,6 +20,11 @@
                 #:conceal-value))
 (in-package log4cl-extras-test/secrets)
 
+;; Without this settings compiler might
+;; not show variables in stack frames
+;; and tests will fail:
+(declaim (optimize (debug 3)))
+
 
 (deftest test-secrets-replacer
   (let ((remover (make-secrets-replacer)))
