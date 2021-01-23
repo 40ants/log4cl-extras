@@ -41,6 +41,7 @@ jobs:
           # Here we remove lock file to test
           # our system with latest dependencies
           rm -f qlfile.lock
+          ls -l /home/runner/.roswell/bin
           qlot install
           echo .qlot/bin >> $GITHUB_PATH
       - name: Check CL Version
