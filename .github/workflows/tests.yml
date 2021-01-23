@@ -51,7 +51,7 @@ jobs:
           if [[ "$OS" == "ubuntu-latest" ]]; then
               sudo apt-get -y install git build-essential automake libcurl4-openssl-dev
           fi
-          if [[ "$OS" == macos-latest" ]]; then
+          if [[ "$OS" == "macos-latest" ]]; then
               brew install automake autoconf curl
           fi
           curl -L https://raw.githubusercontent.com/svetlyak40wt/roswell/patches/scripts/install-for-ci.sh | sh
