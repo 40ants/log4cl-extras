@@ -2,7 +2,20 @@ name: 'Tests'
 
 on:
   push:
+    # We only want to run tests on any push
+    # to the 'master' branch.
+    #
+    # If we don't filter by branch here,
+    # then when we create on the same repository
+    # and make a pull request into the 'master'
+    # branch, then tests will be started twice.
+    branches:
+      - 'main'
+      - 'master'
+  # But to check every pull-request
   pull_request:
+
+  # Also, we'll recheck code by cron
   schedule:
     # rebuild docs at 10 AM every Monday
     - cron:  '0 10 * * 1'
@@ -26,7 +39,7 @@ jobs:
         run: |
           # Here we remove lock file to test
           # our system with latest dependencies
-          rm -f qlot.lock
+          rm -f qlfile.lock
           qlot install
           echo .qlot/bin >> $GITHUB_PATH
       - name: Check CL Version
