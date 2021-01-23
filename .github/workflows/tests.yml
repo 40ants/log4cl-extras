@@ -31,6 +31,7 @@ jobs:
         env:
           LISP: sbcl-bin
         run: |
+          apt-get -y install git build-essential automake libcurl4-openssl-dev
           curl -L https://raw.githubusercontent.com/svetlyak40wt/roswell/patches/scripts/install-for-ci.sh | sh
           echo /home/runner/.roswell/bin >> $GITHUB_PATH
       - name: Install Qlot
