@@ -5,7 +5,12 @@
   :license "BSD"
   :class :package-inferred-system
   :pathname "src"
-  :depends-on ("log4cl-extras/config"
+  :depends-on (;; This component intentionally
+               ;; not listed, because it requires
+               ;; additional dependency system :secret-values
+               ;;
+               ;; "log4cl-extras/secrets"
+               "log4cl-extras/config"
                "log4cl-extras/error")
   :description "A bunch of addons to log4cl, JSON appender, context fields, cross-finger appender, etc."
   :long-description

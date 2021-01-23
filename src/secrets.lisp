@@ -4,6 +4,9 @@
                 #:define-global-var)
   (:import-from #:log4cl-extras/error
                 #:make-placeholder)
+  (:import-from #:secret-values
+                #:secret-value
+                #:reveal-value)
   (:export
    #:make-secrets-replacer))
 (in-package log4cl-extras/secrets)
@@ -25,13 +28,13 @@
                (gethash raw-secret
                         seen-secrets))
              (remember-secret (secret)
-               (setf (gethash (secret-values:reveal-value secret)
+               (setf (gethash (reveal-value secret)
                               seen-secrets)
                      t))
              (remove-secrets (func-name args)
                (let ((new-args
                        (loop for arg in args
-                             for is-secret-value = (typep arg 'secret-values:secret-value)
+                             for is-secret-value = (typep arg 'secret-value)
                              if is-secret-value
                              do (remember-secret arg)
                              if (or is-secret-value
