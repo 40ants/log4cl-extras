@@ -33,18 +33,14 @@ jobs:
         run: |
           sudo apt-get -y install git build-essential automake libcurl4-openssl-dev
           curl -L https://raw.githubusercontent.com/svetlyak40wt/roswell/patches/scripts/install-for-ci.sh | sh
-          echo /home/runner/.roswell/bin >> $GITHUB_PATH
+          echo /home/runner/.roswell/lisp/quicklisp/bin >> $GITHUB_PATH
       - name: Install Qlot
         run: ros install qlot
       - name: Install Latest Dependencies
         run: |
           # Here we remove lock file to test
           # our system with latest dependencies
-          set -x
-          
           rm -f qlfile.lock
-          ls -l /home/runner/.roswell/
-          ls -l /home/runner/.roswell/bin
           qlot install
           echo .qlot/bin >> $GITHUB_PATH
       - name: Check CL Version
