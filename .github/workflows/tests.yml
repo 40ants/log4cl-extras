@@ -22,14 +22,23 @@ on:
 
 jobs:
   run_tests:
-    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        lisp:
+          - sbcl-bin
+          - ccl-bin
+        os:
+          - ubuntu-latest
+          - macos-latest
+    runs-on: ${{ matrix.os }}
+    env:
+      LISP: ${{ matrix.lisp }}
     steps:
       - uses: actions/checkout@v1
       - name: Show Env
         run: 'env | sort -u'
       - name: Install Roswell
-        env:
-          LISP: sbcl-bin
         run: |
           sudo apt-get -y install git build-essential automake libcurl4-openssl-dev
           curl -L https://raw.githubusercontent.com/svetlyak40wt/roswell/patches/scripts/install-for-ci.sh | sh
