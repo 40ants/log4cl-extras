@@ -40,7 +40,10 @@ jobs:
         run: |
           # Here we remove lock file to test
           # our system with latest dependencies
+          set -x
+          
           rm -f qlfile.lock
+          ls -l /home/runner/.roswell/
           ls -l /home/runner/.roswell/bin
           qlot install
           echo .qlot/bin >> $GITHUB_PATH
