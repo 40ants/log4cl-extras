@@ -47,5 +47,7 @@ jobs:
         run: |
           qlot exec ros install 40ants/cl-info
           cl-info
+      - name: Install Rove
+        run: qlot exec ros install rove
       - name: Run Tests
         run: qlot exec rove log4cl-extras-test
