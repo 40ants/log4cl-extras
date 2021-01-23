@@ -27,20 +27,23 @@ jobs:
       matrix:
         lisp:
           - sbcl-bin
-          - ccl-bin
+#          - ccl-bin
         os:
-          - ubuntu-latest
+#          - ubuntu-latest
           - macos-latest
     runs-on: ${{ matrix.os }}
     env:
       LISP: ${{ matrix.lisp }}
+      OS: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v1
       - name: Show Env
         run: 'env | sort -u'
       - name: Install Roswell
         run: |
-          sudo apt-get -y install git build-essential automake libcurl4-openssl-dev
+          if [[ "$OS" == "ubuntu-latest" ]]; then
+              sudo apt-get -y install git build-essential automake libcurl4-openssl-dev
+          fi
           curl -L https://raw.githubusercontent.com/svetlyak40wt/roswell/patches/scripts/install-for-ci.sh | sh
           echo /home/runner/.roswell/lisp/quicklisp/bin >> $GITHUB_PATH
       - name: Install Qlot
