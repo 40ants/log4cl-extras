@@ -17,10 +17,8 @@ on:
 
   # Also, we'll recheck code by cron
   schedule:
-    # rebuild docs at 10 AM every Day
-    - cron:  '30 * * * *'
-      env:
-        BY_CRON: yes
+    # rebuild docs at 10 AM every Monday
+    - cron:  '0 10 * * 1'
 
 jobs:
   run_tests:
@@ -40,8 +38,9 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Show Env
-        run: 'env | sort -u'
-        
+        run: |
+          env | sort -u
+
       # - name: Start SSH session
       #   uses: luchihoratiu/debug-via-ssh@main
       #   with:
@@ -64,9 +63,15 @@ jobs:
           ros install qlot
       - name: Install Latest Dependencies
         run: |
-          # Here we remove lock file to test
-          # our system with latest dependencies
-          rm -f qlfile.lock
+          # If tests are started by cron, we want to check
+          # code against latest dependencies. This will allow
+          # to find problems caused by a new dependency version.
+          #
+          # Therefore we remove lock file.
+          if [[ "${GITHUB_EVENT_NAME}" == "schedule" ]]; then
+              rm -f qlfile.lock
+          fi
+  
           qlot install
           echo .qlot/bin >> $GITHUB_PATH
       - name: Check CL Version
