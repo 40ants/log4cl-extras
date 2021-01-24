@@ -21,7 +21,7 @@
 
 
 (defun return-backtrace ()
-  (log4cl-extras/error:print-backtrace nil :stream nil))
+  (log4cl-extras/error:print-backtrace :stream nil))
 
 
 (defun process-request (uri env)
