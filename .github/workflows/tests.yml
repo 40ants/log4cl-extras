@@ -1,0 +1,81 @@
+name: 'Tests'
+
+on:
+  push:
+    # We only want to run tests on any push
+    # to the 'master' branch.
+    #
+    # If we don't filter by branch here,
+    # then when we create on the same repository
+    # and make a pull request into the 'master'
+    # branch, then tests will be started twice.
+    branches:
+      - 'main'
+      - 'master'
+  # But to check every pull-request
+  pull_request:
+
+  # Also, we'll recheck code by cron
+  schedule:
+    # rebuild docs at 10 AM every Day
+    - cron:  '30 * * * *'
+      env:
+        BY_CRON: yes
+
+jobs:
+  run_tests:
+    strategy:
+      fail-fast: false
+      matrix:
+        lisp:
+          - sbcl-bin
+#          - ccl-bin
+        os:
+          - ubuntu-latest
+          - macos-latest
+    runs-on: ${{ matrix.os }}
+    env:
+      LISP: ${{ matrix.lisp }}
+      OS: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v1
+      - name: Show Env
+        run: 'env | sort -u'
+        
+      # - name: Start SSH session
+      #   uses: luchihoratiu/debug-via-ssh@main
+      #   with:
+      #     NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
+      #     NGROK_REGION: eu
+      #     SSH_PASS: ${{ secrets.SSH_PASS }}
+
+      - name: Install Roswell
+        run: |
+          if [[ "$OS" == "ubuntu-latest" ]]; then
+              sudo apt-get -y install git build-essential automake libcurl4-openssl-dev
+          fi
+          if [[ "$OS" == "macos-latest" ]]; then
+              brew install automake autoconf curl
+          fi
+          curl -L https://raw.githubusercontent.com/svetlyak40wt/roswell/patches/scripts/install-for-ci.sh | sh
+          echo $HOME/.roswell/lisp/quicklisp/bin >> $GITHUB_PATH
+      - name: Install Qlot
+        run: |
+          ros install qlot
+      - name: Install Latest Dependencies
+        run: |
+          # Here we remove lock file to test
+          # our system with latest dependencies
+          rm -f qlfile.lock
+          qlot install
+          echo .qlot/bin >> $GITHUB_PATH
+      - name: Check CL Version
+        run: |
+          qlot exec ros install 40ants/cl-info
+          qlot exec cl-info
+      - name: Install Rove
+        run: |
+          qlot exec ros install rove
+      - name: Run Tests
+        run: |
+          qlot exec rove log4cl-extras-test.asd

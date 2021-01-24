@@ -2,6 +2,15 @@
  Changelog
 ===========
 
+0.5.0 (2021-01-24)
+==================
+
+* Function ``traceback-to-string`` was removed and
+  replaced with ``print-backtrace`` which is now
+  a part of public API.
+* Added ability to filter secret and sensitive values.
+  Read documentation, to lear more.
+
 0.4.2 (2020-11-26)
 ==================
 
