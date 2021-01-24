@@ -18,7 +18,7 @@ on:
   # Also, we'll recheck code by cron
   schedule:
     # rebuild docs at 10 AM every Day
-    - cron:  '0 10 * * *'
+    - cron:  '30 * * * *'
       env:
         BY_CRON: yes
 
