@@ -165,7 +165,7 @@ how to not log secret values.
 How Keep Secrets Out of Logs
 ============================
 
-When backtrace is printed to log files it is good idea to not omit passwords, tokens, cookies,
+When backtrace is printed to log files it is good idea to omit passwords, tokens, cookies,
 and other potentially sensitive values.
 
 Here is a potential situation where you have a password and trying to create a new connection
