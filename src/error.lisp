@@ -49,22 +49,14 @@
          (case (car call)
            ((:method)
             (check-symbol (second call)))
-           ((lambda)
-            (assert (eql (third call) :in))
-            (when (typep (fourth call) 'symbol)
-              ;; For top-level lambdas, fourth part
+           ((lambda flet labels)
+            (when (and (eql (third call) :in)
+                       (typep (fourth call) 'symbol))
+              ;; For top-level flets and labels, fourth part
               ;; will be a string with the path to the
               ;; source file. We consider such forms
               ;; as being not in the current package.
               (check-symbol (fourth call))))
-           ((flet labels)
-            (assert (eql (third call) :in))
-            (if (typep (fourth call) 'symbol)
-                ;; For top-level flets and labels, fourth part
-                ;; will be a string with the path to the
-                ;; source file. We consider such forms
-                ;; as being not in the current package.
-                (check-symbol (fourth call))))
            ;; for other types we consider frame not belonging
            ;; to the log4cl-extras package
            (t nil)))
@@ -74,30 +66,10 @@
          nil)))))
 
 
-(defun get-traceback (&key
-                      (depth *max-traceback-depth*))
-  (let* ((full-stack (dissect:stack))
-         (filtered-stack (remove-if #'from-current-package
-                                    full-stack)))
-    (subseq filtered-stack
-            0 depth)))
-
-
-
-(defun traceback-to-string (tb &key (max-call-length *max-call-length*)
-                                    (args-filters *args-filters*))
-  (handler-case
-      (format nil "Traceback (most recent call last):
-~{~a
-~}" (loop for frame in tb
-          for idx upfrom 0
-          collect (format-frame idx
-                                frame
-                                :max-call-length max-call-length
-                                :args-filters args-filters)))
-    (error (another-condition)
-      (format nil "Unable to get traceback because of another error:~%~A"
-              another-condition))))
+(defun get-backtrace ()
+  (let ((full-stack (dissect:stack)))
+    (delete-if #'from-current-package
+               full-stack)))
 
 
 (defun apply-args-filters (func-name args &key (args-filters *args-filters*))
@@ -110,53 +82,97 @@
                                 args))))
 
 
-(defun format-frame (idx frame &key (max-call-length *max-call-length*)
-                                    (args-filters *args-filters*))
+(defun format-frame (stream idx call args file line &key
+                                                    (max-call-length *max-call-length*))
   (flet ((safe-to-string (item)
            (handler-case (format nil "~S" item)
              (error (another-condition)
-               (format nil "[unable to format because of ~S]"
+               (format stream "[unable to format because of ~S]"
                        another-condition)))))
-    (multiple-value-bind (call args)
-        (apply-args-filters (dissect:call frame)
-                            (dissect:args frame)
-                            :args-filters args-filters)
-      (format nil "~4@A File \"~A\", line ~A
+    ;; If file is unknown, then we'll output "unknown"
+    ;; Line printed only if it is known.
+    (format stream "~4@A File \"~A\"~@[, line ~A~]
        In ~A
-     Args (~{~A~^ ~})"
-              idx
-              (dissect:file frame)
-              (dissect:line frame)
-              (limit-length (remove-newlines
-                             ;; we need to format, because call will return a symbol or a list
-                             (safe-to-string call))
-                            max-call-length)
-              (mapcar #'safe-to-string
-                      args)))))
+     Args (~{~A~^ ~})
+"
+            idx
+            (or file
+                "unknown")
+            line
+            (limit-length (remove-newlines
+                           ;; we need to format, because call will return a symbol or a list
+                           (safe-to-string call))
+                          max-call-length)
+            (mapcar #'safe-to-string
+                    args))))
 
 
 (defvar *d* nil)
 
-(defun print-backtrace (condition
-                        &key
+
+(defun prepare (frame args-filters)
+  (multiple-value-bind (call args)
+      (apply-args-filters (dissect:call frame)
+                          (dissect:args frame)
+                          :args-filters args-filters)
+    (list call args
+          (dissect:file frame)
+          (dissect:line frame))))
+
+
+(defun print-backtrace (&key
                         (stream *debug-io*)
+                        (condition nil)
+                        (depth *max-traceback-depth*)
                         (max-call-length *max-call-length*)
-                        (depth *max-traceback-depth*))
-  (let ((tb (get-traceback :depth depth)))
-    (traceback-to-string tb :max-call-length max-call-length)
-    ;; (with-output-to-stream (s stream)
-    ;;   )
-    ))
+                        (args-filters *args-filters*))
+  (let ((frames (get-backtrace)))
+    (with-output-to-stream (stream stream)
+      (handler-case
+          (progn
+            (format stream "Traceback (most recent call last):~%")
+
+            (let ((prepared-frames
+                    ;; First, we need to apply filters in a backward order.
+                    ;; This way, filters will have a chance to learn about
+                    ;; secure-values and to remove their raw form in the higher
+                    ;; frames.
+                    ;; 
+                    ;; For the same reason, at at this step we have to apply prepare
+                    ;; to all frames whereas call FORMAT-FRAME only on limited number
+                    ;; of frames.
+                    (loop for frame in (reverse frames)
+                          collect (prepare frame args-filters) into result
+                          finally (return (nreverse result)))))
+             
+              (loop for (call args file line) in prepared-frames
+                    ;; Here we a limiting our frames to a given depth
+                    for idx from 0 below depth
+                    do (format-frame stream
+                                     idx
+                                     call
+                                     args
+                                     file
+                                     line
+                                     :max-call-length max-call-length)))
+           
+           
+            (when condition
+              (format stream "~%Condition: ~A"
+                      condition)))
+        (error (another-condition)
+          (format stream "Unable to get traceback because of another error during printing:~%~A"
+                  another-condition))))))
 
 
 (defmacro with-log-unhandled ((&key (depth *max-traceback-depth*)) &body body)
-  (alexandria:with-gensyms (tb tb-as-string)
+  (alexandria:with-gensyms (tb-as-string)
     `(handler-bind
          ((error (lambda (condition)
-                   (let* ((,tb (get-traceback :depth ,depth))
-                          (,tb-as-string (format nil "~A~2%Condition: ~A"
-                                                 (traceback-to-string ,tb)
-                                                 condition)))
+                   (let ((,tb-as-string
+                           (print-backtrace :stream nil
+                                            :condition condition
+                                            :depth ,depth)))
                      (with-fields (:traceback ,tb-as-string)
                        (log:error "Unhandled exception"))))))
        ,@body)))
