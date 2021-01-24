@@ -57,7 +57,7 @@ jobs:
               brew install automake autoconf curl
           fi
           curl -L https://raw.githubusercontent.com/svetlyak40wt/roswell/patches/scripts/install-for-ci.sh | sh
-          echo $HOME/.roswell/lisp/quicklisp/bin >> $GITHUB_PATH
+          echo $HOME/.roswell/bin >> $GITHUB_PATH
       - name: Install Qlot
         run: |
           ros install qlot
