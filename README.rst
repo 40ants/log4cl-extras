@@ -442,3 +442,43 @@ with ``#<lack env>``!!!
           Args ()
      
      Condition: Network timeout
+
+
+For such simple case like replacing args matching a predicate, ``LOG4CL-EXTRAS`` has a small helper ``LOG4CL-EXTRAS/ERROR:MAKE-ARGS-FILTER``:
+
+
+.. code:: common-lisp
+
+   CL-USER> (setf log4cl-extras/error:*args-filters*
+                  (list (log4cl-extras/error:make-args-filter
+                         'lack-env-p
+                         (log4cl-extras/error:make-placeholder "LACK ENV BEING HERE"))
+                        ;; We need this too to keep DB password safe, remember?
+                        (log4cl-extras/secrets:make-secrets-replacer)))
+   
+   <ERROR> [2021-01-24T15:09:48.839513+03:00] Unhandled exception
+     Fields:
+     Traceback (most recent call last):
+        0 File "unknown"
+            In (FLET "H0")
+          Args (#<SIMPLE-ERROR "Network timeout" {1003112243}>)
+        1 File "/Users/art/.roswell/src/sbcl-2.0.11/src/code/cold-error.lisp", line 81
+            In SB-KERNEL::%SIGNAL
+          Args (#<SIMPLE-ERROR "Network timeout" {1003112243}>)
+        2 File "/Users/art/.roswell/src/sbcl-2.0.11/src/code/cold-error.lisp", line 154
+            In ERROR
+          Args ("Network timeout")
+        3 File "unknown"
+            In CONNECT
+          Args (#<secret value>)
+        4 File "unknown"
+            In AUTHENTICATE
+          Args (#<secret value>)
+        5 File "unknown"
+            In REQUEST-HANDLER
+          Args (42 #<LACK ENV BEING HERE>)
+        6 File "unknown"
+            In (LAMBDA ())
+          Args ()
+     
+     Condition: Network timeout

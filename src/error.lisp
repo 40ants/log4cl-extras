@@ -19,7 +19,8 @@
    #:*args-filters*
    #:make-placeholder
    #:placeholder-name
-   #:placeholder-p))
+   #:placeholder-p
+   #:make-args-filter))
 (in-package log4cl-extras/error)
 
 
@@ -212,3 +213,18 @@ Placeholders should be created with MAKE-PLACEHOLDER function.
 
 (defun placeholder-p (obj)
   (typep obj 'placeholder))
+
+
+(defun make-args-filter (predicate placeholder)
+  "Returns a function, suitable to be used in *ARGS-FILTERS*
+
+   Function PREDICATE will be applied to each argument in the frame
+   and if it returns T, then argument will be replaced with PLACEHOLDER.
+"
+  (lambda (func-name args)
+    (values func-name
+            (loop for arg in args
+                  if (funcall predicate arg)
+                  collect placeholder
+                  else
+                  collect arg))))
