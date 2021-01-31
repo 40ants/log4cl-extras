@@ -2,6 +2,9 @@
 log4cl-extras
 =============
 
+.. image:: http://github-actions.40ants.com/40ants/log4cl-extras/matrix.svg
+    :target: https://github.com/40ants/log4cl-extras
+
 This library extends log4cl in a few ways:
 
 * It helps with configuration of multiple appenders and layouts.
