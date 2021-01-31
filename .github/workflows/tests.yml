@@ -27,7 +27,7 @@ jobs:
       matrix:
         lisp:
           - sbcl-bin
-#          - ccl-bin
+          - ccl-bin
         os:
           - ubuntu-latest
           - macos-latest
