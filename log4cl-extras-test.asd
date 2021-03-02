@@ -9,6 +9,6 @@
                "log4cl-extras-test/secrets")
   :description "Test system for log4cl-extras"
 
-  :perform (test-op :after (op c)
-                    (uiop:symbol-call :rove :run c)
-                    (asdf:clear-system c)))
+  :perform (test-op (op c)
+                    (unless (symbol-call :rove :run c)
+                      (error "Tests failed"))))

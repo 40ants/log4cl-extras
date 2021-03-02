@@ -49,7 +49,15 @@
         (cons
          (case (car call)
            ((:method)
-            (check-symbol (second call)))
+            (let ((real-call (second call)))
+              (etypecase real-call
+                (symbol
+                 (check-symbol real-call))
+                ;; Call might be something like
+                ;; (SETF the-function).
+                (cons
+                 (some #'check-symbol
+                       real-call)))))
            ((lambda flet labels)
             (when (and (eql (third call) :in)
                        (typep (fourth call) 'symbol))
