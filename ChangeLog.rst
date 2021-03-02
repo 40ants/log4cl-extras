@@ -2,6 +2,11 @@
  Changelog
 ===========
 
+0.5.1 (2021-03-02)
+==================
+
+* Fixed fail during logging error with (setf some-func) in the backtrace.
+
 0.5.0 (2021-01-24)
 ==================
 

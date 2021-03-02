@@ -32,9 +32,11 @@ jobs:
           - ubuntu-latest
           - macos-latest
     runs-on: ${{ matrix.os }}
+
     env:
       LISP: ${{ matrix.lisp }}
       OS: ${{ matrix.os }}
+
     steps:
       - uses: actions/checkout@v1
       - name: Show Env
