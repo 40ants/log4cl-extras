@@ -12,19 +12,19 @@
                ;; "log4cl-extras/secrets"
                "log4cl-extras/config"
                "log4cl-extras/error")
-  :description "A bunch of addons to log4cl, JSON appender, context fields, cross-finger appender, etc."
-  :long-description
-  #.(with-open-file (stream (merge-pathnames
-                             #p"README.rst"
-                             (or *load-pathname* *compile-file-pathname*))
-                            :if-does-not-exist nil
-                            :direction :input
-                            :external-format :utf-8)
-      (when stream
-        (let ((seq (make-array (file-length stream)
-                               :element-type 'character
-                               :fill-pointer t)))
-          (setf (fill-pointer seq)
-                (read-sequence seq stream))
-          seq)))
+  :description "A bunch of addons to LOG4CL: JSON appender, context fields, cross-finger appender, etc."
+  :long-description "
+
+This library extends LOG4CL system in a few ways:
+
+* It helps with configuration of multiple appenders and layouts.
+* Has a facility to catch context fields and to log them.
+* Has a macro to log unhandled errors.
+* Adds a layout to write messages as JSON, which is useful for production as makes easier to parse and process such logs.
+* Uses the appenders which are not disabled in case of some error which again, should be useful for production.
+
+"
+  :homepage "https://40ants.com/log4cl-extras"
+  :bug-tracker "https://github.com/40ants/log4cl-extras/issues"
+  :source-control (:git "https://github.com/40ants/log4cl-extras")
   :in-order-to ((test-op (test-op log4cl-extras-test))))

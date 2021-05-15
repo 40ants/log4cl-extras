@@ -1,5 +1,9 @@
-(defpackage #:log4cl-extras/config
+(uiop:define-package #:log4cl-extras/config
   (:use #:cl)
+  (:import-from #:pythonic-string-reader
+                #:pythonic-string-syntax)
+  (:import-from #:named-readtables
+                #:in-readtable)
   (:import-from #:log4cl-extras/json)
   (:import-from #:log4cl-extras/plain)
   (:import-from #:alexandria
@@ -10,9 +14,30 @@
                 #:stable-this-console-appender
                 #:stable-daily-file-appender
                 #:stable-file-appender)
+  (:import-from #:40ants-doc
+                #:defsection)
   (:export
    #:setup))
 (in-package log4cl-extras/config)
+
+(in-readtable pythonic-string-syntax)
+
+
+(defsection @configuration (:title "Configuration")
+  """
+Here is the example of the config, suitable for production. Here we log all messages as JSON records
+into the file, rotated on the daily basis. And all errors and warnings will be written to the REPL.
+
+```
+(log4cl-extras/config:setup
+ '(:level :debug
+   :appenders ((this-console :layout :plain
+                             :filter :warn)
+               (daily :layout :json
+                      :name-format "/app/logs/app.log"
+                      :backup-name-format "app-%Y%m%d.log"))))
+```
+""")
 
 
 (define-global-parameter

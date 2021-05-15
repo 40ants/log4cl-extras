@@ -1,5 +1,9 @@
-(defpackage #:log4cl-extras/error
+(uiop:define-package #:log4cl-extras/error
   (:use #:cl)
+  (:import-from #:pythonic-string-reader
+                #:pythonic-string-syntax)
+  (:import-from #:named-readtables
+                #:in-readtable)
   (:import-from #:dissect)
   (:import-from #:log4cl)
   (:import-from #:log4cl-extras/context
@@ -23,8 +27,118 @@
    #:make-args-filter))
 (in-package log4cl-extras/error)
 
+(in-readtable pythonic-string-syntax)
 
-(define-global-var *max-traceback-depth* 10)
+
+(40ants-doc:defsection @errors (:title "Logging Unhandled Errors")
+  (@intro section)
+  (@printing section)
+  (*max-traceback-depth* variable)
+  (*max-call-length* variable)
+  (*args-filters* variable)
+  (with-log-unhandled macro)
+  (print-backtrace function)
+  (make-args-filter function)
+  (make-placeholder function))
+
+
+(40ants-doc:defsection @intro (:title "Quickstart"
+                               :export nil)
+  """
+If you want to log unhandled signals traceback, then use WITH-LOG-UNHANDLED macro.
+
+Usually it is good idea, to use WITH-LOG-UNHANDLED in the main function or in a function which handles
+a HTTP request.
+
+If some error condition will be signaled by the body, it will be logged as an error with "traceback"
+field like this:
+
+```
+CL-USER> (defun foo ()
+           (error "Some error happened"))
+
+CL-USER> (defun bar ()
+           (foo))
+
+CL-USER> (log4cl-extras/error:with-log-unhandled ()
+           (bar))
+
+<ERROR> [2020-07-19T10:14:39.644805Z] Unhandled exception
+  Fields:
+  Traceback (most recent call last):
+    File "NIL", line NIL, in FOO
+      (FOO)
+    File "NIL", line NIL, in BAR
+      (BAR)
+    File "NIL", line NIL, in (LAMBDA (…
+      ((LAMBDA ()))
+    File "NIL", line NIL, in SIMPLE-EV…
+      (SB-INT:SIMPLE-EVAL-IN-LEXENV
+       (LOG4CL-EXTRAS/ERROR:WITH-LOG-UNHANDLED NIL
+         (BAR))
+       #<NULL-LEXENV>)
+    ...
+       #<CLOSURE (LAMBDA () :IN SLYNK::CALL-WITH-LISTENER) {100A6B043B}>)
+     
+     
+  Condition: Some error happened
+; Debugger entered on #<SIMPLE-ERROR "Some error happened" {100A7A5DB3}>
+```
+
+The JSON layout will write such error like this:
+
+```
+{
+  "fields": {
+    "traceback": "Traceback (most recent call last):\n  File \"NIL\", line NIL, in FOO\n    (FOO)\n  File \"NIL\", line NIL, in BAR\n    (BAR)\n...\nCondition: Some error happened"
+  },
+  "level": "ERROR",
+  "message": "Unhandled exception",
+  "timestamp": "2020-07-19T10:21:33.557418Z"
+}
+```
+
+""")
+
+
+(40ants-doc:defsection @printing (:title "Printing Backtrace"
+                                  :export nil)
+  """
+There is a helper function PRINT-BACKTRACE for extracting and printing backtrace, which can be used
+separately from logging. One use case is to render backtrace on the web page when a
+site is in a debug mode:
+
+```
+CL-USER> (log4cl-extras/error:print-backtrace :depth 3)
+Traceback (most recent call last):
+   0 File "/Users/art/.roswell/src/sbcl-2.0.11/src/code/eval.lisp", line 291
+       In SB-INT:SIMPLE-EVAL-IN-LEXENV
+     Args ((LOG4CL-EXTRAS/ERROR:PRINT-BACKTRACE :DEPTH 3) #<NULL-LEXENV>)
+   1 File "/Users/art/.roswell/src/sbcl-2.0.11/src/code/eval.lisp", line 311
+       In EVAL
+     Args ((LOG4CL-EXTRAS/ERROR:PRINT-BACKTRACE :DEPTH 3))
+   2 File "/Users/art/projects/lisp/sly/contrib/slynk-mrepl.lisp"
+       In (LAMBDA () :IN SLYNK-MREPL::MREPL-EVAL-1)
+     Args ()
+```
+
+By default, it prints to the *DEBUG-IO, but you can pass it a :STREAM argument
+which has the same semantic as a stream for FORMAT function.
+
+Other useful parameters are :DEPTH and :MAX-CALL-LENTH. They allow to control how
+long and wide backtrace will be.
+
+Also, you might pass :CONDITION. If it is given, it will be printed after the backtrace.
+
+And finally, you can pass a list of functions to filter arguments before printing.
+This way secret or unnecesary long values can be stripped. See the next section to learn
+how to not log secret values.
+
+""")
+
+
+(define-global-var *max-traceback-depth* 10
+  "Keeps default value for traceback depth logged by WITH-LOG-UNHANDLED macro")
 (define-global-var *max-call-length* 100)
 
 (define-global-var *args-filters* nil
@@ -135,6 +249,10 @@
                         (depth *max-traceback-depth*)
                         (max-call-length *max-call-length*)
                         (args-filters *args-filters*))
+  "A helper to print backtrace. Could be useful to out backtrace
+   at places other than logs, for example at a web page.
+
+   This function applies the same filtering rules as WITH-LOG-UNHANDLED macro."
   (let ((frames (get-backtrace)))
     (with-output-to-stream (stream stream)
       (handler-case
@@ -175,6 +293,7 @@
 
 
 (defmacro with-log-unhandled ((&key (depth *max-traceback-depth*)) &body body)
+  "Logs any ERROR condition signaled from the body. Logged message will have a \"traceback\" field."
   (alexandria:with-gensyms (tb-as-string)
     `(handler-bind
          ((error (lambda (condition)
