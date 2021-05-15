@@ -62,7 +62,7 @@ This system defines two layout types:
 
 - `:PLAIN` - a layout for printing messages to the REPL.
 
-- `:JSON` - a layout which outputs each message and all it's data as a JSON documents. Use it to feed logs to Elastic Search or a service like [Datadog](https://www.datadoghq.com/) to [Papertrail](https://www.papertrail.com/).
+- :JSON - a layout which outputs each message and all it's data as a JSON documents. Use it to feed logs to Elastic Search or a service like [Datadog](https://www.datadoghq.com/) to [Papertrail](https://www.papertrail.com/).
 
 To use these custom layouts, you have to use [`SETUP`][09b8] function. It also allows to set a log level
 for root logger and appenders. Here is a minimal example showing how to configure logger for the REPL:
@@ -83,7 +83,7 @@ CL-USER> (log4cl-extras/context:with-fields (:foo "Bar")
     foo: Bar
 ```
 
-If you replace `:PLAIN` with `:JSON`, you'll get this:
+If you replace `:PLAIN` with :JSON, you'll get this:
 
 ```
 CL-USER> (log4cl-extras/config:setup
@@ -155,7 +155,7 @@ Also, [`SETUP`][09b8] allows to change log levels for different loggers:
     
     To lookup supported arguments for each appender type, see these classes initargs.
     the only difference is that `:LAYOUT` argument is processed in a special way:
-    `:JSON` value replaced with `LOG4CL-EXTRAS/JSON:JSON-LAYOUT` and `:PLAIN` is replaced
+    :JSON value replaced with `LOG4CL-EXTRAS/JSON:JSON-LAYOUT` and `:PLAIN` is replaced
     with `LOG4CL-EXTRAS/PLAIN:PLAIN-LAYOUT`.
     
     And finally, you can pass to [`SETUP`][09b8] a list of loggers. Each item in this list
