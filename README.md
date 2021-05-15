@@ -86,7 +86,7 @@ CL-USER> (log4cl-extras/context:with-fields (:foo "Bar")
     foo: Bar
 ```
 
-If you replace `:PLAIN` with `:JSON`, you'll get this:
+If you replace `:PLAIN` with :JSON, you'll get this:
 
 ```
 CL-USER> (log4cl-extras/config:setup
@@ -158,7 +158,7 @@ Also, [`SETUP`][09b8] allows to change log levels for different loggers:
     
     To lookup supported arguments for each appender type, see these classes initargs.
     the only difference is that `:LAYOUT` argument is processed in a special way:
-    `:JSON` value replaced with `LOG4CL-EXTRAS/JSON:JSON-LAYOUT` and `:PLAIN` is replaced
+    :JSON value replaced with `LOG4CL-EXTRAS/JSON:JSON-LAYOUT` and `:PLAIN` is replaced
     with `LOG4CL-EXTRAS/PLAIN:PLAIN-LAYOUT`.
     
     And finally, you can pass to [`SETUP`][09b8] a list of loggers. Each item in this list
