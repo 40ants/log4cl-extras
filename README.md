@@ -62,7 +62,10 @@ This system defines two layout types:
 
 - `:PLAIN` - a layout for printing messages to the REPL.
 
-- `:JSON` - a layout which outputs each message and all it's data as a JSON documents. Use it to feed logs to Elastic Search or a service like [Datadog](https://www.datadoghq.com/) to [Papertrail](https://www.papertrail.com/).
+- `:JSON` - a layout which outputs each message and all it's data
+  as a JSON documents. Use it to feed logs to Elastic Search
+  or a service like [Datadog](https://www.datadoghq.com/)
+  to [Papertrail](https://www.papertrail.com/).
 
 To use these custom layouts, you have to use [`SETUP`][09b8] function. It also allows to set a log level
 for root logger and appenders. Here is a minimal example showing how to configure logger for the REPL:
