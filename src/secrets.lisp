@@ -225,7 +225,7 @@ two arguments:
 
 Filter should return two values, which can be the same is inputs or a transformed in some way.
 
-For example, we know that the Lack's env is a plist with :REQUEST-METHOD, :REQUEST-URI and other values.
+For example, we know that the Lack's env is a plist with `:REQUEST-METHOD`, `:REQUEST-URI` and other values.
 We can to write a predicate like this:
 
 ```

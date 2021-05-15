@@ -21,7 +21,10 @@
 
 (defsection @index (:title "LOG4CL-EXTRAS - Addons for Log4CL"
                     :ignore-words ("JSON"
-                                   "HTTP"))
+                                   "HTTP"
+                                   "THIS-CONSOLE"
+                                   "DAILY"
+                                   "FILE"))
   (log4cl-extras system)
   "
 [![](https://github-actions.40ants.com/40ants/log4cl-extras/matrix.svg?only=ci.run-tests)](https://github.com/40ants/log4cl-extras/actions)

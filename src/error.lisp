@@ -122,10 +122,10 @@ Traceback (most recent call last):
      Args ()
 ```
 
-By default, it prints to the *DEBUG-IO, but you can pass it a :STREAM argument
+By default, it prints to the *DEBUG-IO*, but you can pass it a :STREAM argument
 which has the same semantic as a stream for FORMAT function.
 
-Other useful parameters are :DEPTH and :MAX-CALL-LENTH. They allow to control how
+Other useful parameters are :DEPTH and :MAX-CALL-LENGTH. They allow to control how
 long and wide backtrace will be.
 
 Also, you might pass :CONDITION. If it is given, it will be printed after the backtrace.
