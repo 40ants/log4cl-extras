@@ -38,7 +38,7 @@
 
 (defsection @installation (:title "Installation")
   """
-This library is not available from Quicklisp yet, but you can install it from Ultralisp.org:
+You can install this library from Quicklisp, but you want to receive updates quickly, then install it from Ultralisp.org:
 
 ```
 (ql-dist:install-dist "http://dist.ultralisp.org/"
