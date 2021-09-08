@@ -22,7 +22,10 @@
 
 (defsection @keeping-secrets (:title "How Keep Secrets Out of Logs"
                               :ignore-words ("LOG4CL-EXTRAS"
-                                             "AUTHENTICATE"))
+                                             "AUTHENTICATE"
+                                             "10036CB183"
+                                             "PASSWORD"
+                                             "POSTGRES"))
   """
 When backtrace is printed to log files it is good idea to omit passwords, tokens, cookies,
 and other potentially sensitive values.
@@ -83,7 +86,8 @@ With `LOG4CL-EXTRAS` you can keep values in secret in two ways.
 
 
 (40ants-doc:defsection @easy-way (:title "Easy Way"
-                                  :export nil)
+                                  :ignore-words ("LOG4CL-EXTRAS/SECRETS"
+                                                 "SECRET-VALUES:SECRET-VALUE"))
   """
 The easiest way, is two wrap all sensitive data using
 [secret-values](https://40ants.com/lisp-project-of-the-day/2020/09/0186-secret-values.html)
@@ -141,12 +145,12 @@ But why do we see `"The Secret Password"` in the third frame anyway?
 It is because we have to pass a raw version of the password to the libraries
 we don't control.
 
-Here is where `LOG4CL-EXTRAS` comes to the resque. It provides a subsystem
-LOG4CL-EXTRAS/SECRETS. It is optional and is not loaded together with the
+Here is where `LOG4CL-EXTRAS` comes to the resque. It provides a package
+[LOG4CL-EXTRAS/SECRETS][package]. It is optional and is not loaded together with the
 primary system.
 
 Earlier, I've mentioned :ARGS-FILTERS argument to the LOG4CL-EXTRAS/ERROR:PRINT-BACKTRACE function.
-Package LOG4CL-EXTRAS/SECRETS provides a function MAKE-SECRETS-REPLACER
+Package [LOG4CL-EXTRAS/SECRETS][package] provides a function MAKE-SECRETS-REPLACER
 which can be used to filter secret values.
 
 We can add it into the global variable LOG4CL-EXTRAS/ERROR:*ARGS-FILTERS* like this:

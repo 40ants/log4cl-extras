@@ -24,7 +24,7 @@ This library extends LOG4CL system in a few ways:
 * Uses the appenders which are not disabled in case of some error which again, should be useful for production.
 
 "
-  :homepage "https://40ants.com/log4cl-extras"
+  :homepage "https://40ants.com/log4cl-extras/"
   :bug-tracker "https://github.com/40ants/log4cl-extras/issues"
   :source-control (:git "https://github.com/40ants/log4cl-extras")
   :in-order-to ((test-op (test-op log4cl-extras-test))))

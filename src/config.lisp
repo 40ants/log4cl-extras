@@ -23,7 +23,12 @@
 (in-readtable pythonic-string-syntax)
 
 
-(defsection @configuration (:title "Configuration")
+(defsection @configuration (:title "Configuration"
+                            :ignore-words (":JSON"
+                                           ":PLAIN"
+                                           "LOG4CL:THIS-CONSOLE-APPENDER"
+                                           "LOG4CL:DAILY-FILE-APPENDER"
+                                           "LOG4CL:FILE-APPENDER"))
   """
 By default LOG4CL outputs log items like this:
 
@@ -37,8 +42,8 @@ Layout defines the way how the message will be formatted.
 
 This system defines two layout types:
 
-* `:PLAIN` - a layout for printing messages to the REPL.
-* `:JSON` - a layout which outputs each message and all it's data
+* :PLAIN - a layout for printing messages to the REPL.
+* :JSON - a layout which outputs each message and all it's data
   as a JSON documents. Use it to feed logs to Elastic Search
   or a service like [Datadog](https://www.datadoghq.com/)
   to [Papertrail](https://www.papertrail.com/).
@@ -92,7 +97,12 @@ into the file, rotated on the daily basis. And all errors and warnings will be w
 
 Also, SETUP allows to change log levels for different loggers:
 """
-  (setup function))
+  (setup function)
+
+  "## Layouts"
+
+  (log4cl-extras/plain:plain-layout class)
+  (log4cl-extras/json:json-layout class))
 
 
 (define-global-parameter

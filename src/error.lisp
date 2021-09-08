@@ -24,22 +24,30 @@
    #:make-placeholder
    #:placeholder-name
    #:placeholder-p
-   #:make-args-filter))
+   #:make-args-filter
+   #:placeholder))
 (in-package log4cl-extras/error)
 
 (in-readtable pythonic-string-syntax)
 
 
-(40ants-doc:defsection @errors (:title "Logging Unhandled Errors")
+(40ants-doc:defsection @errors (:title "Logging Unhandled Errors"
+                                :ignore-words ("SBCL"))
   (@intro section)
   (@printing section)
+  
+  "## API"
+  
   (*max-traceback-depth* variable)
   (*max-call-length* variable)
   (*args-filters* variable)
   (with-log-unhandled macro)
   (print-backtrace function)
   (make-args-filter function)
-  (make-placeholder function))
+  (placeholder class)
+  (make-placeholder function)
+  (placeholder-p function)
+  (placeholder-name (reader placeholder)))
 
 
 (40ants-doc:defsection @intro (:title "Quickstart"
@@ -333,7 +341,9 @@ Placeholders should be created with MAKE-PLACEHOLDER function.
 
    #<secret value>
    ```
-"
+
+   See LOG4CL-EXTRAS/SECRETS::@HARD-WAY section to learn, how to use
+   placeholders to remove sensitive information from logs."
   (check-type name string)
   (make-instance 'placeholder :name name))
 
@@ -343,7 +353,7 @@ Placeholders should be created with MAKE-PLACEHOLDER function.
 
 
 (defun make-args-filter (predicate placeholder)
-  "Returns a function, suitable to be used in *ARGS-FILTERS*
+  "Returns a function, suitable to be used in *ARGS-FILTERS* variable.
 
    Function PREDICATE will be applied to each argument in the frame
    and if it returns T, then argument will be replaced with PLACEHOLDER.
