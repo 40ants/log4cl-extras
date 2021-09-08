@@ -195,7 +195,6 @@ CL-USER> (log4cl-extras/error:with-log-unhandled (:depth 5)
 Now both third and fourth frames show `#<secret value>` instead of the password.
 This is because `(log4cl-extras/secrets:make-secrets-replacer)` call returns a closure
 which remembers and replaces raw values of the secrets too!
-
 """)
 
 
