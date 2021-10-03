@@ -11,6 +11,8 @@
                               "REPL"
                               "API"
                               "CL-STRINGS"
+                              ":JSON"
+                              ":PLAIN"
                               "TRACEBACK-TO-STRING"))
   (0.6.0 2021-10-03
          "* Now :PLAIN and :JSON logger will output logger's category, filename and a callable name.")
