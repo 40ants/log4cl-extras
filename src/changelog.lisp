@@ -12,6 +12,8 @@
                               "API"
                               "CL-STRINGS"
                               "TRACEBACK-TO-STRING"))
+  (0.6.0 2021-10-03
+         "* Now :PLAIN and :JSON logger will output logger's category, filename and a callable name.")
   (0.5.1 2021-03-02
          "* Fixed fail during logging error with `(setf some-func)` in the backtrace.")
   (0.5.0 2021-01-24
