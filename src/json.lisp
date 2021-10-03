@@ -12,11 +12,28 @@
 (in-package log4cl-extras/json)
 
 
-(defun write-json-item (stream log-func level &key (timezone local-time:*default-timezone*))
+(defparameter +format-info+
+  (make-instance 'log4cl::pattern-category-format-info
+                 :case :downcase
+                 :precision 1000
+                 :separator nil
+                 :start nil))
+
+
+(defun write-json-item (stream logger log-func level &key (timezone local-time:*default-timezone*))
   (let* ((message (with-output-to-string (s)
                     ;; (log4cl:call-user-log-message log-func s)
                     (funcall log-func s)))
-         (fields (get-fields))
+         (fields (list*
+                  (cons :|logger| (with-output-to-string (s)
+                                    (funcall (gethash #\g log4cl::*formatters*)
+                                             s +format-info+ logger 0 0)))
+                  (cons :|func| (with-output-to-string (s)
+                                  (funcall (gethash #\C log4cl::*formatters*)
+                                           s +format-info+ logger 0 0)))
+                  (cons :|file| (log4cl:logger-file-namestring logger))
+                  ;; User specified fields:
+                  (get-fields)))
          (data (list (cons :|message| message)
                      (cons :|timestamp| (get-timestamp :timezone timezone)))))
 
@@ -46,6 +63,6 @@
                                     logger
                                     level
                                     log-func)
-  (declare (ignorable layout logger))
-  (write-json-item stream log-func level :timezone (get-timezone layout))
+  (declare (ignorable layout))
+  (write-json-item stream logger log-func level :timezone (get-timezone layout))
   (values))

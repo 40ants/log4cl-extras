@@ -10,9 +10,18 @@
 (in-package log4cl-extras/plain)
 
 
-(defun write-plain-item (stream log-func level &key (timezone local-time:*default-timezone*))
+(defparameter +format-info+
+  (make-instance 'log4cl::pattern-category-format-info
+                 :case :downcase
+                 :precision 1000
+                 :separator nil
+                 :start nil))
+
+
+(defun write-plain-item (stream logger log-func level &key (timezone local-time:*default-timezone*))
   (let* ((message (with-output-to-string (s)
                     (funcall log-func s)))
+         (filename (log4cl:logger-file-namestring logger))
          (fields (get-fields))
          (level (log4cl:log-level-to-string level))
          (timestamp (get-timestamp :timezone timezone))
@@ -27,9 +36,28 @@
     ;;   Traceback: Multiline
     ;;   traceback
     ;;   which easy to read.
-    (format stream "<~A> [~A] ~A~%"
+    (format stream "<~A> [~A] "
             level
-            timestamp
+            timestamp)
+
+    (funcall (gethash #\g log4cl::*formatters*)
+             stream
+             +format-info+
+             logger
+             0
+             0)
+    
+    (format stream " ~A ("
+            filename)
+
+    (funcall (gethash #\C log4cl::*formatters*)
+             stream
+             +format-info+
+             logger
+             0
+             0)
+    
+    (format stream ") ~A~%"
             message)
 
     (when fields
@@ -37,9 +65,9 @@
       (loop for (key . value) in fields
             unless (string-equal key
                                  "traceback")
-            do (format stream "    ~A: ~A~%"
-                       key
-                       value)))
+              do (format stream "    ~A: ~A~%"
+                         key
+                         value)))
 
     ;; (format stream "DEBUG: ~S~%" fields)
     (when traceback
@@ -59,5 +87,5 @@
                                     level
                                     log-func)
   (declare (ignorable layout logger))
-  (write-plain-item stream log-func level :timezone (get-timezone layout))
+  (write-plain-item stream logger log-func level :timezone (get-timezone layout))
   (values))
