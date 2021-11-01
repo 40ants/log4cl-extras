@@ -103,7 +103,7 @@ Also, [`setup`][74de] allows to change log levels for different loggers:
 
 <a id="x-28LOG4CL-EXTRAS-2FCONFIG-3ASETUP-20FUNCTION-29"></a>
 
-### [function](75bc) `log4cl-extras/config:setup` config
+### [function](eddd) `log4cl-extras/config:setup` config
 
 Setup loggers and appenders via confg.
 
@@ -155,11 +155,11 @@ inside a package and other items are params for a nested [`setup`][74de] call.
 
 <a id="x-28LOG4CL-EXTRAS-2FPLAIN-3APLAIN-LAYOUT-20CLASS-29"></a>
 
-### [class](a60c) `log4cl-extras/plain:plain-layout` (layout)
+### [class](4ae9) `log4cl-extras/plain:plain-layout` (layout)
 
 <a id="x-28LOG4CL-EXTRAS-2FJSON-3AJSON-LAYOUT-20CLASS-29"></a>
 
-### [class](d2b5) `log4cl-extras/json:json-layout` (layout)
+### [class](16a7) `log4cl-extras/json:json-layout` (layout)
 
 <a id="x-28LOG4CL-EXTRAS-2FCONTEXT-3A-3A-40CONTEXT-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29"></a>
 
@@ -198,7 +198,7 @@ CL-USER> (log4cl-extras/context:with-fields (:request-id 42)
 
 <a id="x-28LOG4CL-EXTRAS-2FCONTEXT-3AWITH-FIELDS-20-2840ANTS-DOC-2FLOCATIVES-3AMACRO-29-29"></a>
 
-### [macro](86c9) `log4cl-extras/context:with-fields` (&rest fields) &body body
+### [macro](ae5f) `log4cl-extras/context:with-fields` (&rest fields) &body body
 
 Captures content of given fields into a dynamic variable.
 
@@ -207,7 +207,7 @@ inside the [`with-fields`][b464] body.
 
 <a id="x-28LOG4CL-EXTRAS-2FCONTEXT-3AGET-FIELDS-20FUNCTION-29"></a>
 
-### [function](9538) `log4cl-extras/context:get-fields`
+### [function](fe89) `log4cl-extras/context:get-fields`
 
 Returns an alist of all fields defined using [`with-fields`][b464] macro in the current stack.
 
@@ -311,17 +311,17 @@ how to not log secret values.
 
 <a id="x-28LOG4CL-EXTRAS-2FERROR-3A-2AMAX-TRACEBACK-DEPTH-2A-20-28VARIABLE-29-29"></a>
 
-### [variable](c5d1) `log4cl-extras/error:*max-traceback-depth*` 10
+### [variable](d5d4) `log4cl-extras/error:*max-traceback-depth*` 10
 
 Keeps default value for traceback depth logged by [`with-log-unhandled`][3fd6] macro
 
 <a id="x-28LOG4CL-EXTRAS-2FERROR-3A-2AMAX-CALL-LENGTH-2A-20-28VARIABLE-29-29"></a>
 
-### [variable](b70b) `log4cl-extras/error:*max-call-length*` 100
+### [variable](cd28) `log4cl-extras/error:*max-call-length*` 100
 
 <a id="x-28LOG4CL-EXTRAS-2FERROR-3A-2AARGS-FILTERS-2A-20-28VARIABLE-29-29"></a>
 
-### [variable](0451) `log4cl-extras/error:*args-filters*` nil
+### [variable](2c8f) `log4cl-extras/error:*args-filters*` nil
 
 Add to this variable functions of two arguments to change arguments before they will be dumped
 as part of the backtrace to the log.
@@ -331,13 +331,13 @@ from multiple threads.
 
 <a id="x-28LOG4CL-EXTRAS-2FERROR-3AWITH-LOG-UNHANDLED-20-2840ANTS-DOC-2FLOCATIVES-3AMACRO-29-29"></a>
 
-### [macro](a791) `log4cl-extras/error:with-log-unhandled` (&key (depth \*max-traceback-depth\*)) &body body
+### [macro](f56e) `log4cl-extras/error:with-log-unhandled` (&key (depth \*max-traceback-depth\*)) &body body
 
 Logs any `ERROR` condition signaled from the body. Logged message will have a "traceback" field.
 
 <a id="x-28LOG4CL-EXTRAS-2FERROR-3APRINT-BACKTRACE-20FUNCTION-29"></a>
 
-### [function](f3e2) `log4cl-extras/error:print-backtrace` &key (stream \*debug-io\*) (condition nil) (depth \*max-traceback-depth\*) (max-call-length \*max-call-length\*) (args-filters \*args-filters\*)
+### [function](8939) `log4cl-extras/error:print-backtrace` &key (stream \*debug-io\*) (condition nil) (depth \*max-traceback-depth\*) (max-call-length \*max-call-length\*) (args-filters \*args-filters\*)
 
 A helper to print backtrace. Could be useful to out backtrace
 at places other than logs, for example at a web page.
@@ -346,7 +346,7 @@ This function applies the same filtering rules as [`with-log-unhandled`][3fd6] m
 
 <a id="x-28LOG4CL-EXTRAS-2FERROR-3AMAKE-ARGS-FILTER-20FUNCTION-29"></a>
 
-### [function](0e47) `log4cl-extras/error:make-args-filter` predicate placeholder
+### [function](afc5) `log4cl-extras/error:make-args-filter` predicate placeholder
 
 Returns a function, suitable to be used in [`*args-filters*`][c7a0] variable.
 
@@ -355,7 +355,7 @@ and if it returns T, then argument will be replaced with `PLACEHOLDER`.
 
 <a id="x-28LOG4CL-EXTRAS-2FERROR-3APLACEHOLDER-20CLASS-29"></a>
 
-### [class](273c) `log4cl-extras/error:placeholder` ()
+### [class](980c) `log4cl-extras/error:placeholder` ()
 
 Objects of this class can be used as replacement to arguments in a backtrace.
 
@@ -367,7 +367,7 @@ Placeholders should be created with [`make-placeholder`][de65] function.
 
 <a id="x-28LOG4CL-EXTRAS-2FERROR-3AMAKE-PLACEHOLDER-20FUNCTION-29"></a>
 
-### [function](1758) `log4cl-extras/error:make-placeholder` name
+### [function](adf7) `log4cl-extras/error:make-placeholder` name
 
 Creates a placeholder for some secret value or omitted argument.
 
@@ -381,11 +381,11 @@ placeholders to remove sensitive information from logs.
 
 <a id="x-28LOG4CL-EXTRAS-2FERROR-3APLACEHOLDER-P-20FUNCTION-29"></a>
 
-### [function](b8da) `log4cl-extras/error:placeholder-p` obj
+### [function](4186) `log4cl-extras/error:placeholder-p` obj
 
 <a id="x-28LOG4CL-EXTRAS-2FERROR-3APLACEHOLDER-NAME-20-2840ANTS-DOC-2FLOCATIVES-3AREADER-20LOG4CL-EXTRAS-2FERROR-3APLACEHOLDER-29-29"></a>
 
-### [reader](aea6) `log4cl-extras/error:placeholder-name` (placeholder) (:name)
+### [reader](66af) `log4cl-extras/error:placeholder-name` (placeholder) (:name)
 
 <a id="x-28LOG4CL-EXTRAS-2FSECRETS-3A-3A-40KEEPING-SECRETS-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29"></a>
 
@@ -690,7 +690,7 @@ CL-USER> (setf log4cl-extras/error:*args-filters*
 ```
 <a id="x-28LOG4CL-EXTRAS-2FSECRETS-3AMAKE-SECRETS-REPLACER-20FUNCTION-29"></a>
 
-### [function](7c7d) `log4cl-extras/secrets:make-secrets-replacer`
+### [function](0d29) `log4cl-extras/secrets:make-secrets-replacer`
 
 Returns a function which can be used to filter backtrace arguments.
 
@@ -713,22 +713,22 @@ See [`log4cl-extras/error:*args-filters*`][c7a0]
 [bb11]: https://40ants.com/log4cl-extras/#x-28LOG4CL-EXTRAS-2FSECRETS-3AMAKE-SECRETS-REPLACER-20FUNCTION-29
 [8f00]: https://github.com/40ants/log4cl-extras
 [b509]: https://github.com/40ants/log4cl-extras/actions
-[75bc]: https://github.com/40ants/log4cl-extras/blob/7a77607f57e2b78c3fc5dda9c9d7c0f48c7ad620/src/config.lisp#L211
-[9538]: https://github.com/40ants/log4cl-extras/blob/7a77607f57e2b78c3fc5dda9c9d7c0f48c7ad620/src/context.lisp#L62
-[86c9]: https://github.com/40ants/log4cl-extras/blob/7a77607f57e2b78c3fc5dda9c9d7c0f48c7ad620/src/context.lisp#L78
-[c5d1]: https://github.com/40ants/log4cl-extras/blob/7a77607f57e2b78c3fc5dda9c9d7c0f48c7ad620/src/error.lisp#L148
-[b70b]: https://github.com/40ants/log4cl-extras/blob/7a77607f57e2b78c3fc5dda9c9d7c0f48c7ad620/src/error.lisp#L150
-[0451]: https://github.com/40ants/log4cl-extras/blob/7a77607f57e2b78c3fc5dda9c9d7c0f48c7ad620/src/error.lisp#L152
-[f3e2]: https://github.com/40ants/log4cl-extras/blob/7a77607f57e2b78c3fc5dda9c9d7c0f48c7ad620/src/error.lisp#L254
-[a791]: https://github.com/40ants/log4cl-extras/blob/7a77607f57e2b78c3fc5dda9c9d7c0f48c7ad620/src/error.lisp#L303
-[273c]: https://github.com/40ants/log4cl-extras/blob/7a77607f57e2b78c3fc5dda9c9d7c0f48c7ad620/src/error.lisp#L317
-[aea6]: https://github.com/40ants/log4cl-extras/blob/7a77607f57e2b78c3fc5dda9c9d7c0f48c7ad620/src/error.lisp#L318
-[1758]: https://github.com/40ants/log4cl-extras/blob/7a77607f57e2b78c3fc5dda9c9d7c0f48c7ad620/src/error.lisp#L336
-[b8da]: https://github.com/40ants/log4cl-extras/blob/7a77607f57e2b78c3fc5dda9c9d7c0f48c7ad620/src/error.lisp#L351
-[0e47]: https://github.com/40ants/log4cl-extras/blob/7a77607f57e2b78c3fc5dda9c9d7c0f48c7ad620/src/error.lisp#L355
-[d2b5]: https://github.com/40ants/log4cl-extras/blob/7a77607f57e2b78c3fc5dda9c9d7c0f48c7ad620/src/json.lisp#L54
-[a60c]: https://github.com/40ants/log4cl-extras/blob/7a77607f57e2b78c3fc5dda9c9d7c0f48c7ad620/src/plain.lisp#L77
-[7c7d]: https://github.com/40ants/log4cl-extras/blob/7a77607f57e2b78c3fc5dda9c9d7c0f48c7ad620/src/secrets.lisp#L350
+[eddd]: https://github.com/40ants/log4cl-extras/blob/4548bb977fa398bb3655694086b92975e8152e00/src/config.lisp#L211
+[fe89]: https://github.com/40ants/log4cl-extras/blob/4548bb977fa398bb3655694086b92975e8152e00/src/context.lisp#L62
+[ae5f]: https://github.com/40ants/log4cl-extras/blob/4548bb977fa398bb3655694086b92975e8152e00/src/context.lisp#L78
+[d5d4]: https://github.com/40ants/log4cl-extras/blob/4548bb977fa398bb3655694086b92975e8152e00/src/error.lisp#L148
+[cd28]: https://github.com/40ants/log4cl-extras/blob/4548bb977fa398bb3655694086b92975e8152e00/src/error.lisp#L150
+[2c8f]: https://github.com/40ants/log4cl-extras/blob/4548bb977fa398bb3655694086b92975e8152e00/src/error.lisp#L152
+[8939]: https://github.com/40ants/log4cl-extras/blob/4548bb977fa398bb3655694086b92975e8152e00/src/error.lisp#L254
+[f56e]: https://github.com/40ants/log4cl-extras/blob/4548bb977fa398bb3655694086b92975e8152e00/src/error.lisp#L303
+[980c]: https://github.com/40ants/log4cl-extras/blob/4548bb977fa398bb3655694086b92975e8152e00/src/error.lisp#L317
+[66af]: https://github.com/40ants/log4cl-extras/blob/4548bb977fa398bb3655694086b92975e8152e00/src/error.lisp#L318
+[adf7]: https://github.com/40ants/log4cl-extras/blob/4548bb977fa398bb3655694086b92975e8152e00/src/error.lisp#L336
+[4186]: https://github.com/40ants/log4cl-extras/blob/4548bb977fa398bb3655694086b92975e8152e00/src/error.lisp#L351
+[afc5]: https://github.com/40ants/log4cl-extras/blob/4548bb977fa398bb3655694086b92975e8152e00/src/error.lisp#L355
+[16a7]: https://github.com/40ants/log4cl-extras/blob/4548bb977fa398bb3655694086b92975e8152e00/src/json.lisp#L54
+[4ae9]: https://github.com/40ants/log4cl-extras/blob/4548bb977fa398bb3655694086b92975e8152e00/src/plain.lisp#L77
+[0d29]: https://github.com/40ants/log4cl-extras/blob/4548bb977fa398bb3655694086b92975e8152e00/src/secrets.lisp#L350
 [d7d4]: https://github.com/40ants/log4cl-extras/issues
 [d1aa]: https://github.com/fukamachi/lack/
 [646b]: https://www.datadoghq.com/
