@@ -2,6 +2,14 @@
 
 # ChangeLog
 
+<a id="x-28LOG4CL-EXTRAS-2FCHANGELOG-3A-3A-7C0-2E7-2E0-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29"></a>
+
+## 0.7.0 (2022-07-03)
+
+* Macro [`log4cl-extras/error:with-log-unhandled`][3fd6] now uses internal function and you can change backtrace length on the fly by changing [`log4cl-extras/error:*max-traceback-depth*`][c93b] variable.
+
+* Also, [`log4cl-extras/error:*max-call-length*`][6d41] variable was documented.
+
 <a id="x-28LOG4CL-EXTRAS-2FCHANGELOG-3A-3A-7C0-2E6-2E0-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29"></a>
 
 ## 0.6.0 (2021-10-03)
