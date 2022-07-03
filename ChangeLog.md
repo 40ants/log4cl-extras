@@ -91,7 +91,7 @@ printed as well, including a traceback.
 
 * Fixed system's loading in environments with `C` locale.
 
-  This closes issue reported along with pull request #1.
+This closes issue reported along with pull request #1.
 
 <a id="x-28LOG4CL-EXTRAS-2FCHANGELOG-3A-3A-7C0-2E2-2E1-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29"></a>
 
@@ -110,7 +110,7 @@ printed as well, including a traceback.
       (signal "foo"))
 `
 
-  Now this bad behavior was fixed and only `errors` are logged.
+Now this bad behavior was fixed and only `errors` are logged.
 
 <a id="x-28LOG4CL-EXTRAS-2FCHANGELOG-3A-3A-7C0-2E2-2E0-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29"></a>
 
