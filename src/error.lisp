@@ -147,7 +147,9 @@ how to not log secret values.
 
 (define-global-var *max-traceback-depth* 10
   "Keeps default value for traceback depth logged by WITH-LOG-UNHANDLED macro")
-(define-global-var *max-call-length* 100)
+
+(define-global-var *max-call-length* 100
+  "The max length of each line in a traceback. It is useful to limit it because otherwise some log collectors can discard the whole log entry.")
 
 (define-global-var *args-filters* nil
   "Add to this variable functions of two arguments to change arguments before they will be dumped
@@ -300,18 +302,26 @@ how to not log secret values.
                   another-condition))))))
 
 
-(defmacro with-log-unhandled ((&key (depth *max-traceback-depth*)) &body body)
+(defun call-with-log-unhandled (thunk &key (depth *max-traceback-depth*))
+  (handler-bind
+      ((error (lambda (condition)
+                (let ((tb-as-string
+                        (print-backtrace :stream nil
+                                         :condition condition
+                                         :depth depth)))
+                  (with-fields (:traceback tb-as-string)
+                    (log:error "Unhandled exception"))))))
+    (funcall thunk)))
+
+
+(defmacro with-log-unhandled ((&key (depth *max-traceback-depth* depth-given-p)) &body body)
   "Logs any ERROR condition signaled from the body. Logged message will have a \"traceback\" field."
-  (alexandria:with-gensyms (tb-as-string)
-    `(handler-bind
-         ((error (lambda (condition)
-                   (let ((,tb-as-string
-                           (print-backtrace :stream nil
-                                            :condition condition
-                                            :depth ,depth)))
-                     (with-fields (:traceback ,tb-as-string)
-                       (log:error "Unhandled exception"))))))
-       ,@body)))
+  ;; TODO: reimplement as nested function call to make
+  ;; *max-traceback-depth* used in case if no depth were given
+  (if depth-given-p
+      `(call-with-log-unhandled (lambda () ,@body)
+                                :depth ,depth)
+      `(call-with-log-unhandled (lambda () ,@body))))
 
 
 (defclass placeholder ()

@@ -14,6 +14,9 @@
                               ":JSON"
                               ":PLAIN"
                               "TRACEBACK-TO-STRING"))
+  (0.7.0 2022-07-03
+         "* Macro LOG4CL-EXTRAS/ERROR:WITH-LOG-UNHANDLED now uses internal function and you can change backtrace length on the fly by changing LOG4CL-EXTRAS/ERROR:*MAX-TRACEBACK-DEPTH* variable.
+          * Also, LOG4CL-EXTRAS/ERROR:*MAX-CALL-LENGTH* variable was documented.")
   (0.6.0 2021-10-03
          "* Now :PLAIN and :JSON logger will output logger's category, filename and a callable name.")
   (0.5.1 2021-03-02
