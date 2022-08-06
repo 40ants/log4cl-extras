@@ -11,28 +11,27 @@
 
 Previously, backtrace was logged like this:
 
-`
-  1 File "/Users/art/projects/lisp/cloud-analyzer/.qlot/dists/ultralisp/software/fukamachi-dexador-20220619102143/src/backend/usocket.lisp", line 451
-      In DEXADOR.BACKEND.USOCKET:REQUEST
-    Args (#<unavailable argument> :METHOD :GET :HEADERS (("Authorization" . "OAuth AQAEA5qgMKaqAAffdZ0Nw7BqTkCTlp6ii80Gdmo")))
-`
-
+```
+1 File "/Users/art/projects/lisp/cloud-analyzer/.qlot/dists/ultralisp/software/fukamachi-dexador-20220619102143/src/backend/usocket.lisp", line 451
+    In DEXADOR.BACKEND.USOCKET:REQUEST
+  Args (#<unavailable argument> :METHOD :GET :HEADERS (("Authorization" . "OAuth AQAEA5qgMKaqAAffdZ0Nw7BqTkCTlp6ii80Gdmo")))
+```
 and oauth token leaked to the log storage.
 
 After this fix, backtrace will be logged like this:
 
-`
-  1 File "/Users/art/projects/lisp/cloud-analyzer/.qlot/dists/ultralisp/software/fukamachi-dexador-20220619102143/src/backend/usocket.lisp", line 451
-      In DEXADOR.BACKEND.USOCKET:REQUEST
-    Args (#<unavailable argument> :METHOD :GET :HEADERS (("Authorization" . "OAuth #<secret value>")))
-`
+```
+1 File "/Users/art/projects/lisp/cloud-analyzer/.qlot/dists/ultralisp/software/fukamachi-dexador-20220619102143/src/backend/usocket.lisp", line 451
+    In DEXADOR.BACKEND.USOCKET:REQUEST
+  Args (#<unavailable argument> :METHOD :GET :HEADERS (("Authorization" . "OAuth #<secret value>")))
+```
 * A new variable [`log4cl-extras/error:*args-filter-constructors*`][5c08] was introduced. It should be used together
   with [`log4cl-extras/secrets:make-secrets-replacer`][bb11] to prevent secrets collection during the program life.
 
 Previosly, when you created a secrets replaced and stored in in the [`log4cl-extras/error:*args-filters*`][c7a0] variable,
-  all secrets from logged backtraces were collected in a closure's state. When
-  [`log4cl-extras/error:*args-filter-constructors*`][5c08] variable is used, a new secrets replacer will be created
-  for processing of each backtrace.
+all secrets from logged backtraces were collected in a closure's state. When
+[`log4cl-extras/error:*args-filter-constructors*`][5c08] variable is used, a new secrets replacer will be created
+for processing of each backtrace.
 
 <a id="x-28LOG4CL-EXTRAS-2FCHANGELOG-3A-3A-7C0-2E7-2E0-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29"></a>
 
