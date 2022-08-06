@@ -14,6 +14,7 @@
                               "CL-STRINGS"
                               ":JSON"
                               ":PLAIN"
+                              "HTTP"
                               "TRACEBACK-TO-STRING"))
   (0.7.1 2022-08-06
          "* Now LOG4CL-EXTRAS/SECRETS:MAKE-SECRETS-REPLACER is able to mask secret values even in strings nested in the lists.
