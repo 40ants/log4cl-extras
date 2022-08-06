@@ -367,16 +367,18 @@ CL-USER> (setf log4cl-extras/error:*args-filters*
                                        #+sbcl
                                        :synchronized
                                        #+sbcl t)))
-    (labels ((already-seen (raw-secret)
-               (gethash raw-secret
-                        seen-secrets))
-             (remember-secret (secret)
+    (labels ((remember-secret (secret)
                (setf (gethash (reveal-value secret)
                               seen-secrets)
                      t))
              (nested-replacement (value)
                (typecase value
+                 (secret-value
+                  (remember-secret value)
+                  +secret-placeholder+)
                  (string (loop for secret being the hash-key of seen-secrets
+                               when (string= secret value)
+                                 do (return +secret-placeholder+)
                                when (containsp secret value)
                                  do (return (str:replace-all secret
                                                              (format nil "~A"
@@ -388,16 +390,6 @@ CL-USER> (setf log4cl-extras/error:*args-filters*
                         (nested-replacement (cdr value))))
                  (t value)))
              (remove-secrets (func-name args)
-               (let ((new-args
-                       (loop for arg in args
-                             for is-secret-value = (typep arg 'secret-value)
-                             if is-secret-value
-                               do (remember-secret arg)
-                             if (or is-secret-value
-                                    (already-seen arg))
-                               collect +secret-placeholder+
-                             else
-                               collect (nested-replacement arg))))
-                 (values func-name
-                         new-args))))
+               (values func-name
+                       (nested-replacement args))))
       #'remove-secrets)))
