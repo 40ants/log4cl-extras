@@ -89,7 +89,7 @@ With `LOG4CL-EXTRAS` you can keep values in secret in two ways.
                                   :ignore-words ("LOG4CL-EXTRAS/SECRETS"
                                                  "SECRET-VALUES:SECRET-VALUE"))
   """
-The easiest way, is two wrap all sensitive data using
+The easiest way, is to wrap all sensitive data using
 [secret-values](https://40ants.com/lisp-project-of-the-day/2020/09/0186-secret-values.html)
 library as soon as possible and unwrap them only before usage.
 
