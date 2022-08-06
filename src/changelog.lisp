@@ -20,30 +20,31 @@
          "* Now LOG4CL-EXTRAS/SECRETS:MAKE-SECRETS-REPLACER is able to mask secret values even in strings nested in the lists.
             This fixes issue of leaking Authorization tokens when some HTTP error is logged.
 
-            Previously, backtrace was logged like this:
+              Previously, backtrace was logged like this:
 
-            ```
-            1 File \"/Users/art/projects/lisp/cloud-analyzer/.qlot/dists/ultralisp/software/fukamachi-dexador-20220619102143/src/backend/usocket.lisp\", line 451
-                In DEXADOR.BACKEND.USOCKET:REQUEST
-              Args (#<unavailable argument> :METHOD :GET :HEADERS ((\"Authorization\" . \"OAuth AQAEA5qgMKaqAAffdZ0Nw7BqTkCTlp6ii80Gdmo\")))
-            ```
+              ```
+              1 File \"/Users/art/projects/lisp/cloud-analyzer/.qlot/dists/ultralisp/software/fukamachi-dexador-20220619102143/src/backend/usocket.lisp\", line 451
+                  In DEXADOR.BACKEND.USOCKET:REQUEST
+                Args (#<unavailable argument> :METHOD :GET :HEADERS ((\"Authorization\" . \"OAuth AQAEA5qgMKaqAAffdZ0Nw7BqTkCTlp6ii80Gdmo\")))
+              ```
 
-            and oauth token leaked to the log storage.
+              and oauth token leaked to the log storage.
 
-            After this fix, backtrace will be logged like this:
+              After this fix, backtrace will be logged like this:
 
-            ```
-            1 File \"/Users/art/projects/lisp/cloud-analyzer/.qlot/dists/ultralisp/software/fukamachi-dexador-20220619102143/src/backend/usocket.lisp\", line 451
-                In DEXADOR.BACKEND.USOCKET:REQUEST
-              Args (#<unavailable argument> :METHOD :GET :HEADERS ((\"Authorization\" . \"OAuth #<secret value>\")))
-            ```
+              ```
+              1 File \"/Users/art/projects/lisp/cloud-analyzer/.qlot/dists/ultralisp/software/fukamachi-dexador-20220619102143/src/backend/usocket.lisp\", line 451
+                  In DEXADOR.BACKEND.USOCKET:REQUEST
+                Args (#<unavailable argument> :METHOD :GET :HEADERS ((\"Authorization\" . \"OAuth #<secret value>\")))
+              ```
+
           * A new variable LOG4CL-EXTRAS/ERROR:*ARGS-FILTER-CONSTRUCTORS* was introduced. It should be used together
             with LOG4CL-EXTRAS/SECRETS:MAKE-SECRETS-REPLACER to prevent secrets collection during the program life.
 
-            Previosly, when you created a secrets replaced and stored in in the LOG4CL-EXTRAS/ERROR:*ARGS-FILTERS* variable,
-            all secrets from logged backtraces were collected in a closure's state. When
-            LOG4CL-EXTRAS/ERROR:*ARGS-FILTER-CONSTRUCTORS* variable is used, a new secrets replacer will be created
-            for processing of each backtrace.
+              Previosly, when you created a secrets replaced and stored in in the LOG4CL-EXTRAS/ERROR:*ARGS-FILTERS* variable,
+              all secrets from logged backtraces were collected in a closure's state. When
+              LOG4CL-EXTRAS/ERROR:*ARGS-FILTER-CONSTRUCTORS* variable is used, a new secrets replacer will be created
+              for processing of each backtrace.
 ")
   (0.7.0 2022-07-03
          "* Macro LOG4CL-EXTRAS/ERROR:WITH-LOG-UNHANDLED now uses internal function and you can change backtrace length on the fly by changing LOG4CL-EXTRAS/ERROR:*MAX-TRACEBACK-DEPTH* variable.
