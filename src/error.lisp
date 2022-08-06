@@ -25,7 +25,8 @@
    #:placeholder-name
    #:placeholder-p
    #:make-args-filter
-   #:placeholder))
+   #:placeholder
+   #:*args-filter-constructors*))
 (in-package log4cl-extras/error)
 
 (in-readtable pythonic-string-syntax)
@@ -41,6 +42,7 @@
   (*max-traceback-depth* variable)
   (*max-call-length* variable)
   (*args-filters* variable)
+  (*args-filter-constructors* variable)
   (with-log-unhandled macro)
   (print-backtrace function)
   (make-args-filter function)
@@ -159,6 +161,19 @@ how to not log secret values.
    from multiple threads.")
 
 
+(define-global-var *args-filter-constructors* nil
+  "Add to this variable functions of zero arguments. Each function should return an argument filter
+   function suitable for using in the *ARGS-FILTERS* variable.
+
+   These constructors can be used to create argument filters with state suitable for
+   processing of a single backtrace only. For example,
+   LOG4CL-EXTRAS/SECRETS:MAKE-SECRETS-REPLACER function, keeps tracks every secret value used in
+   all frames of the backtrace. We don't want to keep these values forever and to mix secrets
+   of different users in the same place. Thus this function should be used as a \"constructor\".
+   In this case it will create a new secret replacer for every backtrace to be processed.
+ ")
+
+
 (defun from-current-package (frame)
   (let ((call (dissect:call frame))
         ;; We'll keep here the current package
@@ -205,7 +220,13 @@ how to not log secret values.
                full-stack)))
 
 
-(defun apply-args-filters (func-name args &key (args-filters *args-filters*))
+(defun get-current-args-filters ()
+  (append (mapcar #'funcall
+                  *args-filter-constructors*)
+          *args-filters*))
+
+
+(defun apply-args-filters (func-name args &key (args-filters (get-current-args-filters)))
   (loop for filter-func in args-filters
         for (new-func-name new-args) = (multiple-value-list
                                         (funcall filter-func func-name args))
@@ -258,7 +279,7 @@ how to not log secret values.
                         (condition nil)
                         (depth *max-traceback-depth*)
                         (max-call-length *max-call-length*)
-                        (args-filters *args-filters*))
+                        (args-filters (get-current-args-filters)))
   "A helper to print backtrace. Could be useful to out backtrace
    at places other than logs, for example at a web page.
 

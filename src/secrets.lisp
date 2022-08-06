@@ -7,12 +7,17 @@
   (:import-from #:global-vars
                 #:define-global-var)
   (:import-from #:log4cl-extras/error
+                #:placeholder-name
                 #:make-placeholder)
   (:import-from #:secret-values
                 #:secret-value
                 #:reveal-value)
   (:import-from #:40ants-doc
                 #:defsection)
+  (:import-from #:str
+                #:containsp)
+  (:import-from #:alexandria
+                #:proper-list)
   (:export
    #:make-secrets-replacer))
 (in-package log4cl-extras/secrets)
@@ -153,15 +158,15 @@ Earlier, I've mentioned :ARGS-FILTERS argument to the LOG4CL-EXTRAS/ERROR:PRINT-
 Package [LOG4CL-EXTRAS/SECRETS][package] provides a function MAKE-SECRETS-REPLACER
 which can be used to filter secret values.
 
-We can add it into the global variable LOG4CL-EXTRAS/ERROR:*ARGS-FILTERS* like this:
+We can add it into the global variable LOG4CL-EXTRAS/ERROR:*ARGS-FILTER-CONSTRUCTORS* like this:
 
 ```
 CL-USER> (ql:quickload :log4cl-extras/secrets)
 (:LOG4CL-EXTRAS/SECRETS)
    
-CL-USER> (setf log4cl-extras/error:*args-filters*
-               (list (log4cl-extras/secrets:make-secrets-replacer)))
-(#<CLOSURE (LABELS LOG4CL-EXTRAS/SECRETS::REMOVE-SECRETS :IN LOG4CL-EXTRAS/SECRETS:MAKE-SECRETS-REPLACER) {1007E4464B}>)
+CL-USER> (setf log4cl-extras/error:*args-filter-constructors*
+               (list 'log4cl-extras/secrets:make-secrets-replacer))
+(#<FUNCTION LOG4CL-EXTRAS/SECRETS:MAKE-SECRETS-REPLACER>)
 ```
 
 Now let's try to connect to our fake database again:
@@ -260,9 +265,10 @@ CL-USER> (defun request-handler (app env)
            (pass-further app env))
    
 CL-USER> (setf log4cl-extras/error:*args-filters*
-               (list 'remove-lack-env-from-frame
-                     ;; We need this too to keep DB password safe, remember?
-                     (log4cl-extras/secrets:make-secrets-replacer)))
+               (list 'remove-lack-env-from-frame)
+               log4cl-extras/error:*args-filter-constructors*
+               ;; We need this too to keep DB password safe, remember?
+               (list 'log4cl-extras/secrets:make-secrets-replacer))
 ```
 
 Now pay attention to the fifth frame, where second argument is replaced
@@ -309,9 +315,10 @@ For such simple case like replacing args matching a predicate, `LOG4CL-EXTRAS` h
 CL-USER> (setf log4cl-extras/error:*args-filters*
                (list (log4cl-extras/error:make-args-filter
                       'lack-env-p
-                      (log4cl-extras/error:make-placeholder "LACK ENV BEING HERE"))
-                     ;; We need this too to keep DB password safe, remember?
-                     (log4cl-extras/secrets:make-secrets-replacer)))
+                      (log4cl-extras/error:make-placeholder "LACK ENV BEING HERE")))
+               log4cl-extras/error:*args-filter-constructors*
+               ;; We need this too to keep DB password safe, remember?
+               (list 'log4cl-extras/secrets:make-secrets-replacer))
    
 <ERROR> [2021-01-24T15:09:48.839513+03:00] Unhandled exception
   Fields:
@@ -350,29 +357,39 @@ CL-USER> (setf log4cl-extras/error:*args-filters*
 (defun make-secrets-replacer ()
   "Returns a function which can be used to filter backtrace arguments.
 
-   See LOG4CL-EXTRAS/ERROR:*ARGS-FILTERS*"
+   Beware, don't add result of the call to MAKE-SECRETS-REPLACER to
+   the LOG4CL-EXTRAS/ERROR:*ARGS-FILTERS* variable, because it will
+   collect all secrets and keep them in memory until the end of the program.
+
+   Use LOG4CL-EXTRAS/ERROR:*ARGS-FILTER-CONSTRUCTORS* instead, to keep
+   secrets only during the backtrace processing."
   (let ((seen-secrets (make-hash-table :test 'equal
                                        #+sbcl
                                        :synchronized
                                        #+sbcl t)))
-    (labels ((already-seen (raw-secret)
-               (gethash raw-secret
-                        seen-secrets))
-             (remember-secret (secret)
+    (labels ((remember-secret (secret)
                (setf (gethash (reveal-value secret)
                               seen-secrets)
                      t))
+             (nested-replacement (value)
+               (typecase value
+                 (secret-value
+                  (remember-secret value)
+                  +secret-placeholder+)
+                 (string (loop for secret being the hash-key of seen-secrets
+                               when (string= secret value)
+                                 do (return +secret-placeholder+)
+                               when (containsp secret value)
+                                 do (return (str:replace-all secret
+                                                             (format nil "~A"
+                                                                     +secret-placeholder+)
+                                                             value))
+                               finally (return value)))
+                 (cons
+                  (cons (nested-replacement (car value))
+                        (nested-replacement (cdr value))))
+                 (t value)))
              (remove-secrets (func-name args)
-               (let ((new-args
-                       (loop for arg in args
-                             for is-secret-value = (typep arg 'secret-value)
-                             if is-secret-value
-                             do (remember-secret arg)
-                             if (or is-secret-value
-                                    (already-seen arg))
-                             collect +secret-placeholder+
-                             else
-                             collect arg)))
-                 (values func-name
-                         new-args))))
-        #'remove-secrets)))
+               (values func-name
+                       (nested-replacement args))))
+      #'remove-secrets)))

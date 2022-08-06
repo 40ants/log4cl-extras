@@ -60,4 +60,19 @@
                  :blah))
         (ok (placeholder-p (second result)))
         (ok (string= (placeholder-name (second result))
-                     "secret value"))))))
+                     "secret value"))))
+    
+    (testing "Remover should be able to replace secret values even in strings nested in the lists"
+      ;; This is necessary, because traceback can be built for some HTTP request and
+      ;; authorization headers might appear on the stack.
+      
+      (multiple-value-bind (func-name result)
+          (funcall remover
+                   'foo
+                   (list :blah
+                         (list (cons "Authorization" "OAuth Passw0rd"))))
+        (declare (ignore func-name))
+        (ok (eql (first result)
+                 :blah))
+        (ok (equal (second result)
+                   (list (cons "Authorization" "OAuth #<secret value>"))))))))

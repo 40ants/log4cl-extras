@@ -3,7 +3,8 @@
   :license "BSD"
   :class :package-inferred-system
   :pathname "t"
-  :depends-on ("log4cl-extras-test/core"
+  :depends-on ("hamcrest"
+               "log4cl-extras-test/core"
                "log4cl-extras-test/appender"
                "log4cl-extras-test/error"
                "log4cl-extras-test/secrets")
