@@ -209,9 +209,16 @@ how to not log secret values.
            ;; to the log4cl-extras package
            (t nil)))
         (string
-         ;; Somtimes frames can have a call like a string:
+         ;; Sometimes frames can have a call like a string:
          ;; "foreign function: call_into_lisp"
-         nil)))))
+         nil)
+        (function
+         ;; On CCL frames can contain lambda functions as a value of CALL
+         nil)
+        #+ccl
+        (standard-method
+         (check-symbol
+          (ccl:method-name call)))))))
 
 
 (defun get-backtrace ()
