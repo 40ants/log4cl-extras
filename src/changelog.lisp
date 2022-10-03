@@ -16,6 +16,9 @@
                               ":PLAIN"
                               "HTTP"
                               "TRACEBACK-TO-STRING"))
+  (0.7.2 2022-10-03
+         "* Backtrace printer was fixed to work on ClozureCL.")
+    
   (0.7.1 2022-08-06
          "* Now LOG4CL-EXTRAS/SECRETS:MAKE-SECRETS-REPLACER is able to mask secret values even in strings nested in the lists.
             This fixes issue of leaking Authorization tokens when some HTTP error is logged.
