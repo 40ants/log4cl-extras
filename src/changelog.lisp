@@ -12,6 +12,7 @@
                               "REPL"
                               "API"
                               "CL-STRINGS"
+                              "CL"
                               ":JSON"
                               ":PLAIN"
                               "HTTP"
