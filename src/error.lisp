@@ -15,6 +15,8 @@
                 #:define-global-var)
   (:import-from #:with-output-to-stream
                 #:with-output-to-stream)
+  (:import-from #:alexandria
+                #:curry)
   (:export
    #:with-log-unhandled
    #:*max-traceback-depth*
@@ -330,26 +332,39 @@ how to not log secret values.
                   another-condition))))))
 
 
-(defun call-with-log-unhandled (thunk &key (depth *max-traceback-depth*))
+(defun call-with-log-unhandled (thunk &key
+                                        (depth *max-traceback-depth*)
+                                        (errors-to-ignore nil))
   (handler-bind
       ((error (lambda (condition)
-                (let ((tb-as-string
-                        (print-backtrace :stream nil
-                                         :condition condition
-                                         :depth depth)))
-                  (with-fields (:traceback tb-as-string)
-                    (log:error "Unhandled exception"))))))
+                (when (or (null errors-to-ignore)
+                          (notany (curry #'typep condition)
+                                  errors-to-ignore))
+                  (let ((tb-as-string
+                          (print-backtrace :stream nil
+                                           :condition condition
+                                           :depth depth)))
+                    (with-fields (:traceback tb-as-string)
+                      (log:error "Unhandled exception")))))))
     (funcall thunk)))
 
 
-(defmacro with-log-unhandled ((&key (depth *max-traceback-depth* depth-given-p)) &body body)
-  "Logs any ERROR condition signaled from the body. Logged message will have a \"traceback\" field."
-  ;; TODO: reimplement as nested function call to make
-  ;; *max-traceback-depth* used in case if no depth were given
-  (if depth-given-p
-      `(call-with-log-unhandled (lambda () ,@body)
-                                :depth ,depth)
-      `(call-with-log-unhandled (lambda () ,@body))))
+(defmacro with-log-unhandled ((&key
+                                 (depth *max-traceback-depth* depth-given-p)
+                                 (errors-to-ignore nil errors-to-ignore-given-p))
+                              &body body)
+  "Logs any ERROR condition signaled from the body. Logged message will have a \"traceback\" field.
+
+You may specify a list of error classes to ignore as ERRORS-TO-IGNORE argument.
+Errors matching (typep err <each-of errors-to-ignore>) will not be logged as \"Unhandled\".
+"
+  (let ((params (append
+                 (when depth-given-p
+                   (list :depth depth))
+                 (when errors-to-ignore-given-p
+                   (list :errors-to-ignore errors-to-ignore)))))
+    `(call-with-log-unhandled (lambda () ,@body)
+                              ,@params)))
 
 
 (defclass placeholder ()
