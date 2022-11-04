@@ -17,6 +17,9 @@
                               ":PLAIN"
                               "HTTP"
                               "TRACEBACK-TO-STRING"))
+  (0.8.0 2022-11-04
+         "* Macro LOG4CL-EXTRAS/ERROR:WITH-LOG-UNHANDLED now has ERRORS-TO-IGNORE argument.
+            You can pass a list of class-names of conditions which should not be logged.")
   (0.7.2 2022-10-03
          "* Backtrace printer was fixed to work on ClozureCL.")
     
