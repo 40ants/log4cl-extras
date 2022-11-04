@@ -2,6 +2,13 @@
 
 # ChangeLog
 
+<a id="x-28LOG4CL-EXTRAS-2FCHANGELOG-3A-3A-7C0-2E8-2E0-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29"></a>
+
+## 0.8.0 (2022-11-04)
+
+* Macro [`log4cl-extras/error:with-log-unhandled`][3fd6] now has `ERRORS-TO-IGNORE` argument.
+You can pass a list of class-names of conditions which should not be logged.
+
 <a id="x-28LOG4CL-EXTRAS-2FCHANGELOG-3A-3A-7C0-2E7-2E2-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29"></a>
 
 ## 0.7.2 (2022-10-03)
