@@ -270,9 +270,6 @@ how to not log secret values.
                     args))))
 
 
-(defvar *d* nil)
-
-
 (defun prepare (frame args-filters)
   (multiple-value-bind (call args)
       (apply-args-filters (dissect:call frame)
@@ -283,16 +280,33 @@ how to not log secret values.
           (dissect:line frame))))
 
 
+(defun format-condition-object (stream condition)
+  (format stream "Condition ~S: ~A"
+          (type-of condition)
+          condition))
+
+
 (defun print-backtrace (&key
                         (stream *debug-io*)
                         (condition nil)
                         (depth *max-traceback-depth*)
                         (max-call-length *max-call-length*)
-                        (args-filters (get-current-args-filters)))
+                        (args-filters (get-current-args-filters))
+                        (format-condition #'format-condition-object))
   "A helper to print backtrace. Could be useful to out backtrace
    at places other than logs, for example at a web page.
 
-   This function applies the same filtering rules as WITH-LOG-UNHANDLED macro."
+   This function applies the same filtering rules as WITH-LOG-UNHANDLED macro.
+
+   By default condition description is printed like this:
+
+   ```
+   Condition REBLOCKS-WEBSOCKET:NO-ACTIVE-WEBSOCKETS: No active websockets bound to the current page.
+   ```
+
+   But you can change this by providing an argument FORMAT-CONDITION. It should be a
+   function of two arguments: `(stream condition)`.
+   "
   (let ((frames (get-backtrace)))
     (with-output-to-stream (stream stream)
       (handler-case
@@ -325,8 +339,9 @@ how to not log secret values.
            
            
             (when condition
-              (format stream "~%Condition: ~A"
-                      condition)))
+              (fresh-line stream)
+              (funcall format-condition stream condition)
+              (fresh-line stream)))
         (error (another-condition)
           (format stream "Unable to get traceback because of another error during printing:~%~A"
                   another-condition))))))

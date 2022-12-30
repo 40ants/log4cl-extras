@@ -17,6 +17,17 @@
                               ":PLAIN"
                               "HTTP"
                               "TRACEBACK-TO-STRING"))
+  (0.9.0 2022-12-30
+         "Function LOG4CL-EXTRAS/ERROR:PRINT-BACKTRACE now prints conditions with type like:
+
+```
+Condition REBLOCKS-WEBSOCKET:NO-ACTIVE-WEBSOCKETS: No active websockets bound to the current page.
+```
+
+instead of:
+
+Condition: No active websockets bound to the current page.
+")
   (0.8.0 2022-11-04
          "* Macro LOG4CL-EXTRAS/ERROR:WITH-LOG-UNHANDLED now has ERRORS-TO-IGNORE argument.
             You can pass a list of class-names of conditions which should not be logged.")
