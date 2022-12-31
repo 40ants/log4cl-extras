@@ -2,6 +2,19 @@
 
 # ChangeLog
 
+<a id="x-28LOG4CL-EXTRAS-2FCHANGELOG-3A-3A-7C0-2E9-2E0-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29"></a>
+
+## 0.9.0 (2022-12-30)
+
+Function [`log4cl-extras/error:print-backtrace`][6a57] now prints conditions with type like:
+
+```
+Condition REBLOCKS-WEBSOCKET:NO-ACTIVE-WEBSOCKETS: No active websockets bound to the current page.
+```
+instead of:
+
+Condition: No active websockets bound to the current page.
+
 <a id="x-28LOG4CL-EXTRAS-2FCHANGELOG-3A-3A-7C0-2E8-2E0-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29"></a>
 
 ## 0.8.0 (2022-11-04)
