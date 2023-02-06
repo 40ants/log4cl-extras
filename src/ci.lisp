@@ -22,8 +22,8 @@
                "macos-latest")
           :quicklisp ("ultralisp"
                       "quicklisp")
-          :lisp ("sbcl"
-                 "ccl"
+          :lisp ("sbcl-bin"
+                 "ccl-bin/1.12.0"
                  "ecl")
           :coverage t)))
 

@@ -1,10 +1,11 @@
 (defsystem log4cl-extras
   :name "log4cl-extras"
-  :version "0.5.1"
   :author "Alexander Artemenko"
   :license "BSD"
-  :class :package-inferred-system
+  :class :40ants-asdf-system
+  :path-to-changelog "src/changelog.lisp"
   :pathname "src"
+  :defsystem-depends-on ("40ants-asdf-system")
   :depends-on (;; This component intentionally
                ;; not listed, because it requires
                ;; additional dependency system :secret-values

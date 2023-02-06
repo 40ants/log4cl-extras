@@ -1,3 +1,4 @@
 /.qlot/
 /docs/
 .DS_Store
+.*.~undo-tree~
