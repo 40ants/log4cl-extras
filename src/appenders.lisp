@@ -1,12 +1,19 @@
 (defpackage #:log4cl-extras/appenders
   (:use #:cl)
   (:import-from #:log4cl)
+  (:import-from #:global-vars
+                #:define-global-var)
   (:export
    #:stable-daily-file-appender
    #:stable-this-console-appender
    #:dont-disable-mixin
-   #:stable-file-appender))
+   #:stable-file-appender
+   #:*debug-on-error*))
 (in-package log4cl-extras/appenders)
+
+
+(define-global-var *debug-on-error* nil
+  "When T, then INVOKE-DEBUGGER will be called in case of any error during logging the message.")
 
 
 (defclass dont-disable-mixin ()
@@ -31,4 +38,6 @@
                      "~@<Caught ~S ~:_~A ~_~
                          Unable to log the message.~:>"
                      (type-of condition) condition))
+  (when *debug-on-error*
+    (invoke-debugger condition))
   :ignore)
