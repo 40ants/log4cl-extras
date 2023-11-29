@@ -19,6 +19,8 @@
                 #:@changelog)
   (:import-from #:docs-config
                 #:docs-config)
+  (:import-from #:log4cl-extras/appenders
+                #:@appenders)
   (:export
    #:@index
    #:@readme
@@ -56,7 +58,8 @@
   (@configuration section)
   (@context section)
   (@errors section)
-  (@keeping-secrets section))
+  (@keeping-secrets section)
+  (@appenders section))
 
 
 (defsection-copy @readme @index)
@@ -72,3 +75,4 @@ You can install this library from Quicklisp, but you want to receive updates qui
 (ql:quickload :log4cl-extras)
 ```
 """)
+

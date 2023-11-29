@@ -16,7 +16,20 @@
                               ":JSON"
                               ":PLAIN"
                               "HTTP"
+                              "ASDF"
                               "TRACEBACK-TO-STRING"))
+  (0.10.0 2023-11-19
+          "
+## New
+
+Variable LOG4CL-EXTRAS/APPENDERS:*DEBUG-ON-ERROR* was added and can be used to debug issues happening when handling log messages.
+When this option is NIL, appenders defined in log4cl-extras will only output \"Unable to log the message\" message in case of errors
+during the message output.
+
+## Fixes
+
+* Package log4cl-extras now is created when library is loaded. This should fix a warning from ASDF about missing package.
+")
   (0.9.0 2022-12-30
          "Function LOG4CL-EXTRAS/ERROR:PRINT-BACKTRACE now prints conditions with type like:
 

@@ -11,8 +11,7 @@
                ;; additional dependency system :secret-values
                ;;
                ;; "log4cl-extras/secrets"
-               "log4cl-extras/config"
-               "log4cl-extras/error")
+               "log4cl-extras/core")
   :description "A bunch of addons to LOG4CL: JSON appender, context fields, cross-finger appender, etc."
   :long-description "
 

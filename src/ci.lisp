@@ -32,5 +32,5 @@
   :on-push-to "master"
   :on-pull-request t
   :by-cron "0 10 * * 1"
-  :cache t 
+  ;; :cache t 
   :jobs ((build-docs :asdf-system "log4cl-extras/doc")))
