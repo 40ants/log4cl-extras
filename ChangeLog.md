@@ -2,6 +2,24 @@
 
 # ChangeLog
 
+<a id="x-28LOG4CL-EXTRAS-2FCHANGELOG-3A-3A-7C0-2E10-2E0-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29"></a>
+
+## 0.10.0 (2023-11-19)
+
+<a id="new"></a>
+
+### New
+
+Variable [`log4cl-extras/appenders:*debug-on-error*`][8400] was added and can be used to debug issues happening when handling log messages.
+When this option is `NIL`, appenders defined in log4cl-extras will only output "Unable to log the message" message in case of errors
+during the message output.
+
+<a id="fixes"></a>
+
+### Fixes
+
+* Package log4cl-extras now is created when library is loaded. This should fix a warning from `ASDF` about missing package.
+
 <a id="x-28LOG4CL-EXTRAS-2FCHANGELOG-3A-3A-7C0-2E9-2E0-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29"></a>
 
 ## 0.9.0 (2022-12-30)
@@ -34,18 +52,14 @@ You can pass a list of class-names of conditions which should not be logged.
 
 * Now [`log4cl-extras/secrets:make-secrets-replacer`][bb11] is able to mask secret values even in strings nested in the lists.
   This fixes issue of leaking Authorization tokens when some `HTTP` error is logged.
-
 Previously, backtrace was logged like this:
-
 ```
 1 File "/Users/art/projects/lisp/cloud-analyzer/.qlot/dists/ultralisp/software/fukamachi-dexador-20220619102143/src/backend/usocket.lisp", line 451
     In DEXADOR.BACKEND.USOCKET:REQUEST
   Args (#<unavailable argument> :METHOD :GET :HEADERS (("Authorization" . "OAuth AQAEA5qgMKaqAAffdZ0Nw7BqTkCTlp6ii80Gdmo")))
 ```
 and oauth token leaked to the log storage.
-
 After this fix, backtrace will be logged like this:
-
 ```
 1 File "/Users/art/projects/lisp/cloud-analyzer/.qlot/dists/ultralisp/software/fukamachi-dexador-20220619102143/src/backend/usocket.lisp", line 451
     In DEXADOR.BACKEND.USOCKET:REQUEST
@@ -53,7 +67,6 @@ After this fix, backtrace will be logged like this:
 ```
 * A new variable [`log4cl-extras/error:*args-filter-constructors*`][5c08] was introduced. It should be used together
   with [`log4cl-extras/secrets:make-secrets-replacer`][bb11] to prevent secrets collection during the program life.
-
 Previosly, when you created a secrets replaced and stored in in the [`log4cl-extras/error:*args-filters*`][c7a0] variable,
 all secrets from logged backtraces were collected in a closure's state. When
 [`log4cl-extras/error:*args-filter-constructors*`][5c08] variable is used, a new secrets replacer will be created
@@ -64,7 +77,6 @@ for processing of each backtrace.
 ## 0.7.0 (2022-07-03)
 
 * Macro [`log4cl-extras/error:with-log-unhandled`][3fd6] now uses internal function and you can change backtrace length on the fly by changing [`log4cl-extras/error:*max-traceback-depth*`][c93b] variable.
-
 * Also, [`log4cl-extras/error:*max-call-length*`][6d41] variable was documented.
 
 <a id="x-28LOG4CL-EXTRAS-2FCHANGELOG-3A-3A-7C0-2E6-2E0-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29"></a>
@@ -86,7 +98,6 @@ for processing of each backtrace.
 * Function `TRACEBACK-TO-STRING` was removed and
   replaced with [`log4cl-extras/error:print-backtrace`][6a57] which is now
   a part of public `API`.
-
 * Added ability to filter secret and sensitive values.
   Read documentation, to lear more.
 
@@ -194,6 +205,7 @@ Now this bad behavior was fixed and only `errors` are logged.
 * Initial version.
 
 
+[8400]: https://40ants.com/log4cl-extras/#x-28LOG4CL-EXTRAS-2FAPPENDERS-3A-2ADEBUG-ON-ERROR-2A-20-28VARIABLE-29-29
 [74de]: https://40ants.com/log4cl-extras/#x-28LOG4CL-EXTRAS-2FCONFIG-3ASETUP-20FUNCTION-29
 [5c08]: https://40ants.com/log4cl-extras/#x-28LOG4CL-EXTRAS-2FERROR-3A-2AARGS-FILTER-CONSTRUCTORS-2A-20-28VARIABLE-29-29
 [c7a0]: https://40ants.com/log4cl-extras/#x-28LOG4CL-EXTRAS-2FERROR-3A-2AARGS-FILTERS-2A-20-28VARIABLE-29-29
