@@ -2,6 +2,16 @@
 
 # ChangeLog
 
+<a id="x-28LOG4CL-EXTRAS-2FCHANGELOG-3A-3A-7C0-2E11-2E0-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29"></a>
+
+## 0.11.0 (2024-03-01)
+
+<a id="changed"></a>
+
+### Changed
+
+Macro [`log4cl-extras/error:with-log-unhandled`][3fd6] now handles `SERIOUS-CONDITION` instead of `ERROR`. This is important, because `ERROR` is not a only subclass of the `SERIOUS-CONDITION`, for example, `SB-EXT:TIMEOUT` is inherited directly from `SERIOUS-CONDITION` and old version of the macro was not able to log such errors.
+
 <a id="x-28LOG4CL-EXTRAS-2FCHANGELOG-3A-3A-7C0-2E10-2E0-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29"></a>
 
 ## 0.10.0 (2023-11-19)
