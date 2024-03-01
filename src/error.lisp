@@ -351,16 +351,17 @@ how to not log secret values.
                                         (depth *max-traceback-depth*)
                                         (errors-to-ignore nil))
   (handler-bind
-      ((error (lambda (condition)
-                (when (or (null errors-to-ignore)
-                          (notany (curry #'typep condition)
-                                  errors-to-ignore))
-                  (let ((tb-as-string
-                          (print-backtrace :stream nil
-                                           :condition condition
-                                           :depth depth)))
-                    (with-fields (:traceback tb-as-string)
-                      (log:error "Unhandled exception")))))))
+      ((serious-condition
+         (lambda (condition)
+           (when (or (null errors-to-ignore)
+                     (notany (curry #'typep condition)
+                             errors-to-ignore))
+             (let ((tb-as-string
+                     (print-backtrace :stream nil
+                                      :condition condition
+                                      :depth depth)))
+               (with-fields (:traceback tb-as-string)
+                 (log:error "Unhandled exception")))))))
     (funcall thunk)))
 
 
