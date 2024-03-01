@@ -12,12 +12,19 @@
                               "REPL"
                               "API"
                               "CL-STRINGS"
+                              "SB-EXT:TIMEOUT"
                               "CL"
                               ":JSON"
                               ":PLAIN"
                               "HTTP"
                               "ASDF"
                               "TRACEBACK-TO-STRING"))
+  (0.11.0 2024-03-01
+          "
+## Changed
+
+Macro LOG4CL-EXTRAS/ERROR:WITH-LOG-UNHANDLED now handles SERIOUS-CONDITION instead of ERROR. This is important, because ERROR is not a only subclass of the SERIOUS-CONDITION, for example, SB-EXT:TIMEOUT is inherited directly from SERIOUS-CONDITION and old version of the macro was not able to log such errors.
+")
   (0.10.0 2023-11-19
           "
 ## New
