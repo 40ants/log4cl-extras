@@ -25,6 +25,9 @@
           :lisp ("sbcl-bin"
                  "ccl-bin"
                  "ecl")
+          :exclude '((:os "macos-latest"
+                      ;; Not supported platform arm64.
+                      :lisp "ccl-bin"))
           :coverage t)))
 
 
