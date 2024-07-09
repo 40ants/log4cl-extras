@@ -23,8 +23,11 @@
           :quicklisp ("ultralisp"
                       "quicklisp")
           :lisp ("sbcl-bin"
-                 "ccl-bin/1.12.0"
+                 "ccl-bin"
                  "ecl")
+          :exclude '((:os "macos-latest"
+                      ;; Not supported platform arm64.
+                      :lisp "ccl-bin"))
           :coverage t)))
 
 
