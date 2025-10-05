@@ -2,6 +2,23 @@
 
 # ChangeLog
 
+<a id="x-28LOG4CL-EXTRAS-2FCHANGELOG-3A-3A-7C0-2E11-2E1-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29"></a>
+
+## 0.11.1 (2025-10-05)
+
+<a id="fixed"></a>
+
+### Fixed
+
+Previously you may encounter this sort of errors when trying to get a backtrace or use [`log4cl-extras/error:with-log-unhandled`][3fd6] macro:
+
+```
+Traceback (most recent call last):n[unable to format because of Unable to get traceback because of another error during printing:n#<PRINT-NOT-READABLE {1213990E43}> cannot be printed readably."},"level":"ERROR","message":"Unhandled exception","timestamp":"2025-10-05T16:23:40.869358Z"
+```
+This error occured when `*print-readably*` variable was bound to `T`.
+
+Now [`log4cl-extras/error:print-backtrace`][6a57] function binds `*print-readably*` to `NIL` when rendering a backtrace. This might change how do your backtraces look like.
+
 <a id="x-28LOG4CL-EXTRAS-2FCHANGELOG-3A-3A-7C0-2E11-2E0-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29"></a>
 
 ## 0.11.0 (2024-03-01)
