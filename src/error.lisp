@@ -307,7 +307,8 @@ how to not log secret values.
    But you can change this by providing an argument FORMAT-CONDITION. It should be a
    function of two arguments: `(stream condition)`.
    "
-  (let ((frames (get-backtrace)))
+  (let* ((frames (get-backtrace))
+         (*print-readably* nil))
     (with-output-to-stream (stream stream)
       (handler-case
           (progn

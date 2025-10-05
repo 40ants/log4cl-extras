@@ -19,6 +19,20 @@
                               "HTTP"
                               "ASDF"
                               "TRACEBACK-TO-STRING"))
+  (0.11.1 2025-10-05
+          "
+## Fixed
+
+Previously you may encounter this sort of errors when trying to get a backtrace or use LOG4CL-EXTRAS/ERROR:WITH-LOG-UNHANDLED macro:
+
+```
+Traceback (most recent call last):\n[unable to format because of Unable to get traceback because of another error during printing:\n#<PRINT-NOT-READABLE {1213990E43}> cannot be printed readably.\"},\"level\":\"ERROR\",\"message\":\"Unhandled exception\",\"timestamp\":\"2025-10-05T16:23:40.869358Z\"
+```
+
+This error occured when `*print-readably*` variable was bound to `T`.
+
+Now LOG4CL-EXTRAS/ERROR:PRINT-BACKTRACE function binds `*print-readably*` to `NIL` when rendering a backtrace. This might change how do your backtraces look like.
+")
   (0.11.0 2024-03-01
           "
 ## Changed
