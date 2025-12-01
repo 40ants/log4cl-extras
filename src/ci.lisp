@@ -17,13 +17,16 @@
   :on-pull-request t
   :cache t
   :jobs ((linter :asdf-version "3.3.7"
+                 ;; There are some issues with Roswell or Qlot under
+                 ;; SBCL 2.5.11:
+                 ;; https://github.com/fukamachi/qlot/issues/333
                  :lisp "sbcl-bin/2.5.10")
          (run-tests
           :os ("ubuntu-latest"
                "macos-latest")
           :quicklisp ("ultralisp"
                       "quicklisp")
-          :lisp ("sbcl-bin"
+          :lisp ("sbcl-bin/2.5.10"
                  "ccl-bin"
                  "ecl")
           :exclude '((:os "macos-latest"
