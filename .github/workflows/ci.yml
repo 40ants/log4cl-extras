@@ -31,6 +31,7 @@
           "uses": "40ants/setup-lisp@v4",
           "with": {
             "asdf-system": "log4cl-extras",
+            "asdf-version": "3.3.7",
             "cache": "true"
           }
         },
