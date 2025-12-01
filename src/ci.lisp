@@ -16,7 +16,8 @@
   :by-cron "0 10 * * 1"
   :on-pull-request t
   :cache t
-  :jobs ((linter :asdf-version "3.3.7")
+  :jobs ((linter :asdf-version "3.3.7"
+                 :lisp "sbcl-bin/2.5.10")
          (run-tests
           :os ("ubuntu-latest"
                "macos-latest")
