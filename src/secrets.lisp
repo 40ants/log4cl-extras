@@ -34,6 +34,7 @@
                               :ignore-words ("LOG4CL-EXTRAS"
                                              "AUTHENTICATE"
                                              "10036CB183"
+                                             "SECRET-VALUES:SECRET-VALUE"
                                              "PASSWORD"
                                              "POSTGRES"))
   """
@@ -212,7 +213,7 @@ which remembers and replaces raw values of the secrets too!
 Approach described above works only if the secret value is passed from one function to another.
 Sometimes you might create a secret value and pass it to the code which does not support secret-values.
 
-The simplest example is passing OAuth Authorization header with a token. Usually you code will look like
+The simplest example is passing Authorization header with a token. Usually you code will look like
 this:
 
 ```lisp
@@ -406,7 +407,7 @@ CL-USER> (setf log4cl-extras/error:*args-filters*
    secrets only during the backtrace processing.
 
    Optional list of secret values can be passed as a SECRETS argument.
-   Values of this list should be either strings or SECRET-VALUE instances.
+   Values of this list should be either strings or SECRET-VALUES:SECRET-VALUE instances.
 "
   (let ((seen-secrets (make-hash-table :test 'equal
                                        #+sbcl
