@@ -163,6 +163,12 @@ how to not log secret values.
    from multiple threads.")
 
 
+(defvar *lexical-args-filters* nil
+  "This variable is internal and whould be bound to new values by `let` in a macro like LOG4CL-EXTRAS/SECRETS:WITH-SECRETS.
+
+   The meaning is the same as of *ARGS-FILTERS* variable.")
+
+
 (define-global-var *args-filter-constructors* nil
   "Add to this variable functions of zero arguments. Each function should return an argument filter
    function suitable for using in the *ARGS-FILTERS* variable.
@@ -230,7 +236,8 @@ how to not log secret values.
 
 
 (defun get-current-args-filters ()
-  (append (mapcar #'funcall
+  (append *lexical-args-filters*
+          (mapcar #'funcall
                   *args-filter-constructors*)
           *args-filters*))
 

@@ -7,9 +7,12 @@
   (:import-from #:global-vars
                 #:define-global-var)
   (:import-from #:log4cl-extras/error
+                #:*lexical-args-filters*
                 #:placeholder-name
                 #:make-placeholder)
   (:import-from #:secret-values
+                #:ensure-value-concealed
+                #:conceal-value
                 #:secret-value
                 #:reveal-value)
   (:import-from #:40ants-doc
@@ -18,8 +21,10 @@
                 #:containsp)
   (:import-from #:alexandria
                 #:proper-list)
-  (:export
-   #:make-secrets-replacer))
+  (:import-from #:serapeum
+                #:->)
+  (:export #:make-secrets-replacer
+           #:with-secrets))
 (in-package log4cl-extras/secrets)
 
 (in-readtable pythonic-string-syntax)
@@ -29,6 +34,7 @@
                               :ignore-words ("LOG4CL-EXTRAS"
                                              "AUTHENTICATE"
                                              "10036CB183"
+                                             "SECRET-VALUES:SECRET-VALUE"
                                              "PASSWORD"
                                              "POSTGRES"))
   """
@@ -87,7 +93,8 @@ With `LOG4CL-EXTRAS` you can keep values in secret in two ways.
 """
   (@easy-way section)
   (@hard-way section)
-  (make-secrets-replacer function))
+  (make-secrets-replacer function)
+  (with-secrets macro))
 
 
 (40ants-doc:defsection @easy-way (:title "Easy Way"
@@ -200,6 +207,41 @@ CL-USER> (log4cl-extras/error:with-log-unhandled (:depth 5)
 Now both third and fourth frames show `#<secret value>` instead of the password.
 This is because `(log4cl-extras/secrets:make-secrets-replacer)` call returns a closure
 which remembers and replaces raw values of the secrets too!
+
+## But this is not a silver bullet
+
+Approach described above works only if the secret value is passed from one function to another.
+Sometimes you might create a secret value and pass it to the code which does not support secret-values.
+
+The simplest example is passing Authorization header with a token. Usually you code will look like
+this:
+
+```lisp
+(let ((headers (list (cons "Authorization"
+                           (concatenate 'string
+                                        "bearer "
+                                        (secret-values:ensure-value-revealed *token*))))))
+   (dex:get url :headers headers))
+```
+
+In this code `*token*` is secret, but `headers` now contains another secret where "bearer " is concatenated with prefix.
+And we can not wrap this header into a secret-value because `dexador` does not support them. Because of this, if some
+error will be signalled from `dex:get`, then this secret header will be printed by LOG4CL-EXTRAS/ERROR:WITH-LOG-UNHANDLED.
+
+To solve the problem, we need to tell log4cl-extras that there is a secret value used somewhere on the stack. To do this,
+wrap unsafe code with LOG4CL-EXTRAS/SECRETS:WITH-SECRETS:
+                                                
+```lisp
+(let ((value (concatenate 'string
+                          "bearer "
+                          (secret-values:ensure-value-revealed *token*)))
+      (headers (list (cons "Authorization"
+                           header))))
+   (with-secrets (value)
+     (dex:get url :headers headers)))
+```
+
+This way, LOG4CL-EXTRAS/ERROR:WITH-LOG-UNHANDLED macro will be able to mask this `value` with a placeholder.
 """)
 
 
@@ -354,7 +396,7 @@ CL-USER> (setf log4cl-extras/error:*args-filters*
     (make-placeholder "secret value"))
 
 
-(defun make-secrets-replacer ()
+(defun make-secrets-replacer (&key secrets)
   "Returns a function which can be used to filter backtrace arguments.
 
    Beware, don't add result of the call to MAKE-SECRETS-REPLACER to
@@ -362,11 +404,22 @@ CL-USER> (setf log4cl-extras/error:*args-filters*
    collect all secrets and keep them in memory until the end of the program.
 
    Use LOG4CL-EXTRAS/ERROR:*ARGS-FILTER-CONSTRUCTORS* instead, to keep
-   secrets only during the backtrace processing."
+   secrets only during the backtrace processing.
+
+   Optional list of secret values can be passed as a SECRETS argument.
+   Values of this list should be either strings or SECRET-VALUES:SECRET-VALUE instances.
+"
   (let ((seen-secrets (make-hash-table :test 'equal
                                        #+sbcl
                                        :synchronized
                                        #+sbcl t)))
+    (loop for value in secrets
+          do (setf (gethash (etypecase value
+                              (secret-value (reveal-value value))
+                              (string value))
+                            seen-secrets)
+                   t))
+    
     (labels ((remember-secret (secret)
                (setf (gethash (reveal-value secret)
                               seen-secrets)
@@ -393,3 +446,24 @@ CL-USER> (setf log4cl-extras/error:*args-filters*
                (values func-name
                        (nested-replacement args))))
       #'remove-secrets)))
+
+
+(defun call-with-secrets (secret-values thunk)
+  (let ((*lexical-args-filters*
+          (list* (make-secrets-replacer :secrets secret-values)
+                 *lexical-args-filters*)))
+    (funcall thunk)))
+
+
+(defmacro with-secrets ((&rest secret-values) &body body)
+  "If any exception will happen during the body execution and be logged by
+   LOG4CL-EXTRAS/ERROR:WITH-LOG-UNHANDLED macro, listed SECRET-VALUES will be replaced by placeholders.
+
+   This is useful when you don't have a SECRET-VALUES:SECRET-VALUE passed somewhere on the stack. In this
+   case this macro provides a way how to let backtrace generator knowledge about values which should not be logged."
+  `(flet ((with-secrets-thunk ()
+            ,@body))
+     (declare (dynamic-extent #'with-secrets-thunk))
+     (call-with-secrets (mapcar #'ensure-value-concealed
+                                (list ,@secret-values))
+                        #'with-secrets-thunk)))

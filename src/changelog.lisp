@@ -19,6 +19,12 @@
                               "HTTP"
                               "ASDF"
                               "TRACEBACK-TO-STRING"))
+  (0.12.0 2026-01-09
+          "
+## Added
+
+Macro LOG4CL-EXTRAS/SECRETS:WITH-SECRETS was added. It allows to solve the problem with passing secret values right into the third party libraries which do not support `secret-values:secret-value` objects.
+")
   (0.11.1 2025-10-05
           "
 ## Fixed
