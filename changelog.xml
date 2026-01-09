@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<rss version="2.0">
+    <channel>
+        <title>log4cl-extras ChangeLog</title>
+        <link>https://40ants.com/log4cl-extras/</link>
+        <generator>xml-emitter</generator>
+        <language>en-us</language>
+        <item>
+            <title>0.12.0  (2026-01-09)</title>
+            <description>&lt;h1 id=&quot;added&quot;&gt;Added&lt;/h1&gt;&lt;p&gt;Macro &lt;a href=&quot;https://40ants.com/log4cl-extras/#x-28LOG4CL-EXTRAS-2FSECRETS-3AWITH-SECRETS-20-2840ANTS-DOC-2FLOCATIVES-3AMACRO-29-29&quot; data-document=&quot;https://40ants.com/log4cl-extras/&quot; data-node=&quot;x-28LOG4CL-EXTRAS-2FSECRETS-3AWITH-SECRETS-20-2840ANTS-DOC-2FLOCATIVES-3AMACRO-29-29&quot;&gt;&lt;code&gt;log4cl-extras/secrets:with-secrets&lt;/code&gt;&lt;/a&gt; was added. It allows to solve the problem with passing secret values right into the third party libraries which do not support &lt;code&gt;secret-values:secret-value&lt;/code&gt; objects.&lt;/p&gt;</description>
+            <pubDate>Fri, 09 Jan 2026 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>0.11.1  (2025-10-05)</title>
+            <description>&lt;h1 id=&quot;fixed&quot;&gt;Fixed&lt;/h1&gt;&lt;p&gt;Previously you may encounter this sort of errors when trying to get a backtrace or use &lt;a href=&quot;https://40ants.com/log4cl-extras/#x-28LOG4CL-EXTRAS-2FERROR-3AWITH-LOG-UNHANDLED-20-2840ANTS-DOC-2FLOCATIVES-3AMACRO-29-29&quot; data-document=&quot;https://40ants.com/log4cl-extras/&quot; data-node=&quot;x-28LOG4CL-EXTRAS-2FERROR-3AWITH-LOG-UNHANDLED-20-2840ANTS-DOC-2FLOCATIVES-3AMACRO-29-29&quot;&gt;&lt;code&gt;log4cl-extras/error:with-log-unhandled&lt;/code&gt;&lt;/a&gt; macro:&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;&quot;&gt;Traceback (most recent call last):n[unable to format because of Unable to get traceback because of another error during printing:n#&amp;lt;PRINT-NOT-READABLE {1213990E43}&amp;gt; cannot be printed readably.&amp;quot;},&amp;quot;level&amp;quot;:&amp;quot;ERROR&amp;quot;,&amp;quot;message&amp;quot;:&amp;quot;Unhandled exception&amp;quot;,&amp;quot;timestamp&amp;quot;:&amp;quot;2025-10-05T16:23:40.869358Z&amp;quot;&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;This error occured when &lt;code&gt;*print-readably*&lt;/code&gt; variable was bound to &lt;code&gt;T&lt;/code&gt;.&lt;/p&gt;&lt;p&gt;Now &lt;a href=&quot;https://40ants.com/log4cl-extras/#x-28LOG4CL-EXTRAS-2FERROR-3APRINT-BACKTRACE-20FUNCTION-29&quot; data-document=&quot;https://40ants.com/log4cl-extras/&quot; data-node=&quot;x-28LOG4CL-EXTRAS-2FERROR-3APRINT-BACKTRACE-20FUNCTION-29&quot;&gt;&lt;code&gt;log4cl-extras/error:print-backtrace&lt;/code&gt;&lt;/a&gt; function binds &lt;code&gt;*print-readably*&lt;/code&gt; to &lt;code&gt;NIL&lt;/code&gt; when rendering a backtrace. This might change how do your backtraces look like.&lt;/p&gt;</description>
+            <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>0.11.0  (2024-03-01)</title>
+            <description>&lt;h1 id=&quot;changed&quot;&gt;Changed&lt;/h1&gt;&lt;p&gt;Macro &lt;a href=&quot;https://40ants.com/log4cl-extras/#x-28LOG4CL-EXTRAS-2FERROR-3AWITH-LOG-UNHANDLED-20-2840ANTS-DOC-2FLOCATIVES-3AMACRO-29-29&quot; data-document=&quot;https://40ants.com/log4cl-extras/&quot; data-node=&quot;x-28LOG4CL-EXTRAS-2FERROR-3AWITH-LOG-UNHANDLED-20-2840ANTS-DOC-2FLOCATIVES-3AMACRO-29-29&quot;&gt;&lt;code&gt;log4cl-extras/error:with-log-unhandled&lt;/code&gt;&lt;/a&gt; now handles &lt;code&gt;SERIOUS-CONDITION&lt;/code&gt; instead of &lt;code&gt;ERROR&lt;/code&gt;. This is important, because &lt;code&gt;ERROR&lt;/code&gt; is not a only subclass of the &lt;code&gt;SERIOUS-CONDITION&lt;/code&gt;, for example, &lt;code&gt;SB-EXT:TIMEOUT&lt;/code&gt; is inherited directly from &lt;code&gt;SERIOUS-CONDITION&lt;/code&gt; and old version of the macro was not able to log such errors.&lt;/p&gt;</description>
+            <pubDate>Fri, 01 Mar 2024 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>0.10.0  (2023-11-19)</title>
+            <description>&lt;h1 id=&quot;new&quot;&gt;New&lt;/h1&gt;&lt;p&gt;Variable &lt;a href=&quot;https://40ants.com/log4cl-extras/#x-28LOG4CL-EXTRAS-2FAPPENDERS-3A-2ADEBUG-ON-ERROR-2A-20-28VARIABLE-29-29&quot; data-document=&quot;https://40ants.com/log4cl-extras/&quot; data-node=&quot;x-28LOG4CL-EXTRAS-2FAPPENDERS-3A-2ADEBUG-ON-ERROR-2A-20-28VARIABLE-29-29&quot;&gt;&lt;code&gt;log4cl-extras/appenders:*debug-on-error*&lt;/code&gt;&lt;/a&gt; was added and can be used to debug issues happening when handling log messages.
+When this option is &lt;code&gt;NIL&lt;/code&gt;, appenders defined in log4cl-extras will only output &amp;quot;Unable to log the message&amp;quot; message in case of errors
+during the message output.&lt;/p&gt;&lt;h1 id=&quot;fixes&quot;&gt;Fixes&lt;/h1&gt;&lt;ul&gt;&lt;li&gt;&lt;p&gt;Package log4cl-extras now is created when library is loaded. This should fix a warning from &lt;code&gt;ASDF&lt;/code&gt; about missing package.&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;</description>
+            <pubDate>Sun, 19 Nov 2023 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>0.9.0  (2022-12-30)</title>
+            <description>&lt;p&gt;Function &lt;a href=&quot;https://40ants.com/log4cl-extras/#x-28LOG4CL-EXTRAS-2FERROR-3APRINT-BACKTRACE-20FUNCTION-29&quot; data-document=&quot;https://40ants.com/log4cl-extras/&quot; data-node=&quot;x-28LOG4CL-EXTRAS-2FERROR-3APRINT-BACKTRACE-20FUNCTION-29&quot;&gt;&lt;code&gt;log4cl-extras/error:print-backtrace&lt;/code&gt;&lt;/a&gt; now prints conditions with type like:&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;&quot;&gt;Condition REBLOCKS-WEBSOCKET:NO-ACTIVE-WEBSOCKETS: No active websockets bound to the current page.&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;instead of:&lt;/p&gt;&lt;p&gt;Condition: No active websockets bound to the current page.&lt;/p&gt;</description>
+            <pubDate>Fri, 30 Dec 2022 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>0.8.0  (2022-11-04)</title>
+            <description>&lt;ul&gt;&lt;li&gt;&lt;p&gt;Macro &lt;a href=&quot;https://40ants.com/log4cl-extras/#x-28LOG4CL-EXTRAS-2FERROR-3AWITH-LOG-UNHANDLED-20-2840ANTS-DOC-2FLOCATIVES-3AMACRO-29-29&quot; data-document=&quot;https://40ants.com/log4cl-extras/&quot; data-node=&quot;x-28LOG4CL-EXTRAS-2FERROR-3AWITH-LOG-UNHANDLED-20-2840ANTS-DOC-2FLOCATIVES-3AMACRO-29-29&quot;&gt;&lt;code&gt;log4cl-extras/error:with-log-unhandled&lt;/code&gt;&lt;/a&gt; now has &lt;code&gt;ERRORS-TO-IGNORE&lt;/code&gt; argument.
+You can pass a list of class-names of conditions which should not be logged.&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;</description>
+            <pubDate>Fri, 04 Nov 2022 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>0.7.2  (2022-10-03)</title>
+            <description>&lt;ul&gt;&lt;li&gt;&lt;p&gt;Backtrace printer was fixed to work on Clozure&lt;code&gt;CL&lt;/code&gt;.&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;</description>
+            <pubDate>Mon, 03 Oct 2022 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>0.7.1  (2022-08-06)</title>
+            <description>&lt;ul&gt;&lt;li&gt;&lt;p&gt;Now &lt;a href=&quot;https://40ants.com/log4cl-extras/#x-28LOG4CL-EXTRAS-2FSECRETS-3AMAKE-SECRETS-REPLACER-20FUNCTION-29&quot; data-document=&quot;https://40ants.com/log4cl-extras/&quot; data-node=&quot;x-28LOG4CL-EXTRAS-2FSECRETS-3AMAKE-SECRETS-REPLACER-20FUNCTION-29&quot;&gt;&lt;code&gt;log4cl-extras/secrets:make-secrets-replacer&lt;/code&gt;&lt;/a&gt; is able to mask secret values even in strings nested in the lists.
+  This fixes issue of leaking Authorization tokens when some &lt;code&gt;HTTP&lt;/code&gt; error is logged.&lt;/p&gt;&lt;p&gt;Previously, backtrace was logged like this:&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;&quot;&gt;1 File &amp;quot;/Users/art/projects/lisp/cloud-analyzer/.qlot/dists/ultralisp/software/fukamachi-dexador-20220619102143/src/backend/usocket.lisp&amp;quot;, line 451
+    In DEXADOR.BACKEND.USOCKET:REQUEST
+  Args (#&amp;lt;unavailable argument&amp;gt; :METHOD :GET :HEADERS ((&amp;quot;Authorization&amp;quot; . &amp;quot;OAuth AQAEA5qgMKaqAAffdZ0Nw7BqTkCTlp6ii80Gdmo&amp;quot;)))&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;and oauth token leaked to the log storage.&lt;/p&gt;&lt;p&gt;After this fix, backtrace will be logged like this:&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;&quot;&gt;1 File &amp;quot;/Users/art/projects/lisp/cloud-analyzer/.qlot/dists/ultralisp/software/fukamachi-dexador-20220619102143/src/backend/usocket.lisp&amp;quot;, line 451
+    In DEXADOR.BACKEND.USOCKET:REQUEST
+  Args (#&amp;lt;unavailable argument&amp;gt; :METHOD :GET :HEADERS ((&amp;quot;Authorization&amp;quot; . &amp;quot;OAuth #&amp;lt;secret value&amp;gt;&amp;quot;)))&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;A new variable &lt;a href=&quot;https://40ants.com/log4cl-extras/#x-28LOG4CL-EXTRAS-2FERROR-3A-2AARGS-FILTER-CONSTRUCTORS-2A-20-28VARIABLE-29-29&quot; data-document=&quot;https://40ants.com/log4cl-extras/&quot; data-node=&quot;x-28LOG4CL-EXTRAS-2FERROR-3A-2AARGS-FILTER-CONSTRUCTORS-2A-20-28VARIABLE-29-29&quot;&gt;&lt;code&gt;log4cl-extras/error:*args-filter-constructors*&lt;/code&gt;&lt;/a&gt; was introduced. It should be used together
+  with &lt;a href=&quot;https://40ants.com/log4cl-extras/#x-28LOG4CL-EXTRAS-2FSECRETS-3AMAKE-SECRETS-REPLACER-20FUNCTION-29&quot; data-document=&quot;https://40ants.com/log4cl-extras/&quot; data-node=&quot;x-28LOG4CL-EXTRAS-2FSECRETS-3AMAKE-SECRETS-REPLACER-20FUNCTION-29&quot;&gt;&lt;code&gt;log4cl-extras/secrets:make-secrets-replacer&lt;/code&gt;&lt;/a&gt; to prevent secrets collection during the program life.&lt;/p&gt;&lt;p&gt;Previosly, when you created a secrets replaced and stored in in the &lt;a href=&quot;https://40ants.com/log4cl-extras/#x-28LOG4CL-EXTRAS-2FERROR-3A-2AARGS-FILTERS-2A-20-28VARIABLE-29-29&quot; data-document=&quot;https://40ants.com/log4cl-extras/&quot; data-node=&quot;x-28LOG4CL-EXTRAS-2FERROR-3A-2AARGS-FILTERS-2A-20-28VARIABLE-29-29&quot;&gt;&lt;code&gt;log4cl-extras/error:*args-filters*&lt;/code&gt;&lt;/a&gt; variable,
+all secrets from logged backtraces were collected in a closure&apos;s state. When
+&lt;a href=&quot;https://40ants.com/log4cl-extras/#x-28LOG4CL-EXTRAS-2FERROR-3A-2AARGS-FILTER-CONSTRUCTORS-2A-20-28VARIABLE-29-29&quot; data-document=&quot;https://40ants.com/log4cl-extras/&quot; data-node=&quot;x-28LOG4CL-EXTRAS-2FERROR-3A-2AARGS-FILTER-CONSTRUCTORS-2A-20-28VARIABLE-29-29&quot;&gt;&lt;code&gt;log4cl-extras/error:*args-filter-constructors*&lt;/code&gt;&lt;/a&gt; variable is used, a new secrets replacer will be created
+for processing of each backtrace.&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;</description>
+            <pubDate>Sat, 06 Aug 2022 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>0.7.0  (2022-07-03)</title>
+            <description>&lt;ul&gt;&lt;li&gt;&lt;p&gt;Macro &lt;a href=&quot;https://40ants.com/log4cl-extras/#x-28LOG4CL-EXTRAS-2FERROR-3AWITH-LOG-UNHANDLED-20-2840ANTS-DOC-2FLOCATIVES-3AMACRO-29-29&quot; data-document=&quot;https://40ants.com/log4cl-extras/&quot; data-node=&quot;x-28LOG4CL-EXTRAS-2FERROR-3AWITH-LOG-UNHANDLED-20-2840ANTS-DOC-2FLOCATIVES-3AMACRO-29-29&quot;&gt;&lt;code&gt;log4cl-extras/error:with-log-unhandled&lt;/code&gt;&lt;/a&gt; now uses internal function and you can change backtrace length on the fly by changing &lt;a href=&quot;https://40ants.com/log4cl-extras/#x-28LOG4CL-EXTRAS-2FERROR-3A-2AMAX-TRACEBACK-DEPTH-2A-20-28VARIABLE-29-29&quot; data-document=&quot;https://40ants.com/log4cl-extras/&quot; data-node=&quot;x-28LOG4CL-EXTRAS-2FERROR-3A-2AMAX-TRACEBACK-DEPTH-2A-20-28VARIABLE-29-29&quot;&gt;&lt;code&gt;log4cl-extras/error:*max-traceback-depth*&lt;/code&gt;&lt;/a&gt; variable.&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;Also, &lt;a href=&quot;https://40ants.com/log4cl-extras/#x-28LOG4CL-EXTRAS-2FERROR-3A-2AMAX-CALL-LENGTH-2A-20-28VARIABLE-29-29&quot; data-document=&quot;https://40ants.com/log4cl-extras/&quot; data-node=&quot;x-28LOG4CL-EXTRAS-2FERROR-3A-2AMAX-CALL-LENGTH-2A-20-28VARIABLE-29-29&quot;&gt;&lt;code&gt;log4cl-extras/error:*max-call-length*&lt;/code&gt;&lt;/a&gt; variable was documented.&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;</description>
+            <pubDate>Sun, 03 Jul 2022 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>0.6.0  (2021-10-03)</title>
+            <description>&lt;ul&gt;&lt;li&gt;&lt;p&gt;Now &lt;code&gt;:PLAIN&lt;/code&gt; and &lt;code&gt;:JSON&lt;/code&gt; logger will output logger&apos;s category, filename and a callable name.&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;</description>
+            <pubDate>Sun, 03 Oct 2021 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>0.5.1  (2021-03-02)</title>
+            <description>&lt;ul&gt;&lt;li&gt;&lt;p&gt;Fixed fail during logging error with &lt;code&gt;(setf some-func)&lt;/code&gt; in the backtrace.&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;</description>
+            <pubDate>Tue, 02 Mar 2021 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>0.5.0  (2021-01-24)</title>
+            <description>&lt;ul&gt;&lt;li&gt;&lt;p&gt;Function &lt;code&gt;TRACEBACK-TO-STRING&lt;/code&gt; was removed and
+  replaced with &lt;a href=&quot;https://40ants.com/log4cl-extras/#x-28LOG4CL-EXTRAS-2FERROR-3APRINT-BACKTRACE-20FUNCTION-29&quot; data-document=&quot;https://40ants.com/log4cl-extras/&quot; data-node=&quot;x-28LOG4CL-EXTRAS-2FERROR-3APRINT-BACKTRACE-20FUNCTION-29&quot;&gt;&lt;code&gt;log4cl-extras/error:print-backtrace&lt;/code&gt;&lt;/a&gt; which is now
+  a part of public &lt;code&gt;API&lt;/code&gt;.&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;Added ability to filter secret and sensitive values.
+  Read documentation, to lear more.&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;</description>
+            <pubDate>Sun, 24 Jan 2021 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>0.4.2  (2020-11-26)</title>
+            <description>&lt;h1 id=&quot;fixed&quot;&gt;Fixed&lt;/h1&gt;&lt;ul&gt;&lt;li&gt;&lt;p&gt;Fixed &lt;a href=&quot;https://40ants.com/log4cl-extras/#x-28LOG4CL-EXTRAS-2FERROR-3AWITH-LOG-UNHANDLED-20-2840ANTS-DOC-2FLOCATIVES-3AMACRO-29-29&quot; data-document=&quot;https://40ants.com/log4cl-extras/&quot; data-node=&quot;x-28LOG4CL-EXTRAS-2FERROR-3AWITH-LOG-UNHANDLED-20-2840ANTS-DOC-2FLOCATIVES-3AMACRO-29-29&quot;&gt;&lt;code&gt;with-log-unhandled&lt;/code&gt;&lt;/a&gt; for cases when some function argument&apos;s print-object signaled the error.&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;Because of this nasty error, sometimes &lt;a href=&quot;https://40ants.com/log4cl-extras/#x-28LOG4CL-EXTRAS-2FERROR-3AWITH-LOG-UNHANDLED-20-2840ANTS-DOC-2FLOCATIVES-3AMACRO-29-29&quot; data-document=&quot;https://40ants.com/log4cl-extras/&quot; data-node=&quot;x-28LOG4CL-EXTRAS-2FERROR-3AWITH-LOG-UNHANDLED-20-2840ANTS-DOC-2FLOCATIVES-3AMACRO-29-29&quot;&gt;&lt;code&gt;with-log-unhandled&lt;/code&gt;&lt;/a&gt; didn&apos;t log &amp;quot;Unandled error&amp;quot;.&lt;/p&gt;&lt;h1 id=&quot;added&quot;&gt;Added&lt;/h1&gt;&lt;ul&gt;&lt;li&gt;&lt;p&gt;Now &lt;a href=&quot;https://40ants.com/log4cl-extras/#x-28LOG4CL-EXTRAS-2FERROR-3AWITH-LOG-UNHANDLED-20-2840ANTS-DOC-2FLOCATIVES-3AMACRO-29-29&quot; data-document=&quot;https://40ants.com/log4cl-extras/&quot; data-node=&quot;x-28LOG4CL-EXTRAS-2FERROR-3AWITH-LOG-UNHANDLED-20-2840ANTS-DOC-2FLOCATIVES-3AMACRO-29-29&quot;&gt;&lt;code&gt;log4cl-extras/error:with-log-unhandled&lt;/code&gt;&lt;/a&gt; macro accepts key argument &lt;code&gt;DEPTH&lt;/code&gt; which is 10 by default.&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;This argument can be overriden by setting &lt;a href=&quot;https://40ants.com/log4cl-extras/#x-28LOG4CL-EXTRAS-2FERROR-3A-2AMAX-TRACEBACK-DEPTH-2A-20-28VARIABLE-29-29&quot; data-document=&quot;https://40ants.com/log4cl-extras/&quot; data-node=&quot;x-28LOG4CL-EXTRAS-2FERROR-3A-2AMAX-TRACEBACK-DEPTH-2A-20-28VARIABLE-29-29&quot;&gt;&lt;code&gt;log4cl-extras/error:*max-traceback-depth*&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;p&gt;Also another variable &lt;a href=&quot;https://40ants.com/log4cl-extras/#x-28LOG4CL-EXTRAS-2FERROR-3A-2AMAX-CALL-LENGTH-2A-20-28VARIABLE-29-29&quot; data-document=&quot;https://40ants.com/log4cl-extras/&quot; data-node=&quot;x-28LOG4CL-EXTRAS-2FERROR-3A-2AMAX-CALL-LENGTH-2A-20-28VARIABLE-29-29&quot;&gt;&lt;code&gt;log4cl-extras/error:*max-call-length*&lt;/code&gt;&lt;/a&gt; can be set to control
+  how long function or method name can be. By default it is 100, but methods are logged along
+  with their specialized arguments and can be longer.&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;</description>
+            <pubDate>Thu, 26 Nov 2020 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>0.4.1  (2019-03-05)</title>
+            <description>&lt;h1 id=&quot;fixed&quot;&gt;Fixed&lt;/h1&gt;&lt;ul&gt;&lt;li&gt;&lt;p&gt;Added missing dependency from &lt;code&gt;CL-STRINGS&lt;/code&gt; system.&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;</description>
+            <pubDate>Tue, 05 Mar 2019 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>0.4.0  (2019-03-04)</title>
+            <description>&lt;h1 id=&quot;improved&quot;&gt;Improved&lt;/h1&gt;&lt;p&gt;Now &lt;a href=&quot;https://40ants.com/log4cl-extras/#x-28LOG4CL-EXTRAS-2FCONFIG-3ASETUP-20FUNCTION-29&quot; data-document=&quot;https://40ants.com/log4cl-extras/&quot; data-node=&quot;x-28LOG4CL-EXTRAS-2FCONFIG-3ASETUP-20FUNCTION-29&quot;&gt;&lt;code&gt;log4cl-extras/config:setup&lt;/code&gt;&lt;/a&gt; sets appender into a mode when it prints log in a human
+readable way if it its called from the &lt;code&gt;SLY&lt;/code&gt;&apos;s &lt;code&gt;REPL&lt;/code&gt;. All logger fields are
+printed as well, including a traceback.&lt;/p&gt;</description>
+            <pubDate>Mon, 04 Mar 2019 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>0.3.0  (2019-01-07)</title>
+            <description>&lt;h1 id=&quot;improved&quot;&gt;Improved&lt;/h1&gt;&lt;ul&gt;&lt;li&gt;&lt;p&gt;Now condition&apos;s description is added to the end of the backtrace.&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;</description>
+            <pubDate>Mon, 07 Jan 2019 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>0.2.2  (2018-12-08)</title>
+            <description>&lt;h1 id=&quot;fixed&quot;&gt;Fixed&lt;/h1&gt;&lt;ul&gt;&lt;li&gt;&lt;p&gt;Fixed system&apos;s loading in environments with &lt;code&gt;C&lt;/code&gt; locale.&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;This closes issue reported along with pull request #1.&lt;/p&gt;</description>
+            <pubDate>Sat, 08 Dec 2018 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>0.2.1  (2018-11-24)</title>
+            <description>&lt;h1 id=&quot;fixed&quot;&gt;Fixed&lt;/h1&gt;&lt;ul&gt;&lt;li&gt;&lt;p&gt;Previously, macros &lt;a href=&quot;https://40ants.com/log4cl-extras/#x-28LOG4CL-EXTRAS-2FERROR-3AWITH-LOG-UNHANDLED-20-2840ANTS-DOC-2FLOCATIVES-3AMACRO-29-29&quot; data-document=&quot;https://40ants.com/log4cl-extras/&quot; data-node=&quot;x-28LOG4CL-EXTRAS-2FERROR-3AWITH-LOG-UNHANDLED-20-2840ANTS-DOC-2FLOCATIVES-3AMACRO-29-29&quot;&gt;&lt;code&gt;log4cl-extras/error:with-log-unhandled&lt;/code&gt;&lt;/a&gt; catched every signal,
+  not only signals derived from &lt;code&gt;ERROR&lt;/code&gt;. Because of that,
+  it logged traceback for non error signals like that:&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;&lt;code&gt;lisp
+  (log4cl-json/error:with-log-unhandled ()
+      (signal &amp;quot;foo&amp;quot;))
+&lt;/code&gt;&lt;/p&gt;&lt;p&gt;Now this bad behavior was fixed and only &lt;code&gt;errors&lt;/code&gt; are logged.&lt;/p&gt;</description>
+            <pubDate>Sat, 24 Nov 2018 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>0.2.0  (2017-08-29)</title>
+            <description>&lt;h1 id=&quot;new&quot;&gt;New&lt;/h1&gt;&lt;ul&gt;&lt;li&gt;&lt;p&gt;Added ability to log tracebacks using &lt;a href=&quot;https://40ants.com/log4cl-extras/#x-28LOG4CL-EXTRAS-2FERROR-3AWITH-LOG-UNHANDLED-20-2840ANTS-DOC-2FLOCATIVES-3AMACRO-29-29&quot; data-document=&quot;https://40ants.com/log4cl-extras/&quot; data-node=&quot;x-28LOG4CL-EXTRAS-2FERROR-3AWITH-LOG-UNHANDLED-20-2840ANTS-DOC-2FLOCATIVES-3AMACRO-29-29&quot;&gt;&lt;code&gt;log4cl-extras/error:with-log-unhandled&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;</description>
+            <pubDate>Tue, 29 Aug 2017 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>0.1.0  (2017-01-23)</title>
+            <description>&lt;ul&gt;&lt;li&gt;&lt;p&gt;Initial version.&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;</description>
+            <pubDate>Mon, 23 Jan 2017 00:00:00 +0000</pubDate>
+        </item>
+    </channel>
+</rss>

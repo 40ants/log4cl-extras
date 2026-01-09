@@ -1,0 +1,649 @@
+<html lang=en>
+ <head>
+  <meta charset=UTF-8><meta name=viewport
+      content="width=device-width, initial-scale=1">
+  <title>LOG4CL-EXTRAS - Addons for Log4CL</title>
+  <link rel=alternate
+        href="https://40ants.com/log4cl-extras/changelog.xml"
+        type="application/rss+xml">
+  <link rel=stylesheet type="text/css"
+        href=theme.css>
+  <script type="text/javascript" src=jquery.js></script>
+  <script type="text/javascript" src=toc.js></script>
+  <script type="text/javascript">$(document).ready(function() {$('a:has(img)').css('border-bottom', 'none')})</script>
+  <link rel=stylesheet type="text/css"
+      href=highlight.min.css>
+  <script type="text/javascript"
+          src=highlight.min.js></script>
+  <script type="text/javascript">hljs.highlightAll();</script>
+<style type="text/css">
+/* Стили для сворачиваемого меню */
+.sidebar ul ul {
+  display: none; /* Скрываем все подменю по умолчанию */
+  margin-left: 0.5em;
+}
+
+.sidebar li.expanded > ul {
+  display: block; /* Показываем подменю для развернутых элементов */
+}
+
+/* Стили для пунктов с подменю */
+.sidebar li.has-children > a {
+  cursor: pointer;
+  position: relative;
+  padding-left: 1.2em;
+}
+
+.sidebar li.has-children > p > a {
+  position: relative;
+  left: -1rem;
+}
+
+.sidebar li.has-children > p > a::before {
+  content:"►";
+}
+
+.sidebar li.has-children.expanded > p > a::before {
+  content: "▼";
+  position: relative;
+  left: -0.08rem;
+}
+
+/* Подсветка активного пункта */
+.sidebar li.active > a {
+  font-weight: bold;
+}
+
+/* Если активная страница находится в подменю, раскрываем родителя */
+.sidebar li.active-parent {
+  font-weight: normal;
+}
+
+.sidebar li.active-parent > ul {
+  display: block;
+}
+</style>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FL71WXK73K"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-FL71WXK73K');
+    </script>
+
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript" >
+       (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+       m[i].l=1*new Date();
+       for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+       k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+       (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+       ym(42462884, "init", {
+            clickmap:true,
+            trackLinks:true,
+            accurateTrackBounce:true
+       });
+    </script>
+    <noscript><div><img src="https://mc.yandex.ru/watch/42462884" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+
+ </head>
+ <body>
+  <div class=page><a id=fork-me href="https://github.com/40ants/log4cl-extras">Fork me on GitHub</a>
+   <div class=navbar>
+    <div class=navbar-inner>
+     <a class=brand href="/">
+      <img class=logo
+           src="https://40ants.com/img/logo.svg"></a>
+     <ul class=nav>
+      <li><a href="/posts/">Blog</a>
+      <li><a href="/ru/posts/">Blog (RU)</a>
+      <li><a href="/tips/">Lisp Tips</a>
+      <li><a href="/projects/">Our Projects</a>
+      <li><a href="/about/">About</a>
+     </ul>
+    </div>
+   </div>
+   <input type=checkbox id=sidebar-check>
+   <label for=sidebar-check>
+    <div id=sidebar-trigger>
+     <span></span><span></span><span></span>
+    </div></label><div class=sidebar><div class=header><form class=search method=GET action="search/">
+      <input type=text name=q>
+      <input type=submit value=Search><span id=search-progress></span>
+     </form>
+    </div><div class=content><div class=page-toc><ul><li><p><a href="#x-28LOG4CL-EXTRAS-2FDOC-3A-40INDEX-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29" data-document="" data-node="x-28LOG4CL-EXTRAS-2FDOC-3A-40INDEX-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29">LOG4CL-EXTRAS - Addons for Log4CL</a></p><ul><li><p><a href="#log4-cl-extras-asdf-system-details" data-document="" data-node="log4-cl-extras-asdf-system-details">LOG4CL-EXTRAS ASDF System Details</a></p></li><li><p><a href="#x-28LOG4CL-EXTRAS-2FDOC-3A-3A-40INSTALLATION-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29" data-document="" data-node="x-28LOG4CL-EXTRAS-2FDOC-3A-3A-40INSTALLATION-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29">Installation</a></p></li><li><p><a href="#x-28LOG4CL-EXTRAS-2FCONFIG-3A-3A-40CONFIGURATION-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29" data-document="" data-node="x-28LOG4CL-EXTRAS-2FCONFIG-3A-3A-40CONFIGURATION-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29">Configuration</a></p><ul><li><p><a href="#layouts" data-document="" data-node="layouts">Layouts</a></p></li></ul></li><li><p><a href="#x-28LOG4CL-EXTRAS-2FCONTEXT-3A-3A-40CONTEXT-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29" data-document="" data-node="x-28LOG4CL-EXTRAS-2FCONTEXT-3A-3A-40CONTEXT-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29">Context Fields</a></p></li><li><p><a href="#x-28LOG4CL-EXTRAS-2FERROR-3A-3A-40ERRORS-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29" data-document="" data-node="x-28LOG4CL-EXTRAS-2FERROR-3A-3A-40ERRORS-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29">Logging Unhandled Errors</a></p><ul><li><p><a href="#x-28LOG4CL-EXTRAS-2FERROR-3A-3A-40INTRO-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29" data-document="" data-node="x-28LOG4CL-EXTRAS-2FERROR-3A-3A-40INTRO-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29">Quickstart</a></p></li><li><p><a href="#x-28LOG4CL-EXTRAS-2FERROR-3A-3A-40PRINTING-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29" data-document="" data-node="x-28LOG4CL-EXTRAS-2FERROR-3A-3A-40PRINTING-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29">Printing Backtrace</a></p></li><li><p><a href="#api" data-document="" data-node="api">API</a></p></li></ul></li><li><p><a href="#x-28LOG4CL-EXTRAS-2FSECRETS-3A-3A-40KEEPING-SECRETS-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29" data-document="" data-node="x-28LOG4CL-EXTRAS-2FSECRETS-3A-3A-40KEEPING-SECRETS-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29">How Keep Secrets Out of Logs</a></p><ul><li><p><a href="#x-28LOG4CL-EXTRAS-2FSECRETS-3A-3A-40EASY-WAY-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29" data-document="" data-node="x-28LOG4CL-EXTRAS-2FSECRETS-3A-3A-40EASY-WAY-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29">Easy Way</a></p><ul><li><p><a href="#but-this-is-not-a-silver-bullet" data-document="" data-node="but-this-is-not-a-silver-bullet">But this is not a silver bullet</a></p></li></ul></li><li><p><a href="#x-28LOG4CL-EXTRAS-2FSECRETS-3A-3A-40HARD-WAY-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29" data-document="" data-node="x-28LOG4CL-EXTRAS-2FSECRETS-3A-3A-40HARD-WAY-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29">Hard Way</a></p></li></ul></li><li><p><a href="#x-28LOG4CL-EXTRAS-2FAPPENDERS-3A-3A-40APPENDERS-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29" data-document="" data-node="x-28LOG4CL-EXTRAS-2FAPPENDERS-3A-3A-40APPENDERS-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29">Appenders</a></p></li></ul></li><li><p><a href="changelog/#x-28LOG4CL-EXTRAS-2FCHANGELOG-3A-40CHANGELOG-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29" data-document="changelog/" data-node="x-28LOG4CL-EXTRAS-2FCHANGELOG-3A-40CHANGELOG-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29">ChangeLog</a></p></li></ul>
+     </div>
+    </div><div class=footer>
+     <a href="https://40ants.com/doc">[generated by 40ANTS-DOC]</a>
+    </div>
+   </div><div class=content role=main><h1>LOG4CL-EXTRAS - Addons for Log4CL<a class=header-link
+     href=#x-28LOG4CL-EXTRAS-2FDOC-3A-40INDEX-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29
+     title="Permalink to this headline"
+     id=x-28LOG4CL-EXTRAS-2FDOC-3A-40INDEX-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29></a></h1><h2 id="log4-cl-extras-asdf-system-details">LOG4CL-EXTRAS ASDF System Details</h2><ul><li><p>Description: A bunch of addons to <code>LOG4CL</code>: <code>JSON</code> appender, context fields, cross-finger appender, etc.</p></li><li><p>Licence: <code>BSD</code></p></li><li><p>Author: Alexander Artemenko</p></li><li><p>Homepage: <a href="https://40ants.com/log4cl-extras/">https://40ants.com/log4cl-extras/</a></p></li><li><p>Bug tracker: <a href="https://github.com/40ants/log4cl-extras/issues">https://github.com/40ants/log4cl-extras/issues</a></p></li><li><p>Source control: <a href="https://github.com/40ants/log4cl-extras">GIT</a></p></li><li><p>Depends on: <a href="https://quickdocs.org/40ants-doc">40ants-doc</a>, <a href="https://quickdocs.org/alexandria">alexandria</a>, <a href="https://quickdocs.org/cl-strings">cl-strings</a>, <a href="https://quickdocs.org/dissect">dissect</a>, <a href="https://quickdocs.org/global-vars">global-vars</a>, <a href="https://quickdocs.org/jonathan">jonathan</a>, <a href="https://quickdocs.org/local-time">local-time</a>, <a href="https://quickdocs.org/log4cl">log4cl</a>, <a href="https://quickdocs.org/named-readtables">named-readtables</a>, <a href="https://quickdocs.org/pythonic-string-reader">pythonic-string-reader</a>, <a href="https://quickdocs.org/with-output-to-stream">with-output-to-stream</a></p></li></ul><p><a href="https://github.com/40ants/log4cl-extras/actions"><img src="https://github-actions.40ants.com/40ants/log4cl-extras/matrix.svg?only=ci.run-tests"/></a></p><h2>Installation<a class=header-link
+     href=#x-28LOG4CL-EXTRAS-2FDOC-3A-3A-40INSTALLATION-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29
+     title="Permalink to this headline"
+     id=x-28LOG4CL-EXTRAS-2FDOC-3A-3A-40INSTALLATION-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29></a></h2><p>You can install this library from Quicklisp, but you want to receive updates quickly, then install it from Ultralisp.org:</p><pre><code class="">(ql-dist:install-dist &quot;http://dist.ultralisp.org/&quot;
+                      :prompt nil)
+(ql:quickload :log4cl-extras)</code></pre><h2>Configuration<a class=header-link
+     href=#x-28LOG4CL-EXTRAS-2FCONFIG-3A-3A-40CONFIGURATION-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29
+     title="Permalink to this headline"
+     id=x-28LOG4CL-EXTRAS-2FCONFIG-3A-3A-40CONFIGURATION-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29></a></h2><p>By default <code>LOG4CL</code> outputs log items like this:</p><pre><code class="">CL-USER&gt; (log:info &quot;Hello&quot;)
+ &lt;INFO&gt; [01:15:37] cl-user () - Hello</code></pre><p>However logging extra context fields requires a custom &quot;layout&quot;.
+Layout defines the way how the message will be formatted.</p><p>This system defines two layout types:</p><ul><li><p><code>:PLAIN</code> - a layout for printing messages to the <code>REPL</code>.</p></li><li><p><code>:JSON</code> - a layout which outputs each message and all it's data
+  as a <code>JSON</code> documents. Use it to feed logs to Elastic Search
+  or a service like <a href="https://www.datadoghq.com/">Datadog</a>
+  to <a href="https://www.papertrail.com/">Papertrail</a>.</p></li></ul><p>To use these custom layouts, you have to use <a href="https://40ants.com/log4cl-extras/#x-28LOG4CL-EXTRAS-2FCONFIG-3ASETUP-20FUNCTION-29" data-document="https://40ants.com/log4cl-extras/" data-node="x-28LOG4CL-EXTRAS-2FCONFIG-3ASETUP-20FUNCTION-29"><code>setup</code></a> function. It also allows to set a log level
+for root logger and appenders. Here is a minimal example showing how to configure logger for the <code>REPL</code>:</p><pre><code class="">CL-USER&gt; (log4cl-extras/config:setup
+          '(:level :debug
+            :appenders ((this-console :layout :plain))))
+NIL
+
+CL-USER&gt; (log:info &quot;Hello&quot;)
+&lt;INFO&gt; [2021-05-16T01:16:46.978992+03:00] Hello
+
+CL-USER&gt; (log4cl-extras/context:with-fields (:foo &quot;Bar&quot;)
+           (log:info &quot;Hello&quot;))
+&lt;INFO&gt; [2021-05-16T01:26:30.331849+03:00] Hello
+  Fields:
+    foo: Bar</code></pre><p>If you replace <code>:PLAIN</code> with <code>:JSON</code>, you'll get this:</p><pre><code class="">CL-USER&gt; (log4cl-extras/config:setup
+          '(:level :debug
+            :appenders ((this-console :layout :json))))
+; No values
+CL-USER&gt; (log4cl-extras/context:with-fields (:foo &quot;Bar&quot;)
+           (log:info &quot;Hello&quot;))
+{&quot;fields&quot;:{&quot;foo&quot;:&quot;Bar&quot;},&quot;level&quot;:&quot;INFO&quot;,&quot;message&quot;:&quot;Hello&quot;,&quot;timestamp&quot;:&quot;2021-05-16T01:27:54.879336+03:00&quot;}</code></pre><p>Appender in terms of log4cl is a target for log output. You can combine multiple appenders
+in a single call to <a href="https://40ants.com/log4cl-extras/#x-28LOG4CL-EXTRAS-2FCONFIG-3ASETUP-20FUNCTION-29" data-document="https://40ants.com/log4cl-extras/" data-node="x-28LOG4CL-EXTRAS-2FCONFIG-3ASETUP-20FUNCTION-29"><code>setup</code></a> function.</p><p>Here is the example of the config, suitable for production. Here we log all messages as <code>JSON</code> records
+into the file, rotated on the daily basis. And all errors and warnings will be written to the <code>REPL</code>.</p><pre><code class="">(log4cl-extras/config:setup
+ '(:level :debug
+   :appenders ((this-console :layout :plain
+                             :filter :warn)
+               (daily :layout :json
+                      :name-format &quot;/app/logs/app.log&quot;
+                      :backup-name-format &quot;app-%Y%m%d.log&quot;))))</code></pre><p>Also, <a href="https://40ants.com/log4cl-extras/#x-28LOG4CL-EXTRAS-2FCONFIG-3ASETUP-20FUNCTION-29" data-document="https://40ants.com/log4cl-extras/" data-node="x-28LOG4CL-EXTRAS-2FCONFIG-3ASETUP-20FUNCTION-29"><code>setup</code></a> allows to change log levels for different loggers:</p><div class=reference-bullet><div class=reference-bullet-header><a class=locative-type href="https://github.com/40ants/log4cl-extras/blob/b6e7501de67a91f7d738306acc131b7dbb871111/src/config.lisp#L211">function</a><div class=reference-object><div class=object-name><a href=#x-28LOG4CL-EXTRAS-2FCONFIG-3ASETUP-20FUNCTION-29 id=x-28LOG4CL-EXTRAS-2FCONFIG-3ASETUP-20FUNCTION-29>log4cl-extras/config:setup</a></div><div class=object-args><span class=locative-args>config</span></div></div><a class=bullet-link href=#x-28LOG4CL-EXTRAS-2FCONFIG-3ASETUP-20FUNCTION-29></a></div><div class=bullet-content><p>Setup loggers and appenders via confg.</p><p>Example:</p><pre><code class="">(setup
+ '(:level :error
+   :appenders
+   (this-console
+    (file
+     :file &quot;foo.log&quot;
+     :layout json))
+   :loggers
+   ((log4cl-extras/config
+     :loggers
+     ((foo :level :debug)
+      (bar
+       :loggers
+       ((some-class
+         :level debug))))))))</code></pre><p>As you can see, <a href="https://40ants.com/log4cl-extras/#x-28LOG4CL-EXTRAS-2FCONFIG-3ASETUP-20FUNCTION-29" data-document="https://40ants.com/log4cl-extras/" data-node="x-28LOG4CL-EXTRAS-2FCONFIG-3ASETUP-20FUNCTION-29"><code>setup</code></a> function accepts a plist with keys <code>:LEVEL</code>, <code>:APPENDERS</code> and <code>:LOGGERS</code>.</p><p><code>:LEVEL</code> key holds a logging level for the root logger. It could be <code>:INFO</code>, <code>:WARN</code> or <code>:ERROR</code>.</p><p><code>:APPENDERS</code> is a list of list where each sublist should start from the appender type and arguments for it's constructor.</p><p>Supported appenders are:</p><ul><li><p><code>THIS-CONSOLE</code> corresponds to <code>LOG4CL:THIS-CONSOLE-APPENDER</code> class.</p></li><li><p><code>DAILY</code> corresponds to <code>LOG4CL:DAILY-FILE-APPENDER</code> class.</p></li><li><p><code>FILE</code> corresponds to <code>LOG4CL:FILE-APPENDER</code>.</p></li></ul><p>To lookup supported arguments for each appender type, see these classes initargs.
+the only difference is that <code>:LAYOUT</code> argument is processed in a special way:
+<code>:JSON</code> value replaced with <a href="https://40ants.com/log4cl-extras/#x-28LOG4CL-EXTRAS-2FJSON-3AJSON-LAYOUT-20CLASS-29" data-document="https://40ants.com/log4cl-extras/" data-node="x-28LOG4CL-EXTRAS-2FJSON-3AJSON-LAYOUT-20CLASS-29"><code>log4cl-extras/json:json-layout</code></a> and <code>:PLAIN</code> is replaced
+with <a href="https://40ants.com/log4cl-extras/#x-28LOG4CL-EXTRAS-2FPLAIN-3APLAIN-LAYOUT-20CLASS-29" data-document="https://40ants.com/log4cl-extras/" data-node="x-28LOG4CL-EXTRAS-2FPLAIN-3APLAIN-LAYOUT-20CLASS-29"><code>log4cl-extras/plain:plain-layout</code></a>.</p><p>And finally, you can pass to <a href="https://40ants.com/log4cl-extras/#x-28LOG4CL-EXTRAS-2FCONFIG-3ASETUP-20FUNCTION-29" data-document="https://40ants.com/log4cl-extras/" data-node="x-28LOG4CL-EXTRAS-2FCONFIG-3ASETUP-20FUNCTION-29"><code>setup</code></a> a list of loggers. Each item in this list
+should be plist where first item is a symbolic name of a package or a function name
+inside a package and other items are params for a nested <a href="https://40ants.com/log4cl-extras/#x-28LOG4CL-EXTRAS-2FCONFIG-3ASETUP-20FUNCTION-29" data-document="https://40ants.com/log4cl-extras/" data-node="x-28LOG4CL-EXTRAS-2FCONFIG-3ASETUP-20FUNCTION-29"><code>setup</code></a> call.</p></div></div><h3 id="layouts">Layouts</h3><div class=reference-bullet><div class=reference-bullet-header><a class=locative-type href="https://github.com/40ants/log4cl-extras/blob/b6e7501de67a91f7d738306acc131b7dbb871111/src/plain.lisp#L77">class</a><div class=reference-object><div class=object-name><a href=#x-28LOG4CL-EXTRAS-2FPLAIN-3APLAIN-LAYOUT-20CLASS-29 id=x-28LOG4CL-EXTRAS-2FPLAIN-3APLAIN-LAYOUT-20CLASS-29>log4cl-extras/plain:plain-layout</a></div><div class=object-args><span class=locative-args></span></div></div><a class=bullet-link href=#x-28LOG4CL-EXTRAS-2FPLAIN-3APLAIN-LAYOUT-20CLASS-29></a></div></div><div class=reference-bullet><div class=reference-bullet-header><a class=locative-type href="https://github.com/40ants/log4cl-extras/blob/b6e7501de67a91f7d738306acc131b7dbb871111/src/json.lisp#L54">class</a><div class=reference-object><div class=object-name><a href=#x-28LOG4CL-EXTRAS-2FJSON-3AJSON-LAYOUT-20CLASS-29 id=x-28LOG4CL-EXTRAS-2FJSON-3AJSON-LAYOUT-20CLASS-29>log4cl-extras/json:json-layout</a></div><div class=object-args><span class=locative-args></span></div></div><a class=bullet-link href=#x-28LOG4CL-EXTRAS-2FJSON-3AJSON-LAYOUT-20CLASS-29></a></div></div><h2>Context Fields<a class=header-link
+     href=#x-28LOG4CL-EXTRAS-2FCONTEXT-3A-3A-40CONTEXT-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29
+     title="Permalink to this headline"
+     id=x-28LOG4CL-EXTRAS-2FCONTEXT-3A-3A-40CONTEXT-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29></a></h2><p>Macro <a href="https://40ants.com/log4cl-extras/#x-28LOG4CL-EXTRAS-2FCONTEXT-3AWITH-FIELDS-20-2840ANTS-DOC-2FLOCATIVES-3AMACRO-29-29" data-document="https://40ants.com/log4cl-extras/" data-node="x-28LOG4CL-EXTRAS-2FCONTEXT-3AWITH-FIELDS-20-2840ANTS-DOC-2FLOCATIVES-3AMACRO-29-29"><code>with-fields</code></a> let to to capture some information into the dynamic variable.
+All messages logged inside the <a href="https://40ants.com/log4cl-extras/#x-28LOG4CL-EXTRAS-2FCONTEXT-3AWITH-FIELDS-20-2840ANTS-DOC-2FLOCATIVES-3AMACRO-29-29" data-document="https://40ants.com/log4cl-extras/" data-node="x-28LOG4CL-EXTRAS-2FCONTEXT-3AWITH-FIELDS-20-2840ANTS-DOC-2FLOCATIVES-3AMACRO-29-29"><code>with-fields</code></a> form will have these fields attached:</p><pre><code class="">CL-USER&gt; (log4cl-extras/config:setup
+          '(:level :debug
+            :appenders ((this-console :layout :plain))))
+
+CL-USER&gt; (defun process-request ()
+           (log:info &quot;Processing request&quot;))
+
+CL-USER&gt; (log4cl-extras/context:with-fields (:request-id 42)
+           (process-request))
+&lt;INFO&gt; [2020-07-19T10:03:21.079636Z] Processing request
+  Fields:
+    request-id: 42
+
+;; Now let's switch to JSON layout:
+CL-USER&gt; (log4cl-extras/config:setup
+          '(:level :debug
+            :appenders ((this-console :layout :json))))
+
+CL-USER&gt; (log4cl-extras/context:with-fields (:request-id 42)
+           (process-request))
+{&quot;fields&quot;: {&quot;request-id&quot;: 42},
+ &quot;level&quot;: &quot;INFO&quot;,
+ &quot;message&quot;: &quot;Processing request&quot;,
+ &quot;timestamp&quot;: &quot;2020-07-19T10:03:32.855593Z&quot;}</code></pre><p><b>Beware!</b>, catching context fields costs some time even if they are not logged.</p><div class=reference-bullet><div class=reference-bullet-header><a class=locative-type href="https://github.com/40ants/log4cl-extras/blob/b6e7501de67a91f7d738306acc131b7dbb871111/src/context.lisp#L78">macro</a><div class=reference-object><div class=object-name><a href=#x-28LOG4CL-EXTRAS-2FCONTEXT-3AWITH-FIELDS-20-2840ANTS-DOC-2FLOCATIVES-3AMACRO-29-29 id=x-28LOG4CL-EXTRAS-2FCONTEXT-3AWITH-FIELDS-20-2840ANTS-DOC-2FLOCATIVES-3AMACRO-29-29>log4cl-extras/context:with-fields</a></div><div class=object-args><span class=locative-args>(&amp;rest fields) &amp;body body</span></div></div><a class=bullet-link href=#x-28LOG4CL-EXTRAS-2FCONTEXT-3AWITH-FIELDS-20-2840ANTS-DOC-2FLOCATIVES-3AMACRO-29-29></a></div><div class=bullet-content><p>Captures content of given fields into a dynamic variable.</p><p>These fields will be logged along with any log entry
+inside the <a href="https://40ants.com/log4cl-extras/#x-28LOG4CL-EXTRAS-2FCONTEXT-3AWITH-FIELDS-20-2840ANTS-DOC-2FLOCATIVES-3AMACRO-29-29" data-document="https://40ants.com/log4cl-extras/" data-node="x-28LOG4CL-EXTRAS-2FCONTEXT-3AWITH-FIELDS-20-2840ANTS-DOC-2FLOCATIVES-3AMACRO-29-29"><code>with-fields</code></a> body.</p></div></div><div class=reference-bullet><div class=reference-bullet-header><a class=locative-type href="https://github.com/40ants/log4cl-extras/blob/b6e7501de67a91f7d738306acc131b7dbb871111/src/context.lisp#L62">function</a><div class=reference-object><div class=object-name><a href=#x-28LOG4CL-EXTRAS-2FCONTEXT-3AGET-FIELDS-20FUNCTION-29 id=x-28LOG4CL-EXTRAS-2FCONTEXT-3AGET-FIELDS-20FUNCTION-29>log4cl-extras/context:get-fields</a></div></div><a class=bullet-link href=#x-28LOG4CL-EXTRAS-2FCONTEXT-3AGET-FIELDS-20FUNCTION-29></a></div><div class=bullet-content><p>Returns an alist of all fields defined using <a href="https://40ants.com/log4cl-extras/#x-28LOG4CL-EXTRAS-2FCONTEXT-3AWITH-FIELDS-20-2840ANTS-DOC-2FLOCATIVES-3AMACRO-29-29" data-document="https://40ants.com/log4cl-extras/" data-node="x-28LOG4CL-EXTRAS-2FCONTEXT-3AWITH-FIELDS-20-2840ANTS-DOC-2FLOCATIVES-3AMACRO-29-29"><code>with-fields</code></a> macro in the current stack.</p><p>Keys are returned as downcased strings, prepared for logging.</p></div></div><h2>Logging Unhandled Errors<a class=header-link
+     href=#x-28LOG4CL-EXTRAS-2FERROR-3A-3A-40ERRORS-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29
+     title="Permalink to this headline"
+     id=x-28LOG4CL-EXTRAS-2FERROR-3A-3A-40ERRORS-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29></a></h2><h3>Quickstart<a class=header-link
+     href=#x-28LOG4CL-EXTRAS-2FERROR-3A-3A-40INTRO-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29
+     title="Permalink to this headline"
+     id=x-28LOG4CL-EXTRAS-2FERROR-3A-3A-40INTRO-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29></a></h3><p>If you want to log unhandled signals traceback, then use <a href="https://40ants.com/log4cl-extras/#x-28LOG4CL-EXTRAS-2FERROR-3AWITH-LOG-UNHANDLED-20-2840ANTS-DOC-2FLOCATIVES-3AMACRO-29-29" data-document="https://40ants.com/log4cl-extras/" data-node="x-28LOG4CL-EXTRAS-2FERROR-3AWITH-LOG-UNHANDLED-20-2840ANTS-DOC-2FLOCATIVES-3AMACRO-29-29"><code>with-log-unhandled</code></a> macro.</p><p>Usually it is good idea, to use <a href="https://40ants.com/log4cl-extras/#x-28LOG4CL-EXTRAS-2FERROR-3AWITH-LOG-UNHANDLED-20-2840ANTS-DOC-2FLOCATIVES-3AMACRO-29-29" data-document="https://40ants.com/log4cl-extras/" data-node="x-28LOG4CL-EXTRAS-2FERROR-3AWITH-LOG-UNHANDLED-20-2840ANTS-DOC-2FLOCATIVES-3AMACRO-29-29"><code>with-log-unhandled</code></a> in the main function or in a function which handles
+a <code>HTTP</code> request.</p><p>If some error condition will be signaled by the body, it will be logged as an error with &quot;traceback&quot;
+field like this:</p><pre><code class="">CL-USER&gt; (defun foo ()
+           (error &quot;Some error happened&quot;))
+
+CL-USER&gt; (defun bar ()
+           (foo))
+
+CL-USER&gt; (log4cl-extras/error:with-log-unhandled ()
+           (bar))
+
+&lt;ERROR&gt; [2020-07-19T10:14:39.644805Z] Unhandled exception
+  Fields:
+  Traceback (most recent call last):
+    File &quot;NIL&quot;, line NIL, in FOO
+      (FOO)
+    File &quot;NIL&quot;, line NIL, in BAR
+      (BAR)
+    File &quot;NIL&quot;, line NIL, in (LAMBDA (…
+      ((LAMBDA ()))
+    File &quot;NIL&quot;, line NIL, in SIMPLE-EV…
+      (SB-INT:SIMPLE-EVAL-IN-LEXENV
+       (LOG4CL-EXTRAS/ERROR:WITH-LOG-UNHANDLED NIL
+         (BAR))
+       #&lt;NULL-LEXENV&gt;)
+    ...
+       #&lt;CLOSURE (LAMBDA () :IN SLYNK::CALL-WITH-LISTENER) {100A6B043B}&gt;)
+     
+     
+  Condition: Some error happened
+; Debugger entered on #&lt;SIMPLE-ERROR &quot;Some error happened&quot; {100A7A5DB3}&gt;</code></pre><p>The <code>JSON</code> layout will write such error like this:</p><pre><code class="">{
+  &quot;fields&quot;: {
+    &quot;traceback&quot;: &quot;Traceback (most recent call last):\n  File \&quot;NIL\&quot;, line NIL, in FOO\n    (FOO)\n  File \&quot;NIL\&quot;, line NIL, in BAR\n    (BAR)\n...\nCondition: Some error happened&quot;
+  },
+  &quot;level&quot;: &quot;ERROR&quot;,
+  &quot;message&quot;: &quot;Unhandled exception&quot;,
+  &quot;timestamp&quot;: &quot;2020-07-19T10:21:33.557418Z&quot;
+}</code></pre><h3>Printing Backtrace<a class=header-link
+     href=#x-28LOG4CL-EXTRAS-2FERROR-3A-3A-40PRINTING-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29
+     title="Permalink to this headline"
+     id=x-28LOG4CL-EXTRAS-2FERROR-3A-3A-40PRINTING-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29></a></h3><p>There is a helper function <a href="https://40ants.com/log4cl-extras/#x-28LOG4CL-EXTRAS-2FERROR-3APRINT-BACKTRACE-20FUNCTION-29" data-document="https://40ants.com/log4cl-extras/" data-node="x-28LOG4CL-EXTRAS-2FERROR-3APRINT-BACKTRACE-20FUNCTION-29"><code>print-backtrace</code></a> for extracting and printing backtrace, which can be used
+separately from logging. One use case is to render backtrace on the web page when a
+site is in a debug mode:</p><pre><code class="">CL-USER&gt; (log4cl-extras/error:print-backtrace :depth 3)
+Traceback (most recent call last):
+   0 File &quot;/Users/art/.roswell/src/sbcl-2.0.11/src/code/eval.lisp&quot;, line 291
+       In SB-INT:SIMPLE-EVAL-IN-LEXENV
+     Args ((LOG4CL-EXTRAS/ERROR:PRINT-BACKTRACE :DEPTH 3) #&lt;NULL-LEXENV&gt;)
+   1 File &quot;/Users/art/.roswell/src/sbcl-2.0.11/src/code/eval.lisp&quot;, line 311
+       In EVAL
+     Args ((LOG4CL-EXTRAS/ERROR:PRINT-BACKTRACE :DEPTH 3))
+   2 File &quot;/Users/art/projects/lisp/sly/contrib/slynk-mrepl.lisp&quot;
+       In (LAMBDA () :IN SLYNK-MREPL::MREPL-EVAL-1)
+     Args ()</code></pre><p>By default, it prints to the <code>*DEBUG-IO*</code>, but you can pass it a <code>:STREAM</code> argument
+which has the same semantic as a stream for <code>FORMAT</code> function.</p><p>Other useful parameters are <code>:DEPTH</code> and <code>:MAX-CALL-LENGTH</code>. They allow to control how
+long and wide backtrace will be.</p><p>Also, you might pass <code>:CONDITION</code>. If it is given, it will be printed after the backtrace.</p><p>And finally, you can pass a list of functions to filter arguments before printing.
+This way secret or unnecesary long values can be stripped. See the next section to learn
+how to not log secret values.</p><h3 id="api">API</h3><div class=reference-bullet><div class=reference-bullet-header><a class=locative-type href="https://github.com/40ants/log4cl-extras/blob/b6e7501de67a91f7d738306acc131b7dbb871111/src/error.lisp#L152">variable</a><div class=reference-object><div class=object-name><a href=#x-28LOG4CL-EXTRAS-2FERROR-3A-2AMAX-TRACEBACK-DEPTH-2A-20-28VARIABLE-29-29 id=x-28LOG4CL-EXTRAS-2FERROR-3A-2AMAX-TRACEBACK-DEPTH-2A-20-28VARIABLE-29-29>log4cl-extras/error:*max-traceback-depth*</a></div><div class=object-args><span class=locative-args>10</span></div></div><a class=bullet-link href=#x-28LOG4CL-EXTRAS-2FERROR-3A-2AMAX-TRACEBACK-DEPTH-2A-20-28VARIABLE-29-29></a></div><div class=bullet-content><p>Keeps default value for traceback depth logged by <a href="https://40ants.com/log4cl-extras/#x-28LOG4CL-EXTRAS-2FERROR-3AWITH-LOG-UNHANDLED-20-2840ANTS-DOC-2FLOCATIVES-3AMACRO-29-29" data-document="https://40ants.com/log4cl-extras/" data-node="x-28LOG4CL-EXTRAS-2FERROR-3AWITH-LOG-UNHANDLED-20-2840ANTS-DOC-2FLOCATIVES-3AMACRO-29-29"><code>with-log-unhandled</code></a> macro</p></div></div><div class=reference-bullet><div class=reference-bullet-header><a class=locative-type href="https://github.com/40ants/log4cl-extras/blob/b6e7501de67a91f7d738306acc131b7dbb871111/src/error.lisp#L155">variable</a><div class=reference-object><div class=object-name><a href=#x-28LOG4CL-EXTRAS-2FERROR-3A-2AMAX-CALL-LENGTH-2A-20-28VARIABLE-29-29 id=x-28LOG4CL-EXTRAS-2FERROR-3A-2AMAX-CALL-LENGTH-2A-20-28VARIABLE-29-29>log4cl-extras/error:*max-call-length*</a></div><div class=object-args><span class=locative-args>100</span></div></div><a class=bullet-link href=#x-28LOG4CL-EXTRAS-2FERROR-3A-2AMAX-CALL-LENGTH-2A-20-28VARIABLE-29-29></a></div><div class=bullet-content><p>The max length of each line in a traceback. It is useful to limit it because otherwise some log collectors can discard the whole log entry.</p></div></div><div class=reference-bullet><div class=reference-bullet-header><a class=locative-type href="https://github.com/40ants/log4cl-extras/blob/b6e7501de67a91f7d738306acc131b7dbb871111/src/error.lisp#L158">variable</a><div class=reference-object><div class=object-name><a href=#x-28LOG4CL-EXTRAS-2FERROR-3A-2AARGS-FILTERS-2A-20-28VARIABLE-29-29 id=x-28LOG4CL-EXTRAS-2FERROR-3A-2AARGS-FILTERS-2A-20-28VARIABLE-29-29>log4cl-extras/error:*args-filters*</a></div><div class=object-args><span class=locative-args>nil</span></div></div><a class=bullet-link href=#x-28LOG4CL-EXTRAS-2FERROR-3A-2AARGS-FILTERS-2A-20-28VARIABLE-29-29></a></div><div class=bullet-content><p>Add to this variable functions of two arguments to change arguments before they will be dumped
+as part of the backtrace to the log.</p><p>This is not a special variable, because it should be changed system-wide and can be accessedd
+from multiple threads.</p></div></div><div class=reference-bullet><div class=reference-bullet-header><a class=locative-type href="https://github.com/40ants/log4cl-extras/blob/b6e7501de67a91f7d738306acc131b7dbb871111/src/error.lisp#L172">variable</a><div class=reference-object><div class=object-name><a href=#x-28LOG4CL-EXTRAS-2FERROR-3A-2AARGS-FILTER-CONSTRUCTORS-2A-20-28VARIABLE-29-29 id=x-28LOG4CL-EXTRAS-2FERROR-3A-2AARGS-FILTER-CONSTRUCTORS-2A-20-28VARIABLE-29-29>log4cl-extras/error:*args-filter-constructors*</a></div><div class=object-args><span class=locative-args>nil</span></div></div><a class=bullet-link href=#x-28LOG4CL-EXTRAS-2FERROR-3A-2AARGS-FILTER-CONSTRUCTORS-2A-20-28VARIABLE-29-29></a></div><div class=bullet-content><p>Add to this variable functions of zero arguments. Each function should return an argument filter
+function suitable for using in the <a href="https://40ants.com/log4cl-extras/#x-28LOG4CL-EXTRAS-2FERROR-3A-2AARGS-FILTERS-2A-20-28VARIABLE-29-29" data-document="https://40ants.com/log4cl-extras/" data-node="x-28LOG4CL-EXTRAS-2FERROR-3A-2AARGS-FILTERS-2A-20-28VARIABLE-29-29"><code>*args-filters*</code></a> variable.</p><p>These constructors can be used to create argument filters with state suitable for
+processing of a single backtrace only. For example,
+<a href="https://40ants.com/log4cl-extras/#x-28LOG4CL-EXTRAS-2FSECRETS-3AMAKE-SECRETS-REPLACER-20FUNCTION-29" data-document="https://40ants.com/log4cl-extras/" data-node="x-28LOG4CL-EXTRAS-2FSECRETS-3AMAKE-SECRETS-REPLACER-20FUNCTION-29"><code>log4cl-extras/secrets:make-secrets-replacer</code></a> function, keeps tracks every secret value used in
+all frames of the backtrace. We don't want to keep these values forever and to mix secrets
+of different users in the same place. Thus this function should be used as a &quot;constructor&quot;.
+In this case it will create a new secret replacer for every backtrace to be processed.</p></div></div><div class=reference-bullet><div class=reference-bullet-header><a class=locative-type href="https://github.com/40ants/log4cl-extras/blob/b6e7501de67a91f7d738306acc131b7dbb871111/src/error.lisp#L376">macro</a><div class=reference-object><div class=object-name><a href=#x-28LOG4CL-EXTRAS-2FERROR-3AWITH-LOG-UNHANDLED-20-2840ANTS-DOC-2FLOCATIVES-3AMACRO-29-29 id=x-28LOG4CL-EXTRAS-2FERROR-3AWITH-LOG-UNHANDLED-20-2840ANTS-DOC-2FLOCATIVES-3AMACRO-29-29>log4cl-extras/error:with-log-unhandled</a></div><div class=object-args><span class=locative-args>(&amp;key (depth \*max-traceback-depth\*) (errors-to-ignore nil)) &amp;body body</span></div></div><a class=bullet-link href=#x-28LOG4CL-EXTRAS-2FERROR-3AWITH-LOG-UNHANDLED-20-2840ANTS-DOC-2FLOCATIVES-3AMACRO-29-29></a></div><div class=bullet-content><p>Logs any <code>ERROR</code> condition signaled from the body. Logged message will have a &quot;traceback&quot; field.</p><p>You may specify a list of error classes to ignore as <code>ERRORS-TO-IGNORE</code> argument.
+Errors matching (typep err <each-of errors-to-ignore>) will not be logged as &quot;Unhandled&quot;.</p></div></div><div class=reference-bullet><div class=reference-bullet-header><a class=locative-type href="https://github.com/40ants/log4cl-extras/blob/b6e7501de67a91f7d738306acc131b7dbb871111/src/error.lisp#L296">function</a><div class=reference-object><div class=object-name><a href=#x-28LOG4CL-EXTRAS-2FERROR-3APRINT-BACKTRACE-20FUNCTION-29 id=x-28LOG4CL-EXTRAS-2FERROR-3APRINT-BACKTRACE-20FUNCTION-29>log4cl-extras/error:print-backtrace</a></div><div class=object-args><span class=locative-args>&amp;key (stream \*debug-io\*) (condition nil) (depth \*max-traceback-depth\*) (max-call-length \*max-call-length\*) (args-filters (get-current-args-filters)) (format-condition #&#39;format-condition-object)</span></div></div><a class=bullet-link href=#x-28LOG4CL-EXTRAS-2FERROR-3APRINT-BACKTRACE-20FUNCTION-29></a></div><div class=bullet-content><p>A helper to print backtrace. Could be useful to out backtrace
+at places other than logs, for example at a web page.</p><p>This function applies the same filtering rules as <a href="https://40ants.com/log4cl-extras/#x-28LOG4CL-EXTRAS-2FERROR-3AWITH-LOG-UNHANDLED-20-2840ANTS-DOC-2FLOCATIVES-3AMACRO-29-29" data-document="https://40ants.com/log4cl-extras/" data-node="x-28LOG4CL-EXTRAS-2FERROR-3AWITH-LOG-UNHANDLED-20-2840ANTS-DOC-2FLOCATIVES-3AMACRO-29-29"><code>with-log-unhandled</code></a> macro.</p><p>By default condition description is printed like this:</p><pre><code class="">Condition REBLOCKS-WEBSOCKET:NO-ACTIVE-WEBSOCKETS: No active websockets bound to the current page.</code></pre><p>But you can change this by providing an argument <code>FORMAT-CONDITION</code>. It should be a
+function of two arguments: <code>(stream condition)</code>.</p></div></div><div class=reference-bullet><div class=reference-bullet-header><a class=locative-type href="https://github.com/40ants/log4cl-extras/blob/b6e7501de67a91f7d738306acc131b7dbb871111/src/error.lisp#L432">function</a><div class=reference-object><div class=object-name><a href=#x-28LOG4CL-EXTRAS-2FERROR-3AMAKE-ARGS-FILTER-20FUNCTION-29 id=x-28LOG4CL-EXTRAS-2FERROR-3AMAKE-ARGS-FILTER-20FUNCTION-29>log4cl-extras/error:make-args-filter</a></div><div class=object-args><span class=locative-args>predicate placeholder</span></div></div><a class=bullet-link href=#x-28LOG4CL-EXTRAS-2FERROR-3AMAKE-ARGS-FILTER-20FUNCTION-29></a></div><div class=bullet-content><p>Returns a function, suitable to be used in <a href="https://40ants.com/log4cl-extras/#x-28LOG4CL-EXTRAS-2FERROR-3A-2AARGS-FILTERS-2A-20-28VARIABLE-29-29" data-document="https://40ants.com/log4cl-extras/" data-node="x-28LOG4CL-EXTRAS-2FERROR-3A-2AARGS-FILTERS-2A-20-28VARIABLE-29-29"><code>*args-filters*</code></a> variable.</p><p>Function <code>PREDICATE</code> will be applied to each argument in the frame
+and if it returns T, then argument will be replaced with <code>PLACEHOLDER</code>.</p></div></div><div class=reference-bullet><div class=reference-bullet-header><a class=locative-type href="https://github.com/40ants/log4cl-extras/blob/b6e7501de67a91f7d738306acc131b7dbb871111/src/error.lisp#L394">class</a><div class=reference-object><div class=object-name><a href=#x-28LOG4CL-EXTRAS-2FERROR-3APLACEHOLDER-20CLASS-29 id=x-28LOG4CL-EXTRAS-2FERROR-3APLACEHOLDER-20CLASS-29>log4cl-extras/error:placeholder</a></div><div class=object-args><span class=locative-args></span></div></div><a class=bullet-link href=#x-28LOG4CL-EXTRAS-2FERROR-3APLACEHOLDER-20CLASS-29></a></div><div class=bullet-content><p>Objects of this class can be used as replacement to arguments in a backtrace.</p><p>They are printed like <code>#&lt;some-name&gt;</code>.</p><p>This form was choosen to match the way how <code>SBCL</code> shows unused arguments: <code>#&lt;unused argument&gt;</code>.</p><p>Placeholders should be created with <a href="https://40ants.com/log4cl-extras/#x-28LOG4CL-EXTRAS-2FERROR-3AMAKE-PLACEHOLDER-20FUNCTION-29" data-document="https://40ants.com/log4cl-extras/" data-node="x-28LOG4CL-EXTRAS-2FERROR-3AMAKE-PLACEHOLDER-20FUNCTION-29"><code>make-placeholder</code></a> function.</p></div></div><div class=reference-bullet><div class=reference-bullet-header><a class=locative-type href="https://github.com/40ants/log4cl-extras/blob/b6e7501de67a91f7d738306acc131b7dbb871111/src/error.lisp#L413">function</a><div class=reference-object><div class=object-name><a href=#x-28LOG4CL-EXTRAS-2FERROR-3AMAKE-PLACEHOLDER-20FUNCTION-29 id=x-28LOG4CL-EXTRAS-2FERROR-3AMAKE-PLACEHOLDER-20FUNCTION-29>log4cl-extras/error:make-placeholder</a></div><div class=object-args><span class=locative-args>name</span></div></div><a class=bullet-link href=#x-28LOG4CL-EXTRAS-2FERROR-3AMAKE-PLACEHOLDER-20FUNCTION-29></a></div><div class=bullet-content><p>Creates a placeholder for some secret value or omitted argument.</p><pre><code class="">CL-USER&gt; (log4cl-extras/error:make-placeholder &quot;secret value&quot;)
+
+#&lt;secret value&gt;</code></pre><p>See <a href="https://40ants.com/log4cl-extras/#x-28LOG4CL-EXTRAS-2FSECRETS-3A-3A-40HARD-WAY-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29" data-document="https://40ants.com/log4cl-extras/" data-node="x-28LOG4CL-EXTRAS-2FSECRETS-3A-3A-40HARD-WAY-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29"><code>Hard Way</code></a> section to learn, how to use
+placeholders to remove sensitive information from logs.</p></div></div><div class=reference-bullet><div class=reference-bullet-header><a class=locative-type href="https://github.com/40ants/log4cl-extras/blob/b6e7501de67a91f7d738306acc131b7dbb871111/src/error.lisp#L428">function</a><div class=reference-object><div class=object-name><a href=#x-28LOG4CL-EXTRAS-2FERROR-3APLACEHOLDER-P-20FUNCTION-29 id=x-28LOG4CL-EXTRAS-2FERROR-3APLACEHOLDER-P-20FUNCTION-29>log4cl-extras/error:placeholder-p</a></div><div class=object-args><span class=locative-args>obj</span></div></div><a class=bullet-link href=#x-28LOG4CL-EXTRAS-2FERROR-3APLACEHOLDER-P-20FUNCTION-29></a></div></div><div class=reference-bullet><div class=reference-bullet-header><a class=locative-type href="https://github.com/40ants/log4cl-extras/blob/b6e7501de67a91f7d738306acc131b7dbb871111/src/error.lisp#L395">reader</a><div class=reference-object><div class=object-name><a href=#x-28LOG4CL-EXTRAS-2FERROR-3APLACEHOLDER-NAME-20-2840ANTS-DOC-2FLOCATIVES-3AREADER-20LOG4CL-EXTRAS-2FERROR-3APLACEHOLDER-29-29 id=x-28LOG4CL-EXTRAS-2FERROR-3APLACEHOLDER-NAME-20-2840ANTS-DOC-2FLOCATIVES-3AREADER-20LOG4CL-EXTRAS-2FERROR-3APLACEHOLDER-29-29>log4cl-extras/error:placeholder-name</a></div><div class=object-args><span class=locative-args></span><span class=locative-args>(:name)</span></div></div><a class=bullet-link href=#x-28LOG4CL-EXTRAS-2FERROR-3APLACEHOLDER-NAME-20-2840ANTS-DOC-2FLOCATIVES-3AREADER-20LOG4CL-EXTRAS-2FERROR-3APLACEHOLDER-29-29></a></div></div><h2>How Keep Secrets Out of Logs<a class=header-link
+     href=#x-28LOG4CL-EXTRAS-2FSECRETS-3A-3A-40KEEPING-SECRETS-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29
+     title="Permalink to this headline"
+     id=x-28LOG4CL-EXTRAS-2FSECRETS-3A-3A-40KEEPING-SECRETS-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29></a></h2><p>When backtrace is printed to log files it is good idea to omit passwords, tokens, cookies,
+and other potentially sensitive values.</p><p>Here is a potential situation where you have a password and trying to create a new connection
+to the database. But because of some network error, an unhandled error along with a backtrace
+will be logged. Pay attention to our secret password in the log:</p><pre><code class="">CL-USER&gt; (log4cl-extras/config:setup
+           '(:level :error
+             :appenders ((this-console :layout plain))))
+   
+CL-USER&gt; (defun connect (password)
+           &quot;Normally, we don't control this function's code
+  because it is from the third-party library.&quot;
+           (check-type password string)
+           (error &quot;Network timeout&quot;))
+   
+CL-USER&gt; (defun authenticate (password)
+           &quot;This function is in our app's codebase.
+  It is calling a third-party DB driver.&quot;     
+           (connect password))
+   
+CL-USER&gt; (defun bar (password)
+           (authenticate password))
+   
+CL-USER&gt; (log4cl-extras/error:with-log-unhandled (:depth 5)
+           (bar &quot;The Secret Password&quot;))
+&lt;ERROR&gt; [2021-01-24T14:13:24.460890+03:00] Unhandled exception
+  Fields:
+  Traceback (most recent call last):
+     0 File &quot;unknown&quot;
+         In (FLET &quot;H0&quot;)
+       Args (#&lt;SIMPLE-ERROR &quot;Network timeout&quot; {100F065533}&gt;)
+     1 File &quot;/Users/art/.roswell/src/sbcl-2.0.11/src/code/cold-error.lisp&quot;, line 81
+         In SB-KERNEL::%SIGNAL
+       Args (#&lt;SIMPLE-ERROR &quot;Network timeout&quot; {100F065533}&gt;)
+     2 File &quot;/Users/art/.roswell/src/sbcl-2.0.11/src/code/cold-error.lisp&quot;, line 154
+         In ERROR
+       Args (&quot;Network timeout&quot;)
+     3 File &quot;unknown&quot;
+         In CONNECT
+       Args (&quot;The Secret Password&quot;)
+     4 File &quot;unknown&quot;
+         In AUTHENTICATE
+       Args (&quot;The Secret Password&quot;)
+  
+  Condition: Network timeout</code></pre><p>With <a href="https://40ants.com/log4cl-extras/#x-28-23A-28-2813-29-20BASE-CHAR-20-2E-20-22log4cl-extras-22-29-20ASDF-2FSYSTEM-3ASYSTEM-29" data-document="https://40ants.com/log4cl-extras/" data-node="x-28-23A-28-2813-29-20BASE-CHAR-20-2E-20-22log4cl-extras-22-29-20ASDF-2FSYSTEM-3ASYSTEM-29"><code>log4cl-extras</code></a> you can keep values in secret in two ways.</p><h3>Easy Way<a class=header-link
+     href=#x-28LOG4CL-EXTRAS-2FSECRETS-3A-3A-40EASY-WAY-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29
+     title="Permalink to this headline"
+     id=x-28LOG4CL-EXTRAS-2FSECRETS-3A-3A-40EASY-WAY-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29></a></h3><p>The easiest way, is to wrap all sensitive data using
+<a href="https://40ants.com/lisp-project-of-the-day/2020/09/0186-secret-values.html">secret-values</a>
+library as soon as possible and unwrap them only before usage.</p><p>Lets see what will happen if we'll use a wrapped password.</p><p>First, we need to teach <code>AUTHENTICATE</code> function, how to unwrap
+the password, before passing it to the driver:</p><pre><code class="">CL-USER&gt; (defun authenticate (password)
+           &quot;This function is in our app's codebase.
+  It is calling a third-party DB driver.&quot;
+           (connect
+            (secret-values:ensure-value-revealed
+             password)))</code></pre><p>Next, we need to wrap password into a special object. It is better to
+do this as soon as possible. In production code you'll probably have
+something like <code>(secret-values:conceal-value (uiop:getenv &quot;POSTGRES_PASSWORD&quot;))</code>:</p><pre><code class="">CL-USER&gt; (log4cl-extras/error:with-log-unhandled (:depth 5)
+           (bar (secret-values:conceal-value
+                 &quot;The Secret Password&quot;)))
+&lt;ERROR&gt; [2021-01-24T14:16:01.667651+03:00] Unhandled exception
+  Fields:
+  Traceback (most recent call last):
+     0 File &quot;unknown&quot;
+         In (FLET &quot;H0&quot;)
+       Args (#&lt;SIMPLE-ERROR &quot;Network timeout&quot; {10036CB1A3}&gt;)
+     1 File &quot;/Users/art/.roswell/src/sbcl-2.0.11/src/code/cold-error.lisp&quot;, line 81
+         In SB-KERNEL::%SIGNAL
+       Args (#&lt;SIMPLE-ERROR &quot;Network timeout&quot; {10036CB1A3}&gt;)
+     2 File &quot;/Users/art/.roswell/src/sbcl-2.0.11/src/code/cold-error.lisp&quot;, line 154
+         In ERROR
+       Args (&quot;Network timeout&quot;)
+     3 File &quot;unknown&quot;
+         In CONNECT
+       Args (&quot;The Secret Password&quot;)
+     4 File &quot;unknown&quot;
+         In AUTHENTICATE
+       Args (#&lt;SECRET-VALUES:SECRET-VALUE {10036CB183}&gt;)
+     
+  Condition: Network timeout</code></pre><p>Pay attention to the fourth stack frame. <code>AUTHENTICATE</code> function has
+<code>#&lt;SECRET-VALUES:SECRET-VALUE {10036CB183}&gt;</code> as the first argument.
+But why do we see <code>&quot;The Secret Password&quot;</code> in the third frame anyway?</p><p>It is because we have to pass a raw version of the password to the libraries
+we don't control.</p><p>Here is where <a href="https://40ants.com/log4cl-extras/#x-28-23A-28-2813-29-20BASE-CHAR-20-2E-20-22log4cl-extras-22-29-20ASDF-2FSYSTEM-3ASYSTEM-29" data-document="https://40ants.com/log4cl-extras/" data-node="x-28-23A-28-2813-29-20BASE-CHAR-20-2E-20-22log4cl-extras-22-29-20ASDF-2FSYSTEM-3ASYSTEM-29"><code>log4cl-extras</code></a> comes to the resque. It provides a package
+<code>LOG4CL-EXTRAS/SECRETS</code>. It is optional and is not loaded together with the
+primary system.</p><p>Earlier, I've mentioned <code>:ARGS-FILTERS</code> argument to the <a href="https://40ants.com/log4cl-extras/#x-28LOG4CL-EXTRAS-2FERROR-3APRINT-BACKTRACE-20FUNCTION-29" data-document="https://40ants.com/log4cl-extras/" data-node="x-28LOG4CL-EXTRAS-2FERROR-3APRINT-BACKTRACE-20FUNCTION-29"><code>log4cl-extras/error:print-backtrace</code></a> function.
+Package <code>LOG4CL-EXTRAS/SECRETS</code> provides a function <a href="https://40ants.com/log4cl-extras/#x-28LOG4CL-EXTRAS-2FSECRETS-3AMAKE-SECRETS-REPLACER-20FUNCTION-29" data-document="https://40ants.com/log4cl-extras/" data-node="x-28LOG4CL-EXTRAS-2FSECRETS-3AMAKE-SECRETS-REPLACER-20FUNCTION-29"><code>make-secrets-replacer</code></a>
+which can be used to filter secret values.</p><p>We can add it into the global variable <a href="https://40ants.com/log4cl-extras/#x-28LOG4CL-EXTRAS-2FERROR-3A-2AARGS-FILTER-CONSTRUCTORS-2A-20-28VARIABLE-29-29" data-document="https://40ants.com/log4cl-extras/" data-node="x-28LOG4CL-EXTRAS-2FERROR-3A-2AARGS-FILTER-CONSTRUCTORS-2A-20-28VARIABLE-29-29"><code>log4cl-extras/error:*args-filter-constructors*</code></a> like this:</p><pre><code class="">CL-USER&gt; (ql:quickload :log4cl-extras/secrets)
+(:LOG4CL-EXTRAS/SECRETS)
+   
+CL-USER&gt; (setf log4cl-extras/error:*args-filter-constructors*
+               (list 'log4cl-extras/secrets:make-secrets-replacer))
+(#&lt;FUNCTION LOG4CL-EXTRAS/SECRETS:MAKE-SECRETS-REPLACER&gt;)</code></pre><p>Now let's try to connect to our fake database again:</p><pre><code class="">CL-USER&gt; (log4cl-extras/error:with-log-unhandled (:depth 5)
+           (bar (secret-values:conceal-value
+                 &quot;The Secret Password&quot;)))
+&lt;ERROR&gt; [2021-01-24T14:27:17.851716+03:00] Unhandled exception
+  Fields:
+  Traceback (most recent call last):
+     0 File &quot;unknown&quot;
+         In (FLET &quot;H0&quot;)
+       Args (#&lt;SIMPLE-ERROR &quot;Network timeout&quot; {100800F723}&gt;)
+     1 File &quot;/Users/art/.roswell/src/sbcl-2.0.11/src/code/cold-error.lisp&quot;, line 81
+         In SB-KERNEL::%SIGNAL
+       Args (#&lt;SIMPLE-ERROR &quot;Network timeout&quot; {100800F723}&gt;)
+     2 File &quot;/Users/art/.roswell/src/sbcl-2.0.11/src/code/cold-error.lisp&quot;, line 154
+         In ERROR
+       Args (&quot;Network timeout&quot;)
+     3 File &quot;unknown&quot;
+         In CONNECT
+       Args (#&lt;secret value&gt;)
+     4 File &quot;unknown&quot;
+         In AUTHENTICATE
+       Args (#&lt;secret value&gt;)
+  
+  Condition: Network timeout</code></pre><p>Now both third and fourth frames show <code>#&lt;secret value&gt;</code> instead of the password.
+This is because <code>(log4cl-extras/secrets:make-secrets-replacer)</code> call returns a closure
+which remembers and replaces raw values of the secrets too!</p><h4 id="but-this-is-not-a-silver-bullet">But this is not a silver bullet</h4><p>Approach described above works only if the secret value is passed from one function to another.
+Sometimes you might create a secret value and pass it to the code which does not support secret-values.</p><p>The simplest example is passing Authorization header with a token. Usually you code will look like
+this:</p><pre><code class="lisp">(let ((headers (list (cons &quot;Authorization&quot;
+                           (concatenate 'string
+                                        &quot;bearer &quot;
+                                        (secret-values:ensure-value-revealed *token*))))))
+   (dex:get url :headers headers))</code></pre><p>In this code <code>*token*</code> is secret, but <code>headers</code> now contains another secret where &quot;bearer &quot; is concatenated with prefix.
+And we can not wrap this header into a secret-value because <code>dexador</code> does not support them. Because of this, if some
+error will be signalled from <code>dex:get</code>, then this secret header will be printed by <a href="https://40ants.com/log4cl-extras/#x-28LOG4CL-EXTRAS-2FERROR-3AWITH-LOG-UNHANDLED-20-2840ANTS-DOC-2FLOCATIVES-3AMACRO-29-29" data-document="https://40ants.com/log4cl-extras/" data-node="x-28LOG4CL-EXTRAS-2FERROR-3AWITH-LOG-UNHANDLED-20-2840ANTS-DOC-2FLOCATIVES-3AMACRO-29-29"><code>log4cl-extras/error:with-log-unhandled</code></a>.</p><p>To solve the problem, we need to tell log4cl-extras that there is a secret value used somewhere on the stack. To do this,
+wrap unsafe code with <a href="https://40ants.com/log4cl-extras/#x-28LOG4CL-EXTRAS-2FSECRETS-3AWITH-SECRETS-20-2840ANTS-DOC-2FLOCATIVES-3AMACRO-29-29" data-document="https://40ants.com/log4cl-extras/" data-node="x-28LOG4CL-EXTRAS-2FSECRETS-3AWITH-SECRETS-20-2840ANTS-DOC-2FLOCATIVES-3AMACRO-29-29"><code>log4cl-extras/secrets:with-secrets</code></a>:</p><pre><code class="lisp">(let ((value (concatenate 'string
+                          &quot;bearer &quot;
+                          (secret-values:ensure-value-revealed *token*)))
+      (headers (list (cons &quot;Authorization&quot;
+                           header))))
+   (with-secrets (value)
+     (dex:get url :headers headers)))</code></pre><p>This way, <a href="https://40ants.com/log4cl-extras/#x-28LOG4CL-EXTRAS-2FERROR-3AWITH-LOG-UNHANDLED-20-2840ANTS-DOC-2FLOCATIVES-3AMACRO-29-29" data-document="https://40ants.com/log4cl-extras/" data-node="x-28LOG4CL-EXTRAS-2FERROR-3AWITH-LOG-UNHANDLED-20-2840ANTS-DOC-2FLOCATIVES-3AMACRO-29-29"><code>log4cl-extras/error:with-log-unhandled</code></a> macro will be able to mask this <code>value</code> with a placeholder.</p><h3>Hard Way<a class=header-link
+     href=#x-28LOG4CL-EXTRAS-2FSECRETS-3A-3A-40HARD-WAY-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29
+     title="Permalink to this headline"
+     id=x-28LOG4CL-EXTRAS-2FSECRETS-3A-3A-40HARD-WAY-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29></a></h3><p>Sometimes it is desireable to remove from tracebacks other kinds of data.
+For example I don't want to see <a href="https://github.com/fukamachi/lack/">Lack</a>'s
+environments, because of a few reasons:</p><ul><li><p>they contain cookies and it is insecure to log them;</p></li><li><p>they may contain <code>HTTP</code> header with tokens;</p></li><li><p>env objects are list with large amount of data and this makes tracebacks unreadable.</p></li></ul><p>Let's create a filter for arguments, which will replace Lack's environments
+with a placeholder.</p><p>First, we need to create a placeholder object:</p><pre><code class="">CL-USER&gt; (defvar +lack-env-placeholder+
+           (log4cl-extras/error:make-placeholder &quot;lack env&quot;))
++LACK-ENV-PLACEHOLDER+</code></pre><p>Next, we need to define a filter function. Each filter function should accept
+two arguments:</p><ul><li><p>a function's name, which can be a symbol or a list like <code>(:method foo-bar (...))</code></p></li><li><p>a list of arguments.</p></li></ul><p>Filter should return two values, which can be the same is inputs or a transformed in some way.</p><p>For example, we know that the Lack's env is a plist with <code>:REQUEST-METHOD</code>, <code>:REQUEST-URI</code> and other values.
+We can to write a predicate like this:</p><pre><code class="">CL-USER&gt; (defun lack-env-p (arg)
+           (and (listp arg)
+                (member :request-method arg)
+                (member :request-uri arg)))</code></pre><p>And to use it in our filter:</p><pre><code class="">CL-USER&gt; (defun remove-lack-env-from-frame (func-name args)
+           &quot;Removes Lack's env from stackframes to make backtrace concise.&quot;
+           (values func-name
+                   (loop for arg in args
+                         if (lack-env-p arg)
+                           collect +lack-env-placeholder+
+                         else
+                           collect arg)))</code></pre><p>Now let's try to use it:</p><pre><code class="">CL-USER&gt; (defun request-handler (app env)
+           (authenticate (secret-values:conceal-value
+                          &quot;Secret password&quot;))
+           (pass-further app env))
+   
+CL-USER&gt; (setf log4cl-extras/error:*args-filters*
+               (list 'remove-lack-env-from-frame)
+               log4cl-extras/error:*args-filter-constructors*
+               ;; We need this too to keep DB password safe, remember?
+               (list 'log4cl-extras/secrets:make-secrets-replacer))</code></pre><p>Now pay attention to the fifth frame, where second argument is replaced
+with <code>#&lt;lack env&gt;</code>!!!</p><pre><code class="">CL-USER&gt; (log4cl-extras/error:with-log-unhandled (:depth 7)
+           (request-handler 42
+                            (list :request-method :post
+                                  :request-uri &quot;/login/&quot;
+                                  :cookies &quot;Session hash, and other secrets.&quot;)))
+&lt;ERROR&gt; [2021-01-24T14:56:45.502656+03:00] Unhandled exception
+  Fields:
+  Traceback (most recent call last):
+     0 File &quot;unknown&quot;
+         In (FLET &quot;H0&quot;)
+       Args (#&lt;SIMPLE-ERROR &quot;Network timeout&quot; {1004233EB3}&gt;)
+     1 File &quot;/Users/art/.roswell/src/sbcl-2.0.11/src/code/cold-error.lisp&quot;, line 81
+         In SB-KERNEL::%SIGNAL
+       Args (#&lt;SIMPLE-ERROR &quot;Network timeout&quot; {1004233EB3}&gt;)
+     2 File &quot;/Users/art/.roswell/src/sbcl-2.0.11/src/code/cold-error.lisp&quot;, line 154
+         In ERROR
+       Args (&quot;Network timeout&quot;)
+     3 File &quot;unknown&quot;
+         In CONNECT
+       Args (#&lt;secret value&gt;)
+     4 File &quot;unknown&quot;
+         In AUTHENTICATE
+       Args (#&lt;secret value&gt;)
+     5 File &quot;unknown&quot;
+         In REQUEST-HANDLER
+       Args (42 #&lt;lack env&gt;)
+     6 File &quot;unknown&quot;
+         In (LAMBDA ())
+       Args ()
+     
+  Condition: Network timeout</code></pre><p>For such simple case like replacing args matching a predicate, <a href="https://40ants.com/log4cl-extras/#x-28-23A-28-2813-29-20BASE-CHAR-20-2E-20-22log4cl-extras-22-29-20ASDF-2FSYSTEM-3ASYSTEM-29" data-document="https://40ants.com/log4cl-extras/" data-node="x-28-23A-28-2813-29-20BASE-CHAR-20-2E-20-22log4cl-extras-22-29-20ASDF-2FSYSTEM-3ASYSTEM-29"><code>log4cl-extras</code></a> has a small helper <a href="https://40ants.com/log4cl-extras/#x-28LOG4CL-EXTRAS-2FERROR-3AMAKE-ARGS-FILTER-20FUNCTION-29" data-document="https://40ants.com/log4cl-extras/" data-node="x-28LOG4CL-EXTRAS-2FERROR-3AMAKE-ARGS-FILTER-20FUNCTION-29"><code>log4cl-extras/error:make-args-filter</code></a>:</p><pre><code class="">CL-USER&gt; (setf log4cl-extras/error:*args-filters*
+               (list (log4cl-extras/error:make-args-filter
+                      'lack-env-p
+                      (log4cl-extras/error:make-placeholder &quot;LACK ENV BEING HERE&quot;)))
+               log4cl-extras/error:*args-filter-constructors*
+               ;; We need this too to keep DB password safe, remember?
+               (list 'log4cl-extras/secrets:make-secrets-replacer))
+   
+&lt;ERROR&gt; [2021-01-24T15:09:48.839513+03:00] Unhandled exception
+  Fields:
+  Traceback (most recent call last):
+     0 File &quot;unknown&quot;
+         In (FLET &quot;H0&quot;)
+       Args (#&lt;SIMPLE-ERROR &quot;Network timeout&quot; {1003112243}&gt;)
+     1 File &quot;/Users/art/.roswell/src/sbcl-2.0.11/src/code/cold-error.lisp&quot;, line 81
+         In SB-KERNEL::%SIGNAL
+       Args (#&lt;SIMPLE-ERROR &quot;Network timeout&quot; {1003112243}&gt;)
+     2 File &quot;/Users/art/.roswell/src/sbcl-2.0.11/src/code/cold-error.lisp&quot;, line 154
+         In ERROR
+       Args (&quot;Network timeout&quot;)
+     3 File &quot;unknown&quot;
+         In CONNECT
+       Args (#&lt;secret value&gt;)
+     4 File &quot;unknown&quot;
+         In AUTHENTICATE
+       Args (#&lt;secret value&gt;)
+     5 File &quot;unknown&quot;
+         In REQUEST-HANDLER
+       Args (42 #&lt;LACK ENV BEING HERE&gt;)
+     6 File &quot;unknown&quot;
+         In (LAMBDA ())
+       Args ()
+  
+  Condition: Network timeout</code></pre><div class=reference-bullet><div class=reference-bullet-header><a class=locative-type href="https://github.com/40ants/log4cl-extras/blob/b6e7501de67a91f7d738306acc131b7dbb871111/src/secrets.lisp#L399">function</a><div class=reference-object><div class=object-name><a href=#x-28LOG4CL-EXTRAS-2FSECRETS-3AMAKE-SECRETS-REPLACER-20FUNCTION-29 id=x-28LOG4CL-EXTRAS-2FSECRETS-3AMAKE-SECRETS-REPLACER-20FUNCTION-29>log4cl-extras/secrets:make-secrets-replacer</a></div><div class=object-args><span class=locative-args>&amp;key secrets</span></div></div><a class=bullet-link href=#x-28LOG4CL-EXTRAS-2FSECRETS-3AMAKE-SECRETS-REPLACER-20FUNCTION-29></a></div><div class=bullet-content><p>Returns a function which can be used to filter backtrace arguments.</p><p>Beware, don't add result of the call to <a href="https://40ants.com/log4cl-extras/#x-28LOG4CL-EXTRAS-2FSECRETS-3AMAKE-SECRETS-REPLACER-20FUNCTION-29" data-document="https://40ants.com/log4cl-extras/" data-node="x-28LOG4CL-EXTRAS-2FSECRETS-3AMAKE-SECRETS-REPLACER-20FUNCTION-29"><code>make-secrets-replacer</code></a> to
+the <a href="https://40ants.com/log4cl-extras/#x-28LOG4CL-EXTRAS-2FERROR-3A-2AARGS-FILTERS-2A-20-28VARIABLE-29-29" data-document="https://40ants.com/log4cl-extras/" data-node="x-28LOG4CL-EXTRAS-2FERROR-3A-2AARGS-FILTERS-2A-20-28VARIABLE-29-29"><code>log4cl-extras/error:*args-filters*</code></a> variable, because it will
+collect all secrets and keep them in memory until the end of the program.</p><p>Use <a href="https://40ants.com/log4cl-extras/#x-28LOG4CL-EXTRAS-2FERROR-3A-2AARGS-FILTER-CONSTRUCTORS-2A-20-28VARIABLE-29-29" data-document="https://40ants.com/log4cl-extras/" data-node="x-28LOG4CL-EXTRAS-2FERROR-3A-2AARGS-FILTER-CONSTRUCTORS-2A-20-28VARIABLE-29-29"><code>log4cl-extras/error:*args-filter-constructors*</code></a> instead, to keep
+secrets only during the backtrace processing.</p><p>Optional list of secret values can be passed as a <code>SECRETS</code> argument.
+Values of this list should be either strings or <code>SECRET-VALUES:SECRET-VALUE</code> instances.</p></div></div><div class=reference-bullet><div class=reference-bullet-header><a class=locative-type href="https://github.com/40ants/log4cl-extras/blob/b6e7501de67a91f7d738306acc131b7dbb871111/src/secrets.lisp#L458">macro</a><div class=reference-object><div class=object-name><a href=#x-28LOG4CL-EXTRAS-2FSECRETS-3AWITH-SECRETS-20-2840ANTS-DOC-2FLOCATIVES-3AMACRO-29-29 id=x-28LOG4CL-EXTRAS-2FSECRETS-3AWITH-SECRETS-20-2840ANTS-DOC-2FLOCATIVES-3AMACRO-29-29>log4cl-extras/secrets:with-secrets</a></div><div class=object-args><span class=locative-args>(&amp;rest secret-values) &amp;body body</span></div></div><a class=bullet-link href=#x-28LOG4CL-EXTRAS-2FSECRETS-3AWITH-SECRETS-20-2840ANTS-DOC-2FLOCATIVES-3AMACRO-29-29></a></div><div class=bullet-content><p>If any exception will happen during the body execution and be logged by
+<a href="https://40ants.com/log4cl-extras/#x-28LOG4CL-EXTRAS-2FERROR-3AWITH-LOG-UNHANDLED-20-2840ANTS-DOC-2FLOCATIVES-3AMACRO-29-29" data-document="https://40ants.com/log4cl-extras/" data-node="x-28LOG4CL-EXTRAS-2FERROR-3AWITH-LOG-UNHANDLED-20-2840ANTS-DOC-2FLOCATIVES-3AMACRO-29-29"><code>log4cl-extras/error:with-log-unhandled</code></a> macro, listed <code>SECRET-VALUES</code> will be replaced by placeholders.</p><p>This is useful when you don't have a <code>SECRET-VALUES:SECRET-VALUE</code> passed somewhere on the stack. In this
+case this macro provides a way how to let backtrace generator knowledge about values which should not be logged.</p></div></div><h2>Appenders<a class=header-link
+     href=#x-28LOG4CL-EXTRAS-2FAPPENDERS-3A-3A-40APPENDERS-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29
+     title="Permalink to this headline"
+     id=x-28LOG4CL-EXTRAS-2FAPPENDERS-3A-3A-40APPENDERS-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29></a></h2><p>In case of errors, <code>LOG4CL</code> removes appender from the logger. After that log message will be lost.</p><p>I don't like this behaviour and prefer to see such errors in logs and to log other
+messages. This library defines a special appender classes which are not removed on errors but
+output this message instead: &quot;Caught <code>SOME-ERROR</code>: Error description - Unable to log the message.&quot;.</p><p>When you use <a href="https://40ants.com/log4cl-extras/#x-28LOG4CL-EXTRAS-2FCONFIG-3ASETUP-20FUNCTION-29" data-document="https://40ants.com/log4cl-extras/" data-node="x-28LOG4CL-EXTRAS-2FCONFIG-3ASETUP-20FUNCTION-29"><code>log4cl-extras/config:setup</code></a> function it automatically uses these appenders.</p><p>To debug logging errors interactively, you can set <a href="https://40ants.com/log4cl-extras/#x-28LOG4CL-EXTRAS-2FAPPENDERS-3A-2ADEBUG-ON-ERROR-2A-20-28VARIABLE-29-29" data-document="https://40ants.com/log4cl-extras/" data-node="x-28LOG4CL-EXTRAS-2FAPPENDERS-3A-2ADEBUG-ON-ERROR-2A-20-28VARIABLE-29-29"><code>*debug-on-error*</code></a> variable to T.</p><div class=reference-bullet><div class=reference-bullet-header><a class=locative-type href="https://github.com/40ants/log4cl-extras/blob/b6e7501de67a91f7d738306acc131b7dbb871111/src/appenders.lisp#L29">class</a><div class=reference-object><div class=object-name><a href=#x-28LOG4CL-EXTRAS-2FAPPENDERS-3ASTABLE-DAILY-FILE-APPENDER-20CLASS-29 id=x-28LOG4CL-EXTRAS-2FAPPENDERS-3ASTABLE-DAILY-FILE-APPENDER-20CLASS-29>log4cl-extras/appenders:stable-daily-file-appender</a></div><div class=object-args><span class=locative-args></span></div></div><a class=bullet-link href=#x-28LOG4CL-EXTRAS-2FAPPENDERS-3ASTABLE-DAILY-FILE-APPENDER-20CLASS-29></a></div></div><div class=reference-bullet><div class=reference-bullet-header><a class=locative-type href="https://github.com/40ants/log4cl-extras/blob/b6e7501de67a91f7d738306acc131b7dbb871111/src/appenders.lisp#L33">class</a><div class=reference-object><div class=object-name><a href=#x-28LOG4CL-EXTRAS-2FAPPENDERS-3ASTABLE-FILE-APPENDER-20CLASS-29 id=x-28LOG4CL-EXTRAS-2FAPPENDERS-3ASTABLE-FILE-APPENDER-20CLASS-29>log4cl-extras/appenders:stable-file-appender</a></div><div class=object-args><span class=locative-args></span></div></div><a class=bullet-link href=#x-28LOG4CL-EXTRAS-2FAPPENDERS-3ASTABLE-FILE-APPENDER-20CLASS-29></a></div></div><div class=reference-bullet><div class=reference-bullet-header><a class=locative-type href="https://github.com/40ants/log4cl-extras/blob/b6e7501de67a91f7d738306acc131b7dbb871111/src/appenders.lisp#L25">class</a><div class=reference-object><div class=object-name><a href=#x-28LOG4CL-EXTRAS-2FAPPENDERS-3ASTABLE-THIS-CONSOLE-APPENDER-20CLASS-29 id=x-28LOG4CL-EXTRAS-2FAPPENDERS-3ASTABLE-THIS-CONSOLE-APPENDER-20CLASS-29>log4cl-extras/appenders:stable-this-console-appender</a></div><div class=object-args><span class=locative-args></span></div></div><a class=bullet-link href=#x-28LOG4CL-EXTRAS-2FAPPENDERS-3ASTABLE-THIS-CONSOLE-APPENDER-20CLASS-29></a></div></div><div class=reference-bullet><div class=reference-bullet-header><a class=locative-type href="https://github.com/40ants/log4cl-extras/blob/b6e7501de67a91f7d738306acc131b7dbb871111/src/appenders.lisp#L21">class</a><div class=reference-object><div class=object-name><a href=#x-28LOG4CL-EXTRAS-2FAPPENDERS-3ADONT-DISABLE-MIXIN-20CLASS-29 id=x-28LOG4CL-EXTRAS-2FAPPENDERS-3ADONT-DISABLE-MIXIN-20CLASS-29>log4cl-extras/appenders:dont-disable-mixin</a></div><div class=object-args><span class=locative-args></span></div></div><a class=bullet-link href=#x-28LOG4CL-EXTRAS-2FAPPENDERS-3ADONT-DISABLE-MIXIN-20CLASS-29></a></div></div><div class=reference-bullet><div class=reference-bullet-header><a class=locative-type href="https://github.com/40ants/log4cl-extras/blob/b6e7501de67a91f7d738306acc131b7dbb871111/src/appenders.lisp#L17">variable</a><div class=reference-object><div class=object-name><a href=#x-28LOG4CL-EXTRAS-2FAPPENDERS-3A-2ADEBUG-ON-ERROR-2A-20-28VARIABLE-29-29 id=x-28LOG4CL-EXTRAS-2FAPPENDERS-3A-2ADEBUG-ON-ERROR-2A-20-28VARIABLE-29-29>log4cl-extras/appenders:*debug-on-error*</a></div><div class=object-args><span class=locative-args>nil</span></div></div><a class=bullet-link href=#x-28LOG4CL-EXTRAS-2FAPPENDERS-3A-2ADEBUG-ON-ERROR-2A-20-28VARIABLE-29-29></a></div><div class=bullet-content><p>When T, then <code>INVOKE-DEBUGGER</code> will be called in case of any error during logging the message.</p></div></div>
+   </div><div class=footer>
+    <hr class=separator>
+    <p class=fineprint>Created with passion by <em>40Ants</em><a class=lisp-logo
+     href="http://lisp-lang.org/">
+      <img
+           src="https://40ants.com/img/made-with-lisp.svg"></a>
+   </div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Ключ для localStorage
+  const STORAGE_KEY = 'log4cl-extras/doc-menu-state';
+  
+  // Загружаем сохраненное состояние меню
+  function loadMenuState() {
+    try {
+      const savedState = localStorage.getItem(STORAGE_KEY);
+      return savedState ? JSON.parse(savedState) : {};
+    } catch (e) {
+      console.error('Ошибка при загрузке состояния меню:', e);
+      return {};
+    }
+  }
+  
+  // Сохраняем текущее состояние меню
+  function saveMenuState(state) {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    } catch (e) {
+      console.error('Ошибка при сохранении состояния меню:', e);
+    }
+  }
+  
+  // Получаем уникальный идентификатор для пункта меню
+  function getMenuItemId(item) {
+    const link = item.querySelector('a');
+    if (!link) return null;
+    
+    // Используем текст ссылки как идентификатор
+    // Можно также использовать href, но он может меняться в зависимости от текущей страницы
+    return link.innerText.trim();
+  }
+  
+  // Загружаем сохраненное состояние
+  const menuState = loadMenuState();
+  
+  // Находим все пункты меню с подпунктами
+  const menuItems = document.querySelectorAll('.sidebar li');
+  
+  // Обрабатываем каждый пункт меню
+  menuItems.forEach(item => {
+    const subMenu = item.querySelector('ul');
+    
+    // Если у пункта есть подменю
+    if (subMenu) {
+      const itemId = getMenuItemId(item);
+      item.classList.add('has-children');
+      
+      // Восстанавливаем состояние из localStorage, если оно сохранено
+      if (itemId && menuState[itemId]) {
+        item.classList.add('expanded');
+      }
+      
+      // Добавляем обработчик клика
+      const link = item.querySelector('a');
+      if (link) {
+        link.addEventListener('click', function(e) {
+          // Останавливаем переход по ссылке только если кликнули по пункту с подменю
+          if (item.classList.contains('has-children')) {
+            e.preventDefault();
+            
+            // Переключаем класс для раскрытия/скрытия
+            item.classList.toggle('expanded');
+            
+            // Сохраняем новое состояние
+            if (itemId) {
+              if (item.classList.contains('expanded')) {
+                menuState[itemId] = true;
+              } else {
+                delete menuState[itemId];
+              }
+              saveMenuState(menuState);
+            }
+          }
+        });
+      }
+    }
+  });
+  
+  // Функция для поиска и раскрытия родителей активного пункта
+  function expandActiveItemParents() {
+    const activeItem = document.querySelector('.sidebar li.active');
+    if (activeItem) {
+      let parent = activeItem.parentElement;
+      
+      while (parent) {
+        if (parent.tagName === 'UL' && parent.parentElement && parent.parentElement.tagName === 'LI') {
+          parent.parentElement.classList.add('expanded');
+          parent.parentElement.classList.add('active-parent');
+          
+          // Сохраняем состояние активного родителя
+          const parentItem = parent.parentElement;
+          const parentId = getMenuItemId(parentItem);
+          if (parentId) {
+            menuState[parentId] = true;
+          }
+        }
+        parent = parent.parentElement;
+      }
+      
+      // Сохраняем обновленное состояние после раскрытия активных родителей
+      saveMenuState(menuState);
+    }
+  }
+  
+  // Запускаем функцию для текущей страницы
+  expandActiveItemParents();
+});
+</script>
+
+
+  </div>
+ </body>
+</html>
