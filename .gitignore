@@ -3,3 +3,7 @@
 .DS_Store
 .*.~undo-tree~
 *.fasl
+
+
+# APM dependencies
+apm_modules/
